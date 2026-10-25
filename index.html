@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tasvirmatik | @TalibTRB</title>
+    <title>Eserî İnfografik Studio | @TalibTRB</title>
     <!-- Zengin Font Kütüphanesi -->
     <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400;1,700&family=Scheherazade+New:wght@400;700&family=Lora:ital,wght@0,400;0,700;1,400;1,700&family=Cinzel:wght@400;700&display=swap" rel="stylesheet">
     <!-- FontAwesome İkonları (Ara yüz için) -->
@@ -31,6 +31,7 @@
         }
         .sidebar {
             width: 420px;
+            min-width: 300px;
             background: var(--panel-bg);
             border: 1px solid var(--border);
             border-radius: 12px;
@@ -86,6 +87,7 @@
         
         .toolbar {
             display: flex;
+            flex-wrap: wrap;
             gap: 5px;
             margin-bottom: 10px;
             background: #121214;
@@ -103,6 +105,8 @@
             transition: 0.2s;
             font-size: 14px;
             user-select: none;
+            flex: 1;
+            text-align: center;
         }
         .tool-btn:hover { background: #333; color: #fff; }
         .tool-btn.active { background: var(--accent); color: #000; }
@@ -117,23 +121,71 @@
         input[type="color"] {
             width: 35px; height: 35px; padding: 0; border: none; border-radius: 4px; cursor: pointer;
         }
-        
+
+        /* Yeni Alt Buton Düzeni */
+        .action-buttons {
+            display: flex;
+            gap: 15px;
+            margin: 20px;
+        }
         .btn-primary {
+            flex: 1;
             background: var(--accent);
             color: #000;
             border: none;
-            padding: 15px;
-            width: calc(100% - 40px);
-            margin: 20px;
-            font-size: 16px;
+            padding: 15px 10px;
+            font-size: 15px;
             font-weight: bold;
             border-radius: 8px;
             cursor: pointer;
             transition: 0.3s;
             text-transform: uppercase;
             letter-spacing: 1px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
         }
-        .btn-primary:hover { background: #dfb668; box-shadow: 0 0 15px rgba(197, 160, 89, 0.4); }
+        .btn-primary:hover { background: #dfb668; box-shadow: 0 0 15px rgba(197, 160, 89, 0.4); transform: translateY(-2px); }
+        
+        .btn-share {
+            background: #2a2a2a;
+            color: #fff;
+        }
+        .btn-share:hover {
+            background: #444;
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.1);
+        }
+
+        /* Mobil Uyum (Responsive) */
+        @media screen and (max-width: 860px) {
+            body {
+                flex-direction: column;
+                height: auto;
+                overflow-y: auto;
+                padding: 10px;
+                gap: 15px;
+            }
+            .sidebar {
+                width: 100%;
+                order: 2;
+                border-radius: 8px;
+            }
+            .workspace {
+                width: 100%;
+                order: 1;
+                padding: 10px 0;
+                min-height: auto;
+                border: none;
+                background: transparent;
+            }
+            canvas {
+                width: 100%;
+                height: auto !important;
+                max-height: none;
+                max-width: 100%;
+            }
+        }
     </style>
 </head>
 <body>
@@ -160,7 +212,7 @@
                 <button class="tool-btn" id="ar-italic" onclick="toggleStyle('ar', 'italic')"><i class="fas fa-italic"></i></button>
                 <button class="tool-btn" id="ar-underline" onclick="toggleStyle('ar', 'underline')"><i class="fas fa-underline"></i></button>
                 <button class="tool-btn" id="ar-strike" onclick="toggleStyle('ar', 'strike')"><i class="fas fa-strikethrough"></i></button>
-                <span style="border-left: 1px solid #444; margin: 0 5px;"></span>
+                <span style="border-left: 1px solid #444; margin: 0 2px;"></span>
                 <button class="tool-btn active" id="ar-align-center" onclick="setAlignment('ar', 'center')"><i class="fas fa-align-center"></i></button>
                 <button class="tool-btn" id="ar-align-right" onclick="setAlignment('ar', 'right')"><i class="fas fa-align-right"></i></button>
                 <button class="tool-btn" id="ar-align-left" onclick="setAlignment('ar', 'left')"><i class="fas fa-align-left"></i></button>
@@ -184,7 +236,7 @@
                 <button class="tool-btn" id="tr-italic" onclick="toggleStyle('tr', 'italic')"><i class="fas fa-italic"></i></button>
                 <button class="tool-btn" id="tr-underline" onclick="toggleStyle('tr', 'underline')"><i class="fas fa-underline"></i></button>
                 <button class="tool-btn" id="tr-strike" onclick="toggleStyle('tr', 'strike')"><i class="fas fa-strikethrough"></i></button>
-                <span style="border-left: 1px solid #444; margin: 0 5px;"></span>
+                <span style="border-left: 1px solid #444; margin: 0 2px;"></span>
                 <button class="tool-btn" id="tr-align-left" onclick="setAlignment('tr', 'left')"><i class="fas fa-align-left"></i></button>
                 <button class="tool-btn active" id="tr-align-center" onclick="setAlignment('tr', 'center')"><i class="fas fa-align-center"></i></button>
                 <button class="tool-btn" id="tr-align-right" onclick="setAlignment('tr', 'right')"><i class="fas fa-align-right"></i></button>
@@ -212,7 +264,11 @@
             </div>
         </div>
 
-        <button class="btn-primary" onclick="downloadImage()"><i class="fas fa-download"></i> Görseli Üret ve İndir</button>
+        <!-- İndir ve Paylaş Butonları Yan Yana -->
+        <div class="action-buttons">
+            <button class="btn-primary" onclick="downloadImage()"><i class="fas fa-download"></i> İndir</button>
+            <button class="btn-primary btn-share" onclick="shareImage()"><i class="fas fa-share-alt"></i> Paylaş</button>
+        </div>
     </div>
 
     <div class="workspace">
@@ -266,7 +322,6 @@
             }
         }
 
-        // AUTO-SCALE MOTORU: Satırları ölçer, parçalar ve genişliği hesaplar
         function getWrappedLines(ctx, text, maxWidth) {
             const paragraphs = text.split('\n');
             let lines = [];
@@ -323,7 +378,6 @@
 
             drawBackground(ctx, canvas.width, canvas.height, theme);
 
-            // Geometrik Çerçeve
             const frameColor = (theme === 'solidLight' || theme === 'oldPaper') ? '#333333' : '#c5a059';
             ctx.strokeStyle = frameColor;
             ctx.globalAlpha = 0.5;
@@ -336,9 +390,8 @@
             const author = document.getElementById('author').value;
             const source = document.getElementById('source').value;
             
-            // --- AUTO-SCALE SİMÜLASYONU (TAŞMAYI ÖNLER) ---
-            const maxContentHeight = canvas.height - 350; // Güvenli içerik alanı yüksekliği
-            const maxWidth = canvas.width - 240; // Güvenli içerik alanı genişliği
+            const maxContentHeight = canvas.height - 350;
+            const maxWidth = canvas.width - 240;
             
             let scale = 1.0;
             let arFontSize = 65, trFontSize = 45;
@@ -348,7 +401,7 @@
             let trLayout = { lines: [], maxLineWidth: 0 };
             let arTotalHeight = 0, trTotalHeight = 0, gaps = 0, totalHeight = 0;
 
-            while (scale > 0.15) { // Ölçek minimum 0.15'e kadar küçülebilir
+            while (scale > 0.15) {
                 let currentArFont = `${styles.ar.italic ? 'italic ' : ''}${styles.ar.bold ? 'bold ' : ''}${arFontSize * scale}px '${document.getElementById('arFont').value}'`;
                 let currentTrFont = `${styles.tr.italic ? 'italic ' : ''}${styles.tr.bold ? 'bold ' : ''}${trFontSize * scale}px '${document.getElementById('trFont').value}'`;
                 
@@ -369,19 +422,14 @@
                 gaps = (arText.trim() !== '' && trText.trim() !== '') ? (120 * scale) : 0; 
                 totalHeight = arTotalHeight + trTotalHeight + gaps;
                 
-                // Hem dikey sığdırma hem de yatay sığdırma kontrolü
-                if (totalHeight <= maxContentHeight && arLayout.maxLineWidth <= maxWidth && trLayout.maxLineWidth <= maxWidth) {
-                    break; 
-                }
-                scale -= 0.02; // Sığana kadar %2 küçült
+                if (totalHeight <= maxContentHeight && arLayout.maxLineWidth <= maxWidth && trLayout.maxLineWidth <= maxWidth) break; 
+                scale -= 0.02;
             }
 
-            // --- YAZILARI DİKEY OLARAK ORTALA (VERTICAL CENTER) ---
             const contentAreaTop = 130;
             let currentY = contentAreaTop + (maxContentHeight - totalHeight) / 2;
             if (currentY < contentAreaTop) currentY = contentAreaTop;
 
-            // --- ÇİZİM İŞLEMİ ---
             if (arText.trim() !== '') {
                 ctx.font = `${styles.ar.italic ? 'italic ' : ''}${styles.ar.bold ? 'bold ' : ''}${arFontSize * scale}px '${document.getElementById('arFont').value}'`;
                 ctx.fillStyle = document.getElementById('arColor').value;
@@ -397,7 +445,7 @@
                 });
                 
                 if (trText.trim() !== '') {
-                    currentY += 40 * scale; // Çizgi üstü boşluk
+                    currentY += 40 * scale; 
                     ctx.shadowColor = 'transparent';
                     ctx.beginPath();
                     ctx.moveTo(canvas.width/2 - (80 * scale), currentY);
@@ -406,7 +454,7 @@
                     ctx.globalAlpha = 0.3;
                     ctx.stroke();
                     ctx.globalAlpha = 1.0;
-                    currentY += 80 * scale; // Çizgi altı boşluk
+                    currentY += 80 * scale; 
                 }
             }
 
@@ -425,7 +473,6 @@
                 });
             }
 
-            // --- ALT BİLGİ (MÜELLİF VE KAYNAK) ---
             const footerColor = document.getElementById('footerColor').value;
             ctx.fillStyle = footerColor;
             setSoftShadow(ctx, theme);
@@ -443,7 +490,6 @@
                 ctx.globalAlpha = 1.0;
             }
 
-            // --- İMZA / MARKA ---
             ctx.shadowColor = 'transparent';
             ctx.fillStyle = frameColor;
             ctx.font = "24px 'Lora', serif";
@@ -487,9 +533,51 @@
         function downloadImage() {
             const canvas = document.getElementById('canvas');
             const link = document.createElement('a');
-            link.download = 'TalibTRB_Studio_Export.png';
+            link.download = 'TalibTRB_Tasvirmatik.png';
             link.href = canvas.toDataURL('image/png', 1.0);
             link.click();
+        }
+
+        // AKILLI "TEK TUŞLA PAYLAŞ" MOTORU
+        async function shareImage() {
+            const canvas = document.getElementById('canvas');
+            
+            canvas.toBlob(async (blob) => {
+                const file = new File([blob], 'TalibTRB_Tasvirmatik.png', { type: 'image/png' });
+                const shareData = {
+                    files: [file],
+                    title: 'Eserî İnfografik',
+                    text: '@TalibTRB Tasvirmatik ile hazırlandı.'
+                };
+
+                // 1. Cihazın Orjinal Paylaşım Menüsünü Açmayı Dene (Mobil ve Güncel PC'ler)
+                if (navigator.canShare && navigator.canShare(shareData)) {
+                    try {
+                        await navigator.share(shareData);
+                        return; // Menü başarıyla açıldıysa işlemi bitir
+                    } catch (err) {
+                        // Kullanıcı bilerek iptal ettiyse hiçbir şey yapma. 
+                        // Sistem hatası varsa 2. aşamaya (kopyalamaya) geç.
+                        if (err.name !== 'AbortError') {
+                            fallbackCopyToClipboard(blob);
+                        }
+                    }
+                } else {
+                    // 2. Desteklemeyen Cihazlar İçin (Eski tarayıcılar)
+                    fallbackCopyToClipboard(blob);
+                }
+            }, 'image/png', 1.0);
+        }
+
+        async function fallbackCopyToClipboard(blob) {
+            try {
+                await navigator.clipboard.write([
+                    new ClipboardItem({ 'image/png': blob })
+                ]);
+                alert("✅ Sisteminiz doğrudan paylaşım ekranını desteklemiyor ancak görsel hafızaya kopyalandı!\n\nPaylaşım yapmak istediğiniz yeri (X, WhatsApp, Telegram vb.) açıp 'Yapıştır' (Ctrl+V) diyerek resmi ekleyebilirsiniz.");
+            } catch (err) {
+                alert("Tarayıcınız paylaşımı desteklemiyor. Lütfen resmi 'İndir' butonuyla cihaza kaydedip öyle paylaşın.");
+            }
         }
     </script>
 </body>
