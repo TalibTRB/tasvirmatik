@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eserî İnfografik Studio | @TalibTRB</title>
+    <!-- Zengin Font Kütüphanesi -->
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400;1,700&family=Scheherazade+New:wght@400;700&family=Lora:ital,wght@0,400;0,700;1,400;1,700&family=Cinzel:wght@400;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome İkonları (Ara yüz için) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --bg-dark: #0a0a0c;
+            --panel-bg: #161618;
+            --border: #2c2c30;
+            --accent: #c5a059;
+            --text-main: #e0e0e0;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            gap: 20px;
+            height: 100vh;
+            box-sizing: border-box;
+            overflow: hidden;
+        }
+        .sidebar {
+            width: 420px;
+            background: var(--panel-bg);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+        .sidebar::-webkit-scrollbar { width: 6px; }
+        .sidebar::-webkit-scrollbar-thumb { background: #444; border-radius: 10px; }
+        .section {
+            padding: 20px;
+            border-bottom: 1px solid var(--border);
+        }
+        .section-title {
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: var(--accent);
+            margin-bottom: 15px;
+            font-weight: 700;
+        }
+        .workspace {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: #0f0f11;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            position: relative;
+        }
+        canvas {
+            max-width: 95%;
+            max-height: 90%;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.8);
+            border-radius: 4px;
+        }
+        textarea, input, select {
+            width: 100%;
+            background: #1e1e22;
+            color: #fff;
+            border: 1px solid #333;
+            padding: 10px;
+            border-radius: 6px;
+            margin-bottom: 10px;
+            box-sizing: border-box;
+            font-size: 14px;
+        }
+        textarea { resize: vertical; min-height: 80px; }
+        .arabic-input { font-family: 'Amiri', serif; font-size: 20px; direction: rtl; }
+        
+        .toolbar {
+            display: flex;
+            gap: 5px;
+            margin-bottom: 10px;
+            background: #121214;
+            padding: 5px;
+            border-radius: 6px;
+            border: 1px solid #333;
+        }
+        .tool-btn {
+            background: transparent;
+            color: #aaa;
+            border: none;
+            padding: 8px 12px;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: 0.2s;
+            font-size: 14px;
+            user-select: none;
+        }
+        .tool-btn:hover { background: #333; color: #fff; }
+        .tool-btn.active { background: var(--accent); color: #000; }
+        
+        .color-picker-wrap {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 12px;
+            color: #888;
+        }
+        input[type="color"] {
+            width: 35px; height: 35px; padding: 0; border: none; border-radius: 4px; cursor: pointer;
+        }
+        
+        .btn-primary {
+            background: var(--accent);
+            color: #000;
+            border: none;
+            padding: 15px;
+            width: calc(100% - 40px);
+            margin: 20px;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .btn-primary:hover { background: #dfb668; box-shadow: 0 0 15px rgba(197, 160, 89, 0.4); }
+    </style>
+</head>
+<body>
+
+    <div class="sidebar">
+        <div class="section">
+            <div class="section-title">Tuval & Arka Plan</div>
+            <select id="format" onchange="drawCanvas()">
+                <option value="169">X Manzara (1920x1080)</option>
+                <option value="11">X Kare (1080x1080)</option>
+            </select>
+            <select id="bgTheme" onchange="drawCanvas()">
+                <option value="darkSmoke">Koyu Dumanlı (Abstract)</option>
+                <option value="oldPaper">Klasik Eski Kağıt</option>
+                <option value="solidDark">Minimalist Gece (Düz Siyah)</option>
+                <option value="solidLight">Minimalist Gündüz (Düz Beyaz)</option>
+            </select>
+        </div>
+
+        <div class="section">
+            <div class="section-title">Arapça Metin (Orijinal)</div>
+            <div class="toolbar" id="ar-tools">
+                <button class="tool-btn active" id="ar-bold" onclick="toggleStyle('ar', 'bold')"><i class="fas fa-bold"></i></button>
+                <button class="tool-btn" id="ar-italic" onclick="toggleStyle('ar', 'italic')"><i class="fas fa-italic"></i></button>
+                <button class="tool-btn" id="ar-underline" onclick="toggleStyle('ar', 'underline')"><i class="fas fa-underline"></i></button>
+                <button class="tool-btn" id="ar-strike" onclick="toggleStyle('ar', 'strike')"><i class="fas fa-strikethrough"></i></button>
+                <span style="border-left: 1px solid #444; margin: 0 5px;"></span>
+                <button class="tool-btn active" id="ar-align-center" onclick="setAlignment('ar', 'center')"><i class="fas fa-align-center"></i></button>
+                <button class="tool-btn" id="ar-align-right" onclick="setAlignment('ar', 'right')"><i class="fas fa-align-right"></i></button>
+                <button class="tool-btn" id="ar-align-left" onclick="setAlignment('ar', 'left')"><i class="fas fa-align-left"></i></button>
+            </div>
+            <div style="display:flex; gap:10px; margin-bottom:10px;">
+                <select id="arFont" onchange="drawCanvas()" style="margin:0;">
+                    <option value="Amiri">Amiri</option>
+                    <option value="Scheherazade New">Scheherazade</option>
+                </select>
+                <div class="color-picker-wrap">
+                    <input type="color" id="arColor" value="#ffffff" oninput="drawCanvas()">
+                </div>
+            </div>
+            <textarea id="arabicText" class="arabic-input" oninput="drawCanvas()">أَلَا لِلَّهِ الدِّينُ الْخَالِصُ</textarea>
+        </div>
+
+        <div class="section">
+            <div class="section-title">Türkçe Tercüme / Açıklama</div>
+            <div class="toolbar" id="tr-tools">
+                <button class="tool-btn" id="tr-bold" onclick="toggleStyle('tr', 'bold')"><i class="fas fa-bold"></i></button>
+                <button class="tool-btn" id="tr-italic" onclick="toggleStyle('tr', 'italic')"><i class="fas fa-italic"></i></button>
+                <button class="tool-btn" id="tr-underline" onclick="toggleStyle('tr', 'underline')"><i class="fas fa-underline"></i></button>
+                <button class="tool-btn" id="tr-strike" onclick="toggleStyle('tr', 'strike')"><i class="fas fa-strikethrough"></i></button>
+                <span style="border-left: 1px solid #444; margin: 0 5px;"></span>
+                <button class="tool-btn" id="tr-align-left" onclick="setAlignment('tr', 'left')"><i class="fas fa-align-left"></i></button>
+                <button class="tool-btn active" id="tr-align-center" onclick="setAlignment('tr', 'center')"><i class="fas fa-align-center"></i></button>
+                <button class="tool-btn" id="tr-align-right" onclick="setAlignment('tr', 'right')"><i class="fas fa-align-right"></i></button>
+            </div>
+            <div style="display:flex; gap:10px; margin-bottom:10px;">
+                <select id="trFont" onchange="drawCanvas()" style="margin:0;">
+                    <option value="Lora">Lora (Klasik)</option>
+                    <option value="Cinzel">Cinzel (Tarihi)</option>
+                    <option value="Segoe UI">Modern Sans</option>
+                </select>
+                <div class="color-picker-wrap">
+                    <input type="color" id="trColor" value="#d4d4d4" oninput="drawCanvas()">
+                </div>
+            </div>
+            <textarea id="turkishText" oninput="drawCanvas()">"İyi bilin ki, halis din yalnız Allah'ındır."</textarea>
+        </div>
+
+        <div class="section">
+            <div class="section-title">Müellif & Kaynak (Alt Bilgi)</div>
+            <input type="text" id="author" placeholder="Alim veya Eser Sahibi" value="Zümer Suresi, 3" oninput="drawCanvas()">
+            <input type="text" id="source" placeholder="Cilt, Sayfa veya Referans" value="Kur'an-ı Kerim" oninput="drawCanvas()">
+            <div class="color-picker-wrap" style="margin-top:5px;">
+                <span>Yazı Rengi: </span>
+                <input type="color" id="footerColor" value="#a38847" oninput="drawCanvas()">
+            </div>
+        </div>
+
+        <button class="btn-primary" onclick="downloadImage()"><i class="fas fa-download"></i> Görseli Üret ve İndir</button>
+    </div>
+
+    <div class="workspace">
+        <canvas id="canvas"></canvas>
+    </div>
+
+    <script>
+        const styles = {
+            ar: { bold: true, italic: false, underline: false, strike: false, align: 'center' },
+            tr: { bold: false, italic: false, underline: false, strike: false, align: 'center' }
+        };
+
+        function toggleStyle(lang, prop) {
+            styles[lang][prop] = !styles[lang][prop];
+            document.getElementById(`${lang}-${prop}`).classList.toggle('active', styles[lang][prop]);
+            drawCanvas();
+        }
+
+        function setAlignment(lang, align) {
+            styles[lang].align = align;
+            document.getElementById(`${lang}-align-left`).classList.remove('active');
+            document.getElementById(`${lang}-align-center`).classList.remove('active');
+            document.getElementById(`${lang}-align-right`).classList.remove('active');
+            document.getElementById(`${lang}-align-${align}`).classList.add('active');
+            drawCanvas();
+        }
+
+        document.fonts.ready.then(() => drawCanvas());
+
+        function drawBackground(ctx, w, h, theme) {
+            ctx.shadowColor = 'transparent'; 
+            if (theme === 'solidDark') {
+                ctx.fillStyle = '#0a0a0c'; ctx.fillRect(0, 0, w, h);
+            } else if (theme === 'solidLight') {
+                ctx.fillStyle = '#f5f5f0'; ctx.fillRect(0, 0, w, h);
+            } else if (theme === 'oldPaper') {
+                ctx.fillStyle = '#eaddcf'; ctx.fillRect(0, 0, w, h);
+                let grd = ctx.createRadialGradient(w/2, h/2, h/4, w/2, h/2, w);
+                grd.addColorStop(0, 'rgba(0,0,0,0)');
+                grd.addColorStop(1, 'rgba(139, 90, 43, 0.4)');
+                ctx.fillStyle = grd; ctx.fillRect(0, 0, w, h);
+            } else if (theme === 'darkSmoke') {
+                ctx.fillStyle = '#08080a'; ctx.fillRect(0, 0, w, h);
+                let grd1 = ctx.createRadialGradient(w*0.2, h*0.2, 0, w*0.2, h*0.2, w*0.6);
+                grd1.addColorStop(0, 'rgba(40, 50, 60, 0.6)'); grd1.addColorStop(1, 'transparent');
+                ctx.fillStyle = grd1; ctx.fillRect(0, 0, w, h);
+                
+                let grd2 = ctx.createRadialGradient(w*0.8, h*0.8, 0, w*0.8, h*0.8, w*0.5);
+                grd2.addColorStop(0, 'rgba(80, 60, 40, 0.4)'); grd2.addColorStop(1, 'transparent');
+                ctx.fillStyle = grd2; ctx.fillRect(0, 0, w, h);
+            }
+        }
+
+        // AUTO-SCALE MOTORU: Satırları ölçer, parçalar ve genişliği hesaplar
+        function getWrappedLines(ctx, text, maxWidth) {
+            const paragraphs = text.split('\n');
+            let lines = [];
+            let maxLineWidth = 0;
+            
+            paragraphs.forEach(paragraph => {
+                if(paragraph.trim() === '') {
+                    lines.push({ text: '', isSpacer: true });
+                    return;
+                }
+                const words = paragraph.split(' ');
+                let line = '';
+                
+                for (let n = 0; n < words.length; n++) {
+                    const testLine = line + words[n] + ' ';
+                    const metrics = ctx.measureText(testLine);
+                    
+                    if (metrics.width > maxWidth && n > 0) {
+                        lines.push({ text: line });
+                        maxLineWidth = Math.max(maxLineWidth, ctx.measureText(line).width);
+                        line = words[n] + ' ';
+                    } else {
+                        line = testLine;
+                    }
+                }
+                lines.push({ text: line });
+                maxLineWidth = Math.max(maxLineWidth, ctx.measureText(line).width);
+            });
+            return { lines, maxLineWidth };
+        }
+
+        function setSoftShadow(ctx, theme) {
+            if (theme === 'solidLight' || theme === 'oldPaper') {
+                ctx.shadowColor = 'rgba(0, 0, 0, 0.25)'; 
+            } else {
+                ctx.shadowColor = 'rgba(0, 0, 0, 0.85)'; 
+            }
+            ctx.shadowBlur = 28; 
+            ctx.shadowOffsetX = 0; 
+            ctx.shadowOffsetY = 4; 
+        }
+
+        function drawCanvas() {
+            const canvas = document.getElementById('canvas');
+            const ctx = canvas.getContext('2d');
+            const format = document.getElementById('format').value;
+            const theme = document.getElementById('bgTheme').value;
+            
+            canvas.width = format === '169' ? 1920 : 1080;
+            canvas.height = 1080;
+            ctx.textBaseline = 'top';
+            ctx.imageSmoothingEnabled = true;
+            ctx.imageSmoothingQuality = 'high';
+
+            drawBackground(ctx, canvas.width, canvas.height, theme);
+
+            // Geometrik Çerçeve
+            const frameColor = (theme === 'solidLight' || theme === 'oldPaper') ? '#333333' : '#c5a059';
+            ctx.strokeStyle = frameColor;
+            ctx.globalAlpha = 0.5;
+            ctx.lineWidth = 2;
+            ctx.strokeRect(60, 60, canvas.width - 120, canvas.height - 120);
+            ctx.globalAlpha = 1.0;
+
+            const arText = document.getElementById('arabicText').value;
+            const trText = document.getElementById('turkishText').value;
+            const author = document.getElementById('author').value;
+            const source = document.getElementById('source').value;
+            
+            // --- AUTO-SCALE SİMÜLASYONU (TAŞMAYI ÖNLER) ---
+            const maxContentHeight = canvas.height - 350; // Güvenli içerik alanı yüksekliği
+            const maxWidth = canvas.width - 240; // Güvenli içerik alanı genişliği
+            
+            let scale = 1.0;
+            let arFontSize = 65, trFontSize = 45;
+            let arLineHeight = 90, trLineHeight = 65;
+            
+            let arLayout = { lines: [], maxLineWidth: 0 };
+            let trLayout = { lines: [], maxLineWidth: 0 };
+            let arTotalHeight = 0, trTotalHeight = 0, gaps = 0, totalHeight = 0;
+
+            while (scale > 0.15) { // Ölçek minimum 0.15'e kadar küçülebilir
+                let currentArFont = `${styles.ar.italic ? 'italic ' : ''}${styles.ar.bold ? 'bold ' : ''}${arFontSize * scale}px '${document.getElementById('arFont').value}'`;
+                let currentTrFont = `${styles.tr.italic ? 'italic ' : ''}${styles.tr.bold ? 'bold ' : ''}${trFontSize * scale}px '${document.getElementById('trFont').value}'`;
+                
+                arTotalHeight = 0;
+                if (arText.trim() !== '') {
+                    ctx.font = currentArFont;
+                    arLayout = getWrappedLines(ctx, arText, maxWidth);
+                    arLayout.lines.forEach(l => { arTotalHeight += l.isSpacer ? (arLineHeight * scale * 0.5) : (arLineHeight * scale); });
+                }
+                
+                trTotalHeight = 0;
+                if (trText.trim() !== '') {
+                    ctx.font = currentTrFont;
+                    trLayout = getWrappedLines(ctx, trText, maxWidth);
+                    trLayout.lines.forEach(l => { trTotalHeight += l.isSpacer ? (trLineHeight * scale * 0.5) : (trLineHeight * scale); });
+                }
+                
+                gaps = (arText.trim() !== '' && trText.trim() !== '') ? (120 * scale) : 0; 
+                totalHeight = arTotalHeight + trTotalHeight + gaps;
+                
+                // Hem dikey sığdırma hem de yatay sığdırma kontrolü
+                if (totalHeight <= maxContentHeight && arLayout.maxLineWidth <= maxWidth && trLayout.maxLineWidth <= maxWidth) {
+                    break; 
+                }
+                scale -= 0.02; // Sığana kadar %2 küçült
+            }
+
+            // --- YAZILARI DİKEY OLARAK ORTALA (VERTICAL CENTER) ---
+            const contentAreaTop = 130;
+            let currentY = contentAreaTop + (maxContentHeight - totalHeight) / 2;
+            if (currentY < contentAreaTop) currentY = contentAreaTop;
+
+            // --- ÇİZİM İŞLEMİ ---
+            if (arText.trim() !== '') {
+                ctx.font = `${styles.ar.italic ? 'italic ' : ''}${styles.ar.bold ? 'bold ' : ''}${arFontSize * scale}px '${document.getElementById('arFont').value}'`;
+                ctx.fillStyle = document.getElementById('arColor').value;
+                setSoftShadow(ctx, theme);
+                
+                arLayout.lines.forEach(l => {
+                    if (l.isSpacer) {
+                        currentY += (arLineHeight * scale * 0.5);
+                    } else {
+                        drawLineWithDecorations(ctx, l.text, canvas.width, currentY, arLineHeight * scale, styles.ar);
+                        currentY += arLineHeight * scale;
+                    }
+                });
+                
+                if (trText.trim() !== '') {
+                    currentY += 40 * scale; // Çizgi üstü boşluk
+                    ctx.shadowColor = 'transparent';
+                    ctx.beginPath();
+                    ctx.moveTo(canvas.width/2 - (80 * scale), currentY);
+                    ctx.lineTo(canvas.width/2 + (80 * scale), currentY);
+                    ctx.strokeStyle = frameColor;
+                    ctx.globalAlpha = 0.3;
+                    ctx.stroke();
+                    ctx.globalAlpha = 1.0;
+                    currentY += 80 * scale; // Çizgi altı boşluk
+                }
+            }
+
+            if (trText.trim() !== '') {
+                ctx.font = `${styles.tr.italic ? 'italic ' : ''}${styles.tr.bold ? 'bold ' : ''}${trFontSize * scale}px '${document.getElementById('trFont').value}'`;
+                ctx.fillStyle = document.getElementById('trColor').value;
+                setSoftShadow(ctx, theme);
+                
+                trLayout.lines.forEach(l => {
+                    if (l.isSpacer) {
+                        currentY += (trLineHeight * scale * 0.5);
+                    } else {
+                        drawLineWithDecorations(ctx, l.text, canvas.width, currentY, trLineHeight * scale, styles.tr);
+                        currentY += trLineHeight * scale;
+                    }
+                });
+            }
+
+            // --- ALT BİLGİ (MÜELLİF VE KAYNAK) ---
+            const footerColor = document.getElementById('footerColor').value;
+            ctx.fillStyle = footerColor;
+            setSoftShadow(ctx, theme);
+            let bottomY = canvas.height - 200;
+            
+            if (author.trim() !== '') {
+                ctx.font = "bold 38px 'Lora', serif";
+                ctx.textAlign = 'center';
+                ctx.fillText(author, canvas.width / 2, bottomY);
+            }
+            if (source.trim() !== '') {
+                ctx.font = "italic 30px 'Lora', serif";
+                ctx.globalAlpha = 0.8;
+                ctx.fillText(source, canvas.width / 2, bottomY + 55);
+                ctx.globalAlpha = 1.0;
+            }
+
+            // --- İMZA / MARKA ---
+            ctx.shadowColor = 'transparent';
+            ctx.fillStyle = frameColor;
+            ctx.font = "24px 'Lora', serif";
+            ctx.textAlign = 'left';
+            ctx.globalAlpha = 0.7;
+            ctx.fillText("Tâlib Turâb | @TalibTRB", 90, canvas.height - 100);
+        }
+
+        function drawLineWithDecorations(ctx, text, canvasWidth, y, scaledLineHeight, styleObj) {
+            let x;
+            ctx.textAlign = styleObj.align;
+            
+            if (styleObj.align === 'center') x = canvasWidth / 2;
+            else if (styleObj.align === 'left') x = 120;
+            else if (styleObj.align === 'right') x = canvasWidth - 120;
+
+            ctx.fillText(text.trim(), x, y);
+
+            if (styleObj.underline || styleObj.strike) {
+                const metrics = ctx.measureText(text.trim());
+                const width = metrics.width;
+                let lineX = x;
+                
+                if (styleObj.align === 'center') lineX = x - width / 2;
+                else if (styleObj.align === 'right') lineX = x - width;
+
+                ctx.save();
+                ctx.shadowColor = 'transparent'; 
+                ctx.fillStyle = ctx.fillStyle; 
+                
+                if (styleObj.underline) {
+                    ctx.fillRect(lineX, y + scaledLineHeight * 0.8, width, Math.max(2, 3 * (scaledLineHeight/65)));
+                }
+                if (styleObj.strike) {
+                    ctx.fillRect(lineX, y + scaledLineHeight * 0.45, width, Math.max(2, 3 * (scaledLineHeight/65)));
+                }
+                ctx.restore();
+            }
+        }
+
+        function downloadImage() {
+            const canvas = document.getElementById('canvas');
+            const link = document.createElement('a');
+            link.download = 'TalibTRB_Studio_Export.png';
+            link.href = canvas.toDataURL('image/png', 1.0);
+            link.click();
+        }
+    </script>
+</body>
+</html>
