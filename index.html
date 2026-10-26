@@ -2,24 +2,29 @@
 <html lang="tr">
 <head>
     <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-EZPP5VY6Q0"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-EZPP5VY6Q0');
-</script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-EZPP5VY6Q0"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-EZPP5VY6Q0');
+    </script>
+    
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tasvirmatik 1.0 | @TalibTRB</title>
+    
     <link rel="manifest" href="manifest.json">
     <link rel="icon" type="image/png" href="icon.png">
-<link rel="apple-touch-icon" href="icon.png">
-<meta name="theme-color" content="#c5a059">
-    <!-- Zengin Font Kütüphanesi -->
-    <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400;1,700&family=Scheherazade+New:wght@400;700&family=Lora:ital,wght@0,400;0,700;1,400;1,700&family=Cinzel:wght@400;700&display=swap" rel="stylesheet">
-    <!-- FontAwesome İkonları (Ara yüz için) -->
+    <link rel="apple-touch-icon" href="icon.png">
+    <meta name="theme-color" content="#c5a059">
+    
+    <!-- FONT ÖNCEDEN YÜKLEME (PRELOAD) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Almarai:wght@400;700&family=Amiri:ital,wght@0,400;0,700;1,400;1,700&family=Aref+Ruqaa:wght@400;700&family=Cairo:wght@400;700&family=Changa:wght@400;700&family=Cinzel:wght@400;700&family=Cormorant+Garamond:ital,wght@0,400;0,700;1,400;1,700&family=El+Messiri:wght@400;700&family=Harmattan:wght@400;700&family=Lalezar&family=Lateef:wght@400&family=Lora:ital,wght@0,400;0,700;1,400;1,700&family=Mada:wght@400;700&family=Markazi+Text:wght@400;700&family=Merriweather:ital,wght@0,400;0,700;1,400;1,700&family=Montserrat:ital,wght@0,400;0,700;1,400;1,700&family=Noto+Serif:ital,wght@0,400;0,700;1,400;1,700&family=Open+Sans:ital,wght@0,400;0,700;1,400;1,700&family=Oswald:wght@400;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&family=Poppins:ital,wght@0,400;0,700;1,400;1,700&family=Rakkas&family=Raleway:ital,wght@0,400;0,700;1,400;1,700&family=Reem+Kufi:wght@400;700&family=Roboto:ital,wght@0,400;0,700;1,400;1,700&family=Scheherazade+New:wght@400;700&family=Tajawal:wght@400;700&family=Tinos:ital,wght@0,400;0,700;1,400;1,700&family=Ubuntu:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome İkonları -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
@@ -43,8 +48,8 @@
             overflow: hidden;
         }
         .sidebar {
-            width: 420px;
-            min-width: 300px;
+            width: 440px;
+            min-width: 320px;
             background: var(--panel-bg);
             border: 1px solid var(--border);
             border-radius: 12px;
@@ -56,7 +61,7 @@
         .sidebar::-webkit-scrollbar { width: 6px; }
         .sidebar::-webkit-scrollbar-thumb { background: #444; border-radius: 10px; }
         .section {
-            padding: 20px;
+            padding: 15px 20px;
             border-bottom: 1px solid var(--border);
         }
         .section-title {
@@ -64,9 +69,10 @@
             text-transform: uppercase;
             letter-spacing: 1.5px;
             color: var(--accent);
-            margin-bottom: 15px;
+            margin-bottom: 12px;
             font-weight: 700;
         }
+        
         .workspace {
             flex: 1;
             display: flex;
@@ -77,147 +83,211 @@
             border: 1px solid var(--border);
             border-radius: 12px;
             position: relative;
-        }
-        canvas {
-            max-width: 95%;
-            max-height: 90%;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.8);
-            border-radius: 4px;
-        }
-        textarea, input, select {
-            width: 100%;
-            background: #1e1e22;
-            color: #fff;
-            border: 1px solid #333;
-            padding: 10px;
-            border-radius: 6px;
-            margin-bottom: 10px;
+            padding: 20px;
             box-sizing: border-box;
-            font-size: 14px;
+            overflow-y: auto;
         }
-        textarea { resize: vertical; min-height: 80px; }
-        .arabic-input { font-family: 'Amiri', serif; font-size: 20px; direction: rtl; }
+
+        .workspace-title {
+            font-family: 'Cinzel', serif;
+            font-size: 48px;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 25px;
+            background: linear-gradient(180deg, #ffeba8 0%, #c5a059 40%, #8a6d3b 60%, #ffe399 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0px 8px 12px rgba(0,0,0,0.9)) drop-shadow(0px 2px 3px rgba(197,160,89,0.4));
+            letter-spacing: 4px;
+            user-select: none;
+        }
+
+        .sidebar-footer {
+            margin: 0 20px 20px 20px;
+            font-size: 13px;
+            color: #888;
+            text-align: center;
+            line-height: 1.6;
+            font-family: 'Montserrat', sans-serif;
+            border-top: 1px solid #333;
+            padding-top: 15px;
+        }
+        .sidebar-footer a {
+            color: var(--accent);
+            text-decoration: none;
+            font-weight: 700;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .sidebar-footer a:hover {
+            color: #ffeba8;
+            text-shadow: 0 0 10px rgba(197, 160, 89, 0.6);
+        }
+
+        .toast {
+            position: fixed;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%) translateY(30px);
+            background: linear-gradient(135deg, #c5a059, #8a6d3b);
+            color: #0a0a0c;
+            padding: 12px 30px;
+            border-radius: 50px;
+            font-size: 18px;
+            font-weight: bold;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.6), inset 0 2px 2px rgba(255,255,255,0.4);
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            z-index: 9999;
+            font-family: 'Cinzel', serif;
+            letter-spacing: 1px;
+        }
+        .toast.show { opacity: 1; visibility: visible; transform: translateX(-50%) translateY(0); }
+
+        canvas {
+            max-width: 95%; max-height: 75%; box-shadow: 0 20px 50px rgba(0,0,0,0.8); border-radius: 4px;
+        }
+
+        /* MOBİL İÇİN ÜSTTE SIFIR BOŞLUKLU TAM GENİŞLİKTE SABİT ÖNİZLEME */
+        .mobile-sticky-preview {
+            display: none;
+            background: #000;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.9);
+            line-height: 0;
+        }
+        .mobile-sticky-preview canvas {
+            width: 100% !important;
+            height: auto !important;
+            max-height: none !important;
+            border-radius: 0 !important;
+            box-shadow: none !important;
+            display: block;
+        }
+
+        textarea, input[type="text"], select {
+            width: 100%; background: #1e1e22; color: #fff; border: 1px solid #333; padding: 10px; border-radius: 6px; margin-bottom: 10px; box-sizing: border-box; font-size: 14px;
+        }
+        textarea { resize: vertical; min-height: 70px; }
+        .arabic-input { font-size: 22px; direction: rtl; font-family: 'Amiri', sans-serif; }
         
         .toolbar {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 5px;
-            margin-bottom: 10px;
-            background: #121214;
-            padding: 5px;
-            border-radius: 6px;
-            border: 1px solid #333;
+            display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 10px; background: #121214; padding: 5px; border-radius: 6px; border: 1px solid #333;
         }
         .tool-btn {
-            background: transparent;
-            color: #aaa;
-            border: none;
-            padding: 8px 12px;
-            cursor: pointer;
-            border-radius: 4px;
-            transition: 0.2s;
-            font-size: 14px;
-            user-select: none;
-            flex: 1;
-            text-align: center;
+            background: transparent; color: #aaa; border: none; padding: 6px 10px; cursor: pointer; border-radius: 4px; transition: 0.2s; font-size: 14px; user-select: none; flex: 1; text-align: center;
         }
         .tool-btn:hover { background: #333; color: #fff; }
         .tool-btn.active { background: var(--accent); color: #000; }
         
         .color-picker-wrap {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-size: 12px;
-            color: #888;
+            display: flex; align-items: center; gap: 10px; font-size: 12px; color: #888;
         }
         input[type="color"] {
-            width: 35px; height: 35px; padding: 0; border: none; border-radius: 4px; cursor: pointer;
+            width: 32px; height: 32px; padding: 0; border: none; border-radius: 4px; cursor: pointer; background: transparent;
         }
+        input[type="checkbox"] { accent-color: var(--accent); width: 16px; height: 16px; cursor: pointer; }
 
-        /* Yeni Alt Buton Düzeni */
-        .action-buttons {
-            display: flex;
-            gap: 15px;
-            margin: 20px;
+        .effect-panel {
+            background: #121214; border: 1px solid #333; border-radius: 6px; padding: 10px; margin-bottom: 10px;
         }
+        .effect-panel summary {
+            font-size: 12px; color: #e0e0e0; cursor: pointer; font-weight: bold; outline: none; display:flex; align-items: center; gap: 8px; user-select: none;
+        }
+        .effect-panel summary:hover { color: var(--accent); }
+        .effect-content { margin-top: 15px; display: flex; flex-direction: column; gap: 10px; }
+        .effect-row { display: flex; justify-content: space-between; align-items: center; font-size: 11px; color: #888; }
+        .multi-col { display: flex; gap: 15px; }
+        .multi-col > div { flex: 1; }
+
+        .action-buttons { display: flex; gap: 15px; margin: 20px; }
         .btn-primary {
-            flex: 1;
-            background: var(--accent);
-            color: #000;
-            border: none;
-            padding: 15px 10px;
-            font-size: 15px;
-            font-weight: bold;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: 0.3s;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 8px;
+            flex: 1; background: var(--accent); color: #000; border: none; padding: 15px 10px; font-size: 15px; font-weight: bold; border-radius: 8px; cursor: pointer; transition: 0.3s; text-transform: uppercase; letter-spacing: 1px; display: flex; justify-content: center; align-items: center; gap: 8px;
         }
         .btn-primary:hover { background: #dfb668; box-shadow: 0 0 15px rgba(197, 160, 89, 0.4); transform: translateY(-2px); }
-        
-        .btn-share {
-            background: #2a2a2a;
-            color: #fff;
-        }
-        .btn-share:hover {
-            background: #444;
-            box-shadow: 0 0 15px rgba(255, 255, 255, 0.1);
-        }
+        .btn-share { background: #2a2a2a; color: #fff; }
+        .btn-share:hover { background: #444; box-shadow: 0 0 15px rgba(255, 255, 255, 0.1); }
 
-        /* Mobil Uyum (Responsive) */
+        .slider-label { font-size: 11px; color: #aaa; display: flex; justify-content: space-between; margin-bottom: 5px; }
+        input[type="range"] { width: 100%; margin-bottom: 5px; accent-color: var(--accent); }
+
+        .app-install-card { background: #121214; border: 1px solid #333; border-radius: 8px; padding: 15px; margin: 0 20px 20px 20px; }
+        .app-install-card h4 { margin: 0 0 10px 0; color: #d4d4d4; font-size: 13px; display: flex; align-items: center; gap: 8px; }
+        .app-install-card p { margin: 0 0 8px 0; font-size: 12px; color: #888; line-height: 1.5; }
+        .app-install-card p:last-child { margin: 0; }
+        .app-install-card strong { color: var(--accent); }
+
+        /* MOBİL UYUM DÜZENLEMELERİ */
         @media screen and (max-width: 860px) {
-            body {
-                flex-direction: column;
-                height: auto;
-                overflow-y: auto;
-                padding: 10px;
-                gap: 15px;
-            }
-            .sidebar {
-                width: 100%;
-                order: 2;
-                border-radius: 8px;
-            }
-            .workspace {
-                width: 100%;
-                order: 1;
-                padding: 10px 0;
-                min-height: auto;
-                border: none;
-                background: transparent;
-            }
-            canvas {
-                width: 100%;
-                height: auto !important;
-                max-height: none;
-                max-width: 100%;
-            }
+            body { flex-direction: column; height: auto; overflow-y: auto; padding: 0; gap: 0; }
+            .sidebar { width: 100%; height: 100vh; border-radius: 0; border: none; }
+            .workspace { display: none; } /* Büyük çalışma alanı mobilde gizlenir, tam genişlikte sticky önizleme kullanılır */
+            .mobile-sticky-preview { display: block; }
         }
     </style>
 </head>
 <body>
 
+    <div id="toast" class="toast">Elhamdulillah...</div>
+
     <div class="sidebar">
+        <!-- MOBİL İÇİN ÜSTTE SIFIR BOŞLUKLU TAM GENİŞLİKTE SABİT ÖNİZLEME -->
+        <div class="mobile-sticky-preview">
+            <canvas id="mobileCanvas"></canvas>
+        </div>
+
+        <!-- 1. TUVAL VE GÖRSEL AYARLARI -->
         <div class="section">
-            <div class="section-title">Tuval & Arka Plan</div>
-            <select id="format" onchange="drawCanvas()">
+            <div class="section-title">Tuval & Görsel Ayarları</div>
+            <select id="format" onchange="drawAllCanvases()">
                 <option value="169">X Manzara (1920x1080)</option>
                 <option value="11">X Kare (1080x1080)</option>
             </select>
-            <select id="bgTheme" onchange="drawCanvas()">
-                <option value="darkSmoke">Koyu Dumanlı (Abstract)</option>
-                <option value="oldPaper">Klasik Eski Kağıt</option>
-                <option value="solidDark">Minimalist Gece (Düz Siyah)</option>
-                <option value="solidLight">Minimalist Gündüz (Düz Beyaz)</option>
+            
+            <select id="bgTheme" onchange="drawAllCanvases()">
+                <option value="darkSmoke">1. Koyu Dumanlı</option>
+                <option value="graySmoke">2. Gri Dumanlı (Sisli)</option>
+                <option value="stainSmoke">3. Lekeli Duman (Eskitme)</option>
+                <option value="deepBlue">4. Derin Mavi Gece</option>
+                <option value="forestGreen">5. Koyu Orman Yeşili</option>
+                <option value="crimsonRed">6. Koyu Bordo</option>
+                <option value="goldenGlow">7. Altın Hüzme</option>
+                <option value="solidDark">8. Düz Siyah (Minimalist)</option>
+                <option value="solidLight">9. Düz Beyaz (Aydınlık)</option>
+                <option value="oldPaper">10. Klasik Eski Kağıt</option>
+                <option value="parchment">11. Yıpranmış Parşömen</option>
+                <option value="sandStorm">12. Kum Fırtınası (Açık)</option>
             </select>
+
+            <select id="frameStyle" onchange="drawAllCanvases()">
+                <option value="classic">1. Çerçeve: Klasik Tek Çizgi</option>
+                <option value="double">2. Çerçeve: Çift Çizgi</option>
+                <option value="thick">3. Çerçeve: Kalın Çizgi</option>
+                <option value="elegantInner">4. Çerçeve: Zarif İç Çizgi</option>
+                <option value="corner">5. Motif: İslami Köşe</option>
+                <option value="doubleCorner">6. Motif: Çift İslami Köşe</option>
+                <option value="bracket">7. Motif: Köşeli Parantez</option>
+                <option value="minimalTopBottom">8. Minimal: Sadece Alt-Üst</option>
+                <option value="minimalLeftRight">9. Minimal: Sadece Sağ-Sol</option>
+                <option value="dashed">10. Stil: Kesik Çizgili</option>
+                <option value="dotted">11. Stil: Noktalı</option>
+                <option value="none">12. Çerçevesiz (Tam Sayfa)</option>
+            </select>
+
+            <div>
+                <div class="slider-label"><span>Sağa / Sola Kaydır (X Ekseni)</span></div>
+                <input type="range" id="xOffset" min="-400" max="400" value="0" oninput="drawAllCanvases()">
+                <div class="slider-label"><span>Yukarı / Aşağı Kaydır (Y Ekseni)</span></div>
+                <input type="range" id="yOffset" min="-400" max="400" value="0" oninput="drawAllCanvases()">
+            </div>
         </div>
 
+        <!-- 2. ARAPÇA METİN -->
         <div class="section">
             <div class="section-title">Arapça Metin (Orijinal)</div>
             <div class="toolbar" id="ar-tools">
@@ -230,18 +300,89 @@
                 <button class="tool-btn" id="ar-align-right" onclick="setAlignment('ar', 'right')"><i class="fas fa-align-right"></i></button>
                 <button class="tool-btn" id="ar-align-left" onclick="setAlignment('ar', 'left')"><i class="fas fa-align-left"></i></button>
             </div>
+            
             <div style="display:flex; gap:10px; margin-bottom:10px;">
-                <select id="arFont" onchange="drawCanvas()" style="margin:0;">
-                    <option value="Amiri">Amiri</option>
-                    <option value="Scheherazade New">Scheherazade</option>
+                <select id="arFont" onchange="changeFontImmediate('arFont', 'arabicText')" style="margin:0;">
+                    <option value="Amiri">1. Amiri (Klasik Nesiḥ)</option>
+                    <option value="Scheherazade New">2. Scheherazade (Geleneksel)</option>
+                    <option value="Cairo">3. Cairo (Modern Kufi)</option>
+                    <option value="Tajawal">4. Tajawal (Temiz Okunaklı)</option>
+                    <option value="Almarai">5. Almarai (Kurumsal)</option>
+                    <option value="Changa">6. Changa (Kalın ve Köşeli)</option>
+                    <option value="Lateef">7. Lateef (Zarif İnce)</option>
+                    <option value="Reem Kufi">8. Reem Kufi (Geometrik Kufi)</option>
+                    <option value="Aref Ruqaa">9. Aref Ruqaa (Rika / El Yazısı)</option>
+                    <option value="Lalezar">10. Lalezar (Afiş Tipi)</option>
+                    <option value="Mada">11. Mada (Modern İnce)</option>
+                    <option value="Markazi Text">12. Markazi (Kitap Tipi)</option>
+                    <option value="El Messiri">13. El Messiri (Yuvarlak Estetik)</option>
+                    <option value="Rakkas">14. Rakkas (Sanatsal Eğik)</option>
+                    <option value="Harmattan">15. Harmattan (Sade Düz)</option>
                 </select>
                 <div class="color-picker-wrap">
-                    <input type="color" id="arColor" value="#ffffff" oninput="drawCanvas()">
+                    <input type="color" id="arColor" value="#ffffff" title="Düz Yazı Rengi" oninput="drawAllCanvases()">
                 </div>
             </div>
-            <textarea id="arabicText" class="arabic-input" oninput="drawCanvas()">أَلَا لِلَّهِ الدِّينُ الْخَالِصُ</textarea>
+            
+            <div class="slider-label"><span>Arapça Metin Boyutu</span></div>
+            <input type="range" id="arSizeMultiplier" min="0.5" max="2.0" step="0.05" value="1.0" oninput="drawAllCanvases()" style="margin-bottom:10px;">
+
+            <details class="effect-panel">
+                <summary><i class="fas fa-layer-group"></i> ✨ Gelişmiş Efektler ve 3D</summary>
+                <div class="effect-content">
+                    <div class="effect-row">
+                        <span>Dolgu (Renk/Doku):</span>
+                        <select id="arFillType" onchange="drawAllCanvases()" style="width:140px; margin:0; padding:5px;">
+                            <option value="solid">Düz Renk</option>
+                            <option value="gold">Altın Varak (Gold)</option>
+                            <option value="silver">Gümüş (Silver)</option>
+                            <option value="bronze">Bronz (Bronze)</option>
+                        </select>
+                    </div>
+                    <div class="effect-row">
+                        <span>Efekt Motoru:</span>
+                        <select id="arEffectType" onchange="drawAllCanvases()" style="width:140px; margin:0; padding:5px;">
+                            <option value="normal">Normal (Standart Gölge)</option>
+                            <option value="engrave">Kazıma (İç Gölge / Pres)</option>
+                            <option value="neon">Neon (Katmanlı Işıldama)</option>
+                        </select>
+                    </div>
+                    <hr style="border: 0; border-top: 1px solid #333; margin: 5px 0;">
+                    <div class="slider-label"><span>3D Hacim (Derinlik)</span></div>
+                    <input type="range" id="ar3DDepth" min="0" max="20" step="1" value="0" oninput="drawAllCanvases()">
+                    <div class="effect-row" style="margin-top:5px;">
+                        <span>Kenarlık Rengi & Kalınlığı:</span>
+                        <input type="color" id="arStrokeColor" value="#000000" oninput="drawAllCanvases()">
+                    </div>
+                    <input type="range" id="arStrokeWidth" min="0" max="15" step="0.5" value="0" oninput="drawAllCanvases()">
+                    <div class="effect-row" style="margin-top:5px;">
+                        <span>Gölge (Shadow/Glow) Rengi:</span>
+                        <input type="color" id="arShadowColor" value="#000000" oninput="drawAllCanvases()">
+                    </div>
+                    <div class="multi-col">
+                        <div>
+                            <div class="slider-label"><span>Şeffaflık</span></div>
+                            <input type="range" id="arShadowOpacity" min="0" max="1" step="0.1" value="0.8" oninput="drawAllCanvases()">
+                        </div>
+                        <div>
+                            <div class="slider-label"><span>Bulanıklık</span></div>
+                            <input type="range" id="arShadowBlur" min="0" max="60" value="28" oninput="drawAllCanvases()">
+                        </div>
+                    </div>
+                    <hr style="border: 0; border-top: 1px solid #333; margin: 5px 0;">
+                    <div class="effect-row">
+                        <label style="display:flex; align-items:center; gap:5px; cursor:pointer; color:#e0e0e0;">
+                            <input type="checkbox" id="arHighlight" onchange="drawAllCanvases()"> Satır Vurgu (Arka Plan Kutusu)
+                        </label>
+                        <input type="color" id="arHighlightColor" value="#c5a059" oninput="drawAllCanvases()">
+                    </div>
+                </div>
+            </details>
+
+            <textarea id="arabicText" class="arabic-input" oninput="drawAllCanvases()" style="font-family: 'Amiri';">أَلَا لِلَّهِ الدِّينُ الْخَالِصُ</textarea>
         </div>
 
+        <!-- 3. TÜRKÇE METİN -->
         <div class="section">
             <div class="section-title">Türkçe Tercüme / Açıklama</div>
             <div class="toolbar" id="tr-tools">
@@ -254,37 +395,127 @@
                 <button class="tool-btn active" id="tr-align-center" onclick="setAlignment('tr', 'center')"><i class="fas fa-align-center"></i></button>
                 <button class="tool-btn" id="tr-align-right" onclick="setAlignment('tr', 'right')"><i class="fas fa-align-right"></i></button>
             </div>
+            
             <div style="display:flex; gap:10px; margin-bottom:10px;">
-                <select id="trFont" onchange="drawCanvas()" style="margin:0;">
-                    <option value="Lora">Lora (Klasik)</option>
-                    <option value="Cinzel">Cinzel (Tarihi)</option>
-                    <option value="Segoe UI">Modern Sans</option>
+                <select id="trFont" onchange="changeFontImmediate('trFont', 'turkishText')" style="margin:0;">
+                    <option value="Lora">1. Lora (Klasik Tırnaklı)</option>
+                    <option value="Cinzel">2. Cinzel (Tarihi / Kitabe)</option>
+                    <option value="Segoe UI">3. Segoe UI (Sistem Modern)</option>
+                    <option value="Roboto">4. Roboto (Google Standart)</option>
+                    <option value="Montserrat">5. Montserrat (Modern Yuvarlak)</option>
+                    <option value="Playfair Display">6. Playfair (Zarif Başlık)</option>
+                    <option value="Merriweather">7. Merriweather (Okunaklı Kitap)</option>
+                    <option value="Oswald">8. Oswald (Dar ve Uzun)</option>
+                    <option value="Raleway">9. Raleway (İnce Zarif)</option>
+                    <option value="Noto Serif">10. Noto Serif (Akademik)</option>
+                    <option value="Ubuntu">11. Ubuntu (Yumuşak Kavisli)</option>
+                    <option value="Poppins">12. Poppins (Geometrik Sans)</option>
+                    <option value="Tinos">13. Tinos (Times Benzeri Klasik)</option>
+                    <option value="Cormorant Garamond">14. Garamond (Eski Basım)</option>
+                    <option value="Open Sans">15. Open Sans (Temiz Web)</option>
                 </select>
                 <div class="color-picker-wrap">
-                    <input type="color" id="trColor" value="#d4d4d4" oninput="drawCanvas()">
+                    <input type="color" id="trColor" value="#d4d4d4" title="Düz Yazı Rengi" oninput="drawAllCanvases()">
                 </div>
             </div>
-            <textarea id="turkishText" oninput="drawCanvas()">"İyi bilin ki, halis din yalnız Allah'ındır."</textarea>
+
+            <div class="slider-label"><span>Türkçe Metin Boyutu</span></div>
+            <input type="range" id="trSizeMultiplier" min="0.5" max="2.0" step="0.05" value="1.0" oninput="drawAllCanvases()" style="margin-bottom:10px;">
+
+            <details class="effect-panel">
+                <summary><i class="fas fa-layer-group"></i> ✨ Gelişmiş Efektler ve 3D</summary>
+                <div class="effect-content">
+                    <div class="slider-label"><span style="color:var(--accent);">Harf Aralığı (Kerning - Sadece Latin)</span></div>
+                    <input type="range" id="trLetterSpacing" min="-5" max="30" step="1" value="0" oninput="drawAllCanvases()">
+                    <hr style="border: 0; border-top: 1px solid #333; margin: 5px 0;">
+                    <div class="effect-row">
+                        <span>Dolgu (Renk/Doku):</span>
+                        <select id="trFillType" onchange="drawAllCanvases()" style="width:140px; margin:0; padding:5px;">
+                            <option value="solid">Düz Renk</option>
+                            <option value="gold">Altın Varak (Gold)</option>
+                            <option value="silver">Gümüş (Silver)</option>
+                            <option value="bronze">Bronz (Bronze)</option>
+                        </select>
+                    </div>
+                    <div class="effect-row">
+                        <span>Efekt Motoru:</span>
+                        <select id="trEffectType" onchange="drawAllCanvases()" style="width:140px; margin:0; padding:5px;">
+                            <option value="normal">Normal (Standart Gölge)</option>
+                            <option value="engrave">Kazıma (İç Gölge / Pres)</option>
+                            <option value="neon">Neon (Katmanlı Işıldama)</option>
+                        </select>
+                    </div>
+                    <hr style="border: 0; border-top: 1px solid #333; margin: 5px 0;">
+                    <div class="slider-label"><span>3D Hacim (Derinlik)</span></div>
+                    <input type="range" id="tr3DDepth" min="0" max="20" step="1" value="0" oninput="drawAllCanvases()">
+                    <div class="effect-row" style="margin-top:5px;">
+                        <span>Kenarlık Rengi & Kalınlığı:</span>
+                        <input type="color" id="trStrokeColor" value="#000000" oninput="drawAllCanvases()">
+                    </div>
+                    <input type="range" id="trStrokeWidth" min="0" max="15" step="0.5" value="0" oninput="drawAllCanvases()">
+                    <div class="effect-row" style="margin-top:5px;">
+                        <span>Gölge (Shadow/Glow) Rengi:</span>
+                        <input type="color" id="trShadowColor" value="#000000" oninput="drawAllCanvases()">
+                    </div>
+                    <div class="multi-col">
+                        <div>
+                            <div class="slider-label"><span>Şeffaflık</span></div>
+                            <input type="range" id="trShadowOpacity" min="0" max="1" step="0.1" value="0.8" oninput="drawAllCanvases()">
+                        </div>
+                        <div>
+                            <div class="slider-label"><span>Bulanıklık</span></div>
+                            <input type="range" id="trShadowBlur" min="0" max="60" value="28" oninput="drawAllCanvases()">
+                        </div>
+                    </div>
+                    <hr style="border: 0; border-top: 1px solid #333; margin: 5px 0;">
+                    <div class="effect-row">
+                        <label style="display:flex; align-items:center; gap:5px; cursor:pointer; color:#e0e0e0;">
+                            <input type="checkbox" id="trHighlight" onchange="drawAllCanvases()"> Satır Vurgu (Arka Plan Kutusu)
+                        </label>
+                        <input type="color" id="trHighlightColor" value="#c5a059" oninput="drawAllCanvases()">
+                    </div>
+                </div>
+            </details>
+
+            <textarea id="turkishText" oninput="drawAllCanvases()" style="font-family: 'Lora';">"İyi bilin ki, halis din yalnız Allah'ındır."</textarea>
         </div>
 
-        <div class="section">
-            <div class="section-title">Müellif & Kaynak (Alt Bilgi)</div>
-            <input type="text" id="author" placeholder="Alim veya Eser Sahibi" value="Zümer Suresi, 3" oninput="drawCanvas()">
-            <input type="text" id="source" placeholder="Cilt, Sayfa veya Referans" value="Kur'an-ı Kerim" oninput="drawCanvas()">
+        <!-- 4. ALT BİLGİ VE İMZA -->
+        <div class="section" style="border-bottom: none;">
+            <div class="section-title">Müellif, Kaynak & İmza</div>
+            <input type="text" id="author" placeholder="Alim veya Eser Sahibi" value="Zümer Suresi, 3" oninput="drawAllCanvases()">
+            <input type="text" id="source" placeholder="Cilt, Sayfa veya Referans" value="Kur'an-ı Kerim" oninput="drawAllCanvases()">
+            <input type="text" id="brandText" placeholder="Özel Marka İmzanız" value="Tasvirmatik | @TalibTRB" oninput="drawAllCanvases()" style="border-color: var(--accent); color: var(--accent); font-weight:bold;">
+            
             <div class="color-picker-wrap" style="margin-top:5px;">
-                <span>Yazı Rengi: </span>
-                <input type="color" id="footerColor" value="#a38847" oninput="drawCanvas()">
+                <span>Alt Bilgi ve Çizgi Rengi: </span>
+                <input type="color" id="footerColor" value="#a38847" oninput="drawAllCanvases()">
             </div>
         </div>
 
-        <!-- İndir ve Paylaş Butonları Yan Yana -->
+        <!-- İndir ve Paylaş Butonları -->
         <div class="action-buttons">
             <button class="btn-primary" onclick="downloadImage()"><i class="fas fa-download"></i> İndir</button>
             <button class="btn-primary btn-share" onclick="shareImage()"><i class="fas fa-share-alt"></i> Paylaş</button>
         </div>
+
+        <!-- UYGULAMA OLARAK YÜKLEME YÖNERGESİ -->
+        <div class="app-install-card">
+            <h4><i class="fas fa-mobile-alt"></i> Uygulama Olarak Yükle (PWA)</h4>
+            <p><strong>PC'de:</strong> Tarayıcı adres çubuğunun sağındaki <i class="fas fa-download" style="font-size:11px;"></i> (Yükle) simgesine tıklayın.</p>
+            <p><strong>Mobil'de:</strong> Tarayıcı seçeneklerinden (⋮) <em>"Ana Ekrana Ekle"</em> butonuna dokunarak gerçek bir app gibi kullanın.</p>
+        </div>
+        
+        <div class="sidebar-footer">
+            Tasvirmatik 1.0 by @TalibTRB <br>
+            X: <a href="https://x.com/TalibTRB" target="_blank"><i class="fab fa-x-twitter"></i> x.com/TalibTRB</a> <br>
+            Tamamen ücretsiz ve reklamsızdır.
+        </div>
     </div>
 
+    <!-- PC İÇİN BÜYÜK ÇALIŞMA ALANI -->
     <div class="workspace">
+        <div class="workspace-title">TASVİRMATİK 1.0</div>
         <canvas id="canvas"></canvas>
     </div>
 
@@ -297,7 +528,7 @@
         function toggleStyle(lang, prop) {
             styles[lang][prop] = !styles[lang][prop];
             document.getElementById(`${lang}-${prop}`).classList.toggle('active', styles[lang][prop]);
-            drawCanvas();
+            drawAllCanvases();
         }
 
         function setAlignment(lang, align) {
@@ -306,32 +537,107 @@
             document.getElementById(`${lang}-align-center`).classList.remove('active');
             document.getElementById(`${lang}-align-right`).classList.remove('active');
             document.getElementById(`${lang}-align-${align}`).classList.add('active');
-            drawCanvas();
+            drawAllCanvases();
+        }
+        
+        async function changeFontImmediate(selectId, textareaId) {
+            const fontName = document.getElementById(selectId).value;
+            document.getElementById(textareaId).style.fontFamily = `'${fontName}', sans-serif`;
+            if (document.fonts && document.fonts.load) {
+                try { await document.fonts.load(`400 24px "${fontName}"`); } catch (e) {}
+            }
+            drawAllCanvases(); setTimeout(drawAllCanvases, 50);
         }
 
-        document.fonts.ready.then(() => drawCanvas());
+        document.fonts.ready.then(() => { drawAllCanvases(); });
+
+        function showToast() {
+            const toast = document.getElementById('toast');
+            toast.classList.add('show');
+            setTimeout(() => { toast.classList.remove('show'); }, 3000);
+        }
+
+        function hexToRgba(hex, opacity) {
+            hex = hex.replace(/^#/, '');
+            if (hex.length === 3) hex = hex.split('').map(x => x + x).join('');
+            const r = parseInt(hex.substring(0, 2), 16);
+            const g = parseInt(hex.substring(2, 4), 16);
+            const b = parseInt(hex.substring(4, 6), 16);
+            return `rgba(${r}, ${g}, ${b}, ${opacity})`;
+        }
 
         function drawBackground(ctx, w, h, theme) {
             ctx.shadowColor = 'transparent'; 
-            if (theme === 'solidDark') {
-                ctx.fillStyle = '#0a0a0c'; ctx.fillRect(0, 0, w, h);
-            } else if (theme === 'solidLight') {
-                ctx.fillStyle = '#f5f5f0'; ctx.fillRect(0, 0, w, h);
-            } else if (theme === 'oldPaper') {
-                ctx.fillStyle = '#eaddcf'; ctx.fillRect(0, 0, w, h);
-                let grd = ctx.createRadialGradient(w/2, h/2, h/4, w/2, h/2, w);
-                grd.addColorStop(0, 'rgba(0,0,0,0)');
-                grd.addColorStop(1, 'rgba(139, 90, 43, 0.4)');
-                ctx.fillStyle = grd; ctx.fillRect(0, 0, w, h);
-            } else if (theme === 'darkSmoke') {
+            if (theme === 'solidDark') { ctx.fillStyle = '#0a0a0c'; ctx.fillRect(0, 0, w, h); } 
+            else if (theme === 'solidLight') { ctx.fillStyle = '#f5f5f0'; ctx.fillRect(0, 0, w, h); } 
+            else if (theme === 'darkSmoke') {
                 ctx.fillStyle = '#08080a'; ctx.fillRect(0, 0, w, h);
                 let grd1 = ctx.createRadialGradient(w*0.2, h*0.2, 0, w*0.2, h*0.2, w*0.6);
                 grd1.addColorStop(0, 'rgba(40, 50, 60, 0.6)'); grd1.addColorStop(1, 'transparent');
                 ctx.fillStyle = grd1; ctx.fillRect(0, 0, w, h);
-                
                 let grd2 = ctx.createRadialGradient(w*0.8, h*0.8, 0, w*0.8, h*0.8, w*0.5);
                 grd2.addColorStop(0, 'rgba(80, 60, 40, 0.4)'); grd2.addColorStop(1, 'transparent');
                 ctx.fillStyle = grd2; ctx.fillRect(0, 0, w, h);
+            } 
+            else if (theme === 'graySmoke') {
+                ctx.fillStyle = '#16161a'; ctx.fillRect(0, 0, w, h);
+                let grd1 = ctx.createRadialGradient(w*0.3, h*0.3, 0, w*0.3, h*0.3, w*0.7);
+                grd1.addColorStop(0, 'rgba(75, 80, 85, 0.5)'); grd1.addColorStop(1, 'transparent');
+                ctx.fillStyle = grd1; ctx.fillRect(0, 0, w, h);
+                let grd2 = ctx.createRadialGradient(w*0.7, h*0.7, 0, w*0.7, h*0.7, w*0.6);
+                grd2.addColorStop(0, 'rgba(40, 45, 50, 0.4)'); grd2.addColorStop(1, 'transparent');
+                ctx.fillStyle = grd2; ctx.fillRect(0, 0, w, h);
+            } 
+            else if (theme === 'stainSmoke') {
+                ctx.fillStyle = '#0b0a09'; ctx.fillRect(0, 0, w, h);
+                let grd1 = ctx.createRadialGradient(w*0.5, h*0.5, 0, w*0.5, h*0.5, w*0.8);
+                grd1.addColorStop(0, 'rgba(90, 70, 45, 0.25)'); grd1.addColorStop(1, 'transparent');
+                ctx.fillStyle = grd1; ctx.fillRect(0, 0, w, h);
+                let grd2 = ctx.createRadialGradient(w*0.1, h*0.9, 0, w*0.1, h*0.9, w*0.5);
+                grd2.addColorStop(0, 'rgba(50, 40, 35, 0.35)'); grd2.addColorStop(1, 'transparent');
+                ctx.fillStyle = grd2; ctx.fillRect(0, 0, w, h);
+            }
+            else if (theme === 'deepBlue') {
+                ctx.fillStyle = '#070a14'; ctx.fillRect(0, 0, w, h);
+                let grd = ctx.createRadialGradient(w/2, h/2, 0, w/2, h/2, w);
+                grd.addColorStop(0, 'rgba(26, 35, 60, 0.8)'); grd.addColorStop(1, 'transparent');
+                ctx.fillStyle = grd; ctx.fillRect(0, 0, w, h);
+            }
+            else if (theme === 'forestGreen') {
+                ctx.fillStyle = '#050a07'; ctx.fillRect(0, 0, w, h);
+                let grd = ctx.createRadialGradient(w/2, h/2, 0, w/2, h/2, w);
+                grd.addColorStop(0, 'rgba(20, 45, 30, 0.7)'); grd.addColorStop(1, 'transparent');
+                ctx.fillStyle = grd; ctx.fillRect(0, 0, w, h);
+            }
+            else if (theme === 'crimsonRed') {
+                ctx.fillStyle = '#0a0304'; ctx.fillRect(0, 0, w, h);
+                let grd = ctx.createRadialGradient(w/2, h/2, 0, w/2, h/2, w);
+                grd.addColorStop(0, 'rgba(60, 15, 20, 0.8)'); grd.addColorStop(1, 'transparent');
+                ctx.fillStyle = grd; ctx.fillRect(0, 0, w, h);
+            }
+            else if (theme === 'goldenGlow') {
+                ctx.fillStyle = '#0a0805'; ctx.fillRect(0, 0, w, h);
+                let grd = ctx.createRadialGradient(w/2, 0, 0, w/2, h/2, w);
+                grd.addColorStop(0, 'rgba(100, 75, 20, 0.5)'); grd.addColorStop(1, 'transparent');
+                ctx.fillStyle = grd; ctx.fillRect(0, 0, w, h);
+            }
+            else if (theme === 'oldPaper') {
+                ctx.fillStyle = '#eaddcf'; ctx.fillRect(0, 0, w, h);
+                let grd = ctx.createRadialGradient(w/2, h/2, h/4, w/2, h/2, w);
+                grd.addColorStop(0, 'rgba(0,0,0,0)'); grd.addColorStop(1, 'rgba(139, 90, 43, 0.4)');
+                ctx.fillStyle = grd; ctx.fillRect(0, 0, w, h);
+            }
+            else if (theme === 'parchment') {
+                ctx.fillStyle = '#d9c6aa'; ctx.fillRect(0, 0, w, h);
+                let grd = ctx.createRadialGradient(w/2, h/2, 0, w/2, h/2, w);
+                grd.addColorStop(0, 'rgba(180, 140, 90, 0.3)'); grd.addColorStop(1, 'rgba(100, 70, 40, 0.5)');
+                ctx.fillStyle = grd; ctx.fillRect(0, 0, w, h);
+            }
+            else if (theme === 'sandStorm') {
+                ctx.fillStyle = '#c2a878'; ctx.fillRect(0, 0, w, h);
+                let grd = ctx.createLinearGradient(0, 0, w, h);
+                grd.addColorStop(0, 'rgba(200, 180, 140, 0.4)'); grd.addColorStop(1, 'rgba(120, 90, 50, 0.6)');
+                ctx.fillStyle = grd; ctx.fillRect(0, 0, w, h);
             }
         }
 
@@ -341,24 +647,18 @@
             let maxLineWidth = 0;
             
             paragraphs.forEach(paragraph => {
-                if(paragraph.trim() === '') {
-                    lines.push({ text: '', isSpacer: true });
-                    return;
-                }
+                if(paragraph.trim() === '') { lines.push({ text: '', isSpacer: true }); return; }
                 const words = paragraph.split(' ');
                 let line = '';
                 
                 for (let n = 0; n < words.length; n++) {
                     const testLine = line + words[n] + ' ';
                     const metrics = ctx.measureText(testLine);
-                    
                     if (metrics.width > maxWidth && n > 0) {
                         lines.push({ text: line });
                         maxLineWidth = Math.max(maxLineWidth, ctx.measureText(line).width);
                         line = words[n] + ' ';
-                    } else {
-                        line = testLine;
-                    }
+                    } else { line = testLine; }
                 }
                 lines.push({ text: line });
                 maxLineWidth = Math.max(maxLineWidth, ctx.measureText(line).width);
@@ -367,59 +667,109 @@
         }
 
         function setSoftShadow(ctx, theme) {
-            if (theme === 'solidLight' || theme === 'oldPaper') {
+            if (theme === 'solidLight' || theme === 'oldPaper' || theme === 'parchment' || theme === 'sandStorm') {
                 ctx.shadowColor = 'rgba(0, 0, 0, 0.25)'; 
-            } else {
-                ctx.shadowColor = 'rgba(0, 0, 0, 0.85)'; 
-            }
-            ctx.shadowBlur = 28; 
-            ctx.shadowOffsetX = 0; 
-            ctx.shadowOffsetY = 4; 
+            } else { ctx.shadowColor = 'rgba(0, 0, 0, 0.85)'; }
+            ctx.shadowBlur = 28; ctx.shadowOffsetX = 0; ctx.shadowOffsetY = 4; 
         }
 
-        function drawCanvas() {
-            const canvas = document.getElementById('canvas');
+        function drawAllCanvases() {
+            renderCanvasToTarget('canvas');
+            renderCanvasToTarget('mobileCanvas');
+        }
+
+        function renderCanvasToTarget(targetId) {
+            const canvas = document.getElementById(targetId);
+            if (!canvas) return;
             const ctx = canvas.getContext('2d');
+            
             const format = document.getElementById('format').value;
             const theme = document.getElementById('bgTheme').value;
+            const frameStyle = document.getElementById('frameStyle').value;
+            const yOffset = document.getElementById('yOffset') ? parseInt(document.getElementById('yOffset').value) : 0;
+            const xOffset = document.getElementById('xOffset') ? parseInt(document.getElementById('xOffset').value) : 0;
+            
+            const arSizeMultiplier = parseFloat(document.getElementById('arSizeMultiplier').value);
+            const trSizeMultiplier = parseFloat(document.getElementById('trSizeMultiplier').value);
+
+            const arProps = {
+                fillType: document.getElementById('arFillType').value,
+                effectType: document.getElementById('arEffectType').value,
+                depth3D: parseInt(document.getElementById('ar3DDepth').value),
+                fillColor: document.getElementById('arColor').value,
+                strokeColor: document.getElementById('arStrokeColor').value,
+                strokeWidth: parseFloat(document.getElementById('arStrokeWidth').value),
+                shadowColorHex: document.getElementById('arShadowColor').value,
+                shadowOpacity: parseFloat(document.getElementById('arShadowOpacity').value),
+                shadowBlur: parseInt(document.getElementById('arShadowBlur').value),
+                shadowOffset: 4, 
+                highlight: document.getElementById('arHighlight').checked,
+                highlightColor: document.getElementById('arHighlightColor').value
+            };
+
+            const trProps = {
+                fillType: document.getElementById('trFillType').value,
+                effectType: document.getElementById('trEffectType').value,
+                depth3D: parseInt(document.getElementById('tr3DDepth').value),
+                fillColor: document.getElementById('trColor').value,
+                strokeColor: document.getElementById('trStrokeColor').value,
+                strokeWidth: parseFloat(document.getElementById('trStrokeWidth').value),
+                shadowColorHex: document.getElementById('trShadowColor').value,
+                shadowOpacity: parseFloat(document.getElementById('trShadowOpacity').value),
+                shadowBlur: parseInt(document.getElementById('trShadowBlur').value),
+                shadowOffset: 4,
+                highlight: document.getElementById('trHighlight').checked,
+                highlightColor: document.getElementById('trHighlightColor').value,
+                letterSpacing: parseInt(document.getElementById('trLetterSpacing').value)
+            };
+
+            const brandText = document.getElementById('brandText').value;
+            const footerColor = document.getElementById('footerColor').value;
+            
+            const arText = document.getElementById('arabicText').value;
+            const trText = document.getElementById('turkishText').value;
+            const author = document.getElementById('author').value;
+            const source = document.getElementById('source').value;
             
             canvas.width = format === '169' ? 1920 : 1080;
             canvas.height = 1080;
             ctx.textBaseline = 'top';
             ctx.imageSmoothingEnabled = true;
             ctx.imageSmoothingQuality = 'high';
+            ctx.textRendering = "optimizeLegibility";
 
             drawBackground(ctx, canvas.width, canvas.height, theme);
 
-            const frameColor = (theme === 'solidLight' || theme === 'oldPaper') ? '#333333' : '#c5a059';
+            const isLightTheme = (theme === 'solidLight' || theme === 'oldPaper' || theme === 'parchment' || theme === 'sandStorm');
+            const frameColor = isLightTheme ? '#333333' : footerColor;
+            
             ctx.strokeStyle = frameColor;
-            ctx.globalAlpha = 0.5;
-            ctx.lineWidth = 2;
-            ctx.strokeRect(60, 60, canvas.width - 120, canvas.height - 120);
+            ctx.shadowColor = 'transparent';
+            ctx.setLineDash([]); 
+            
+            const off = 60; const w = canvas.width; const h = canvas.height;
+            drawFrame(ctx, frameStyle, off, w, h); 
+
             ctx.globalAlpha = 1.0;
 
-            const arText = document.getElementById('arabicText').value;
-            const trText = document.getElementById('turkishText').value;
-            const author = document.getElementById('author').value;
-            const source = document.getElementById('source').value;
-            
             const maxContentHeight = canvas.height - 350;
             const maxWidth = canvas.width - 240;
             
-            let scale = 1.0;
-            let arFontSize = 65, trFontSize = 45;
-            let arLineHeight = 90, trLineHeight = 65;
+            let arFontSize = 65 * arSizeMultiplier, trFontSize = 45 * trSizeMultiplier;
+            let arLineHeight = 90 * arSizeMultiplier, trLineHeight = 65 * trSizeMultiplier;
             
             let arLayout = { lines: [], maxLineWidth: 0 };
             let trLayout = { lines: [], maxLineWidth: 0 };
             let arTotalHeight = 0, trTotalHeight = 0, gaps = 0, totalHeight = 0;
 
+            let scale = 1.0;
             while (scale > 0.15) {
                 let currentArFont = `${styles.ar.italic ? 'italic ' : ''}${styles.ar.bold ? 'bold ' : ''}${arFontSize * scale}px '${document.getElementById('arFont').value}'`;
                 let currentTrFont = `${styles.tr.italic ? 'italic ' : ''}${styles.tr.bold ? 'bold ' : ''}${trFontSize * scale}px '${document.getElementById('trFont').value}'`;
                 
                 arTotalHeight = 0;
                 if (arText.trim() !== '') {
+                    if ('letterSpacing' in ctx) ctx.letterSpacing = '0px'; 
                     ctx.font = currentArFont;
                     arLayout = getWrappedLines(ctx, arText, maxWidth);
                     arLayout.lines.forEach(l => { arTotalHeight += l.isSpacer ? (arLineHeight * scale * 0.5) : (arLineHeight * scale); });
@@ -427,12 +777,13 @@
                 
                 trTotalHeight = 0;
                 if (trText.trim() !== '') {
+                    if ('letterSpacing' in ctx) ctx.letterSpacing = (trProps.letterSpacing * scale) + 'px'; 
                     ctx.font = currentTrFont;
                     trLayout = getWrappedLines(ctx, trText, maxWidth);
                     trLayout.lines.forEach(l => { trTotalHeight += l.isSpacer ? (trLineHeight * scale * 0.5) : (trLineHeight * scale); });
                 }
                 
-                gaps = (arText.trim() !== '' && trText.trim() !== '') ? (120 * scale) : 0; 
+                gaps = (arText.trim() !== '' && trText.trim() !== '') ? (100 * scale) : 0; 
                 totalHeight = arTotalHeight + trTotalHeight + gaps;
                 
                 if (totalHeight <= maxContentHeight && arLayout.maxLineWidth <= maxWidth && trLayout.maxLineWidth <= maxWidth) break; 
@@ -440,165 +791,232 @@
             }
 
             const contentAreaTop = 130;
-            let currentY = contentAreaTop + (maxContentHeight - totalHeight) / 2;
-            if (currentY < contentAreaTop) currentY = contentAreaTop;
+            let currentY = contentAreaTop + (maxContentHeight - totalHeight) / 2 + yOffset; 
 
             if (arText.trim() !== '') {
+                if ('letterSpacing' in ctx) ctx.letterSpacing = '0px';
                 ctx.font = `${styles.ar.italic ? 'italic ' : ''}${styles.ar.bold ? 'bold ' : ''}${arFontSize * scale}px '${document.getElementById('arFont').value}'`;
-                ctx.fillStyle = document.getElementById('arColor').value;
-                setSoftShadow(ctx, theme);
                 
                 arLayout.lines.forEach(l => {
-                    if (l.isSpacer) {
-                        currentY += (arLineHeight * scale * 0.5);
-                    } else {
-                        drawLineWithDecorations(ctx, l.text, canvas.width, currentY, arLineHeight * scale, styles.ar);
+                    if (l.isSpacer) { currentY += (arLineHeight * scale * 0.5); } 
+                    else {
+                        drawAdvancedTextLine(ctx, l.text, canvas.width, currentY, arLineHeight * scale, styles.ar, xOffset, arProps, scale);
                         currentY += arLineHeight * scale;
                     }
                 });
                 
                 if (trText.trim() !== '') {
-                    currentY += 40 * scale; 
+                    currentY += 30 * scale; 
                     ctx.shadowColor = 'transparent';
                     ctx.beginPath();
-                    ctx.moveTo(canvas.width/2 - (80 * scale), currentY);
-                    ctx.lineTo(canvas.width/2 + (80 * scale), currentY);
-                    ctx.strokeStyle = frameColor;
-                    ctx.globalAlpha = 0.3;
-                    ctx.stroke();
-                    ctx.globalAlpha = 1.0;
-                    currentY += 80 * scale; 
+                    ctx.moveTo(canvas.width/2 - (80 * scale) + xOffset, currentY);
+                    ctx.lineTo(canvas.width/2 + (80 * scale) + xOffset, currentY);
+                    ctx.strokeStyle = footerColor; ctx.globalAlpha = 0.4; ctx.lineWidth = 2; ctx.stroke(); ctx.globalAlpha = 1.0;
+                    currentY += 60 * scale; 
                 }
             }
 
             if (trText.trim() !== '') {
+                if ('letterSpacing' in ctx) ctx.letterSpacing = (trProps.letterSpacing * scale) + 'px';
                 ctx.font = `${styles.tr.italic ? 'italic ' : ''}${styles.tr.bold ? 'bold ' : ''}${trFontSize * scale}px '${document.getElementById('trFont').value}'`;
-                ctx.fillStyle = document.getElementById('trColor').value;
-                setSoftShadow(ctx, theme);
                 
                 trLayout.lines.forEach(l => {
-                    if (l.isSpacer) {
-                        currentY += (trLineHeight * scale * 0.5);
-                    } else {
-                        drawLineWithDecorations(ctx, l.text, canvas.width, currentY, trLineHeight * scale, styles.tr);
+                    if (l.isSpacer) { currentY += (trLineHeight * scale * 0.5); } 
+                    else {
+                        drawAdvancedTextLine(ctx, l.text, canvas.width, currentY, trLineHeight * scale, styles.tr, xOffset, trProps, scale);
                         currentY += trLineHeight * scale;
                     }
                 });
             }
+            if ('letterSpacing' in ctx) ctx.letterSpacing = '0px'; 
 
-            const footerColor = document.getElementById('footerColor').value;
             ctx.fillStyle = footerColor;
             setSoftShadow(ctx, theme);
-            let bottomY = canvas.height - 200;
+            let bottomY = canvas.height - 200 + yOffset; 
             
             if (author.trim() !== '') {
-                ctx.font = "bold 38px 'Lora', serif";
-                ctx.textAlign = 'center';
-                ctx.fillText(author, canvas.width / 2, bottomY);
+                ctx.font = "bold 38px 'Lora', serif"; ctx.textAlign = 'center'; ctx.fillText(author, canvas.width / 2 + xOffset, bottomY);
             }
             if (source.trim() !== '') {
-                ctx.font = "italic 30px 'Lora', serif";
-                ctx.globalAlpha = 0.8;
-                ctx.fillText(source, canvas.width / 2, bottomY + 55);
-                ctx.globalAlpha = 1.0;
+                ctx.font = "italic 30px 'Lora', serif"; ctx.globalAlpha = 0.8; ctx.fillText(source, canvas.width / 2 + xOffset, bottomY + 55); ctx.globalAlpha = 1.0;
             }
 
-            ctx.shadowColor = 'transparent';
-            ctx.fillStyle = frameColor;
-            ctx.font = "24px 'Lora', serif";
-            ctx.textAlign = 'left';
-            ctx.globalAlpha = 0.7;
-            ctx.fillText("Tasvirmatik | @TalibTRB", 90, canvas.height - 100);
+            ctx.shadowColor = 'transparent'; ctx.fillStyle = footerColor; ctx.font = "24px 'Lora', serif"; ctx.textAlign = 'left'; ctx.globalAlpha = 0.8;
+            ctx.fillText(brandText, 90, canvas.height - 100);
         }
 
-        function drawLineWithDecorations(ctx, text, canvasWidth, y, scaledLineHeight, styleObj) {
+        function drawAdvancedTextLine(ctx, text, canvasWidth, y, scaledLineHeight, styleObj, xOffset, props, scale) {
             let x;
             ctx.textAlign = styleObj.align;
-            
-            if (styleObj.align === 'center') x = canvasWidth / 2;
-            else if (styleObj.align === 'left') x = 120;
-            else if (styleObj.align === 'right') x = canvasWidth - 120;
+            if (styleObj.align === 'center') x = canvasWidth / 2 + xOffset;
+            else if (styleObj.align === 'left') x = 120 + xOffset;
+            else if (styleObj.align === 'right') x = canvasWidth - 120 + xOffset;
 
-            ctx.fillText(text.trim(), x, y);
+            let metrics = ctx.measureText(text.trim());
+            let width = metrics.width;
+            let lineX = x;
+            if (styleObj.align === 'center') lineX = x - width / 2;
+            else if (styleObj.align === 'right') lineX = x - width;
 
-            if (styleObj.underline || styleObj.strike) {
-                const metrics = ctx.measureText(text.trim());
-                const width = metrics.width;
-                let lineX = x;
-                
-                if (styleObj.align === 'center') lineX = x - width / 2;
-                else if (styleObj.align === 'right') lineX = x - width;
-
+            if (props.highlight) {
                 ctx.save();
-                ctx.shadowColor = 'transparent'; 
-                ctx.fillStyle = ctx.fillStyle; 
-                
-                if (styleObj.underline) {
-                    ctx.fillRect(lineX, y + scaledLineHeight * 0.8, width, Math.max(2, 3 * (scaledLineHeight/65)));
-                }
-                if (styleObj.strike) {
-                    ctx.fillRect(lineX, y + scaledLineHeight * 0.45, width, Math.max(2, 3 * (scaledLineHeight/65)));
+                ctx.shadowColor = 'transparent';
+                ctx.fillStyle = hexToRgba(props.highlightColor, 0.25);
+                ctx.fillRect(lineX - 15*scale, y + scaledLineHeight * 0.1, width + 30*scale, scaledLineHeight * 0.9);
+                ctx.restore();
+            }
+
+            let fillStyle = props.fillColor;
+            if (props.fillType === 'gold') {
+                let grad = ctx.createLinearGradient(0, y, 0, y + scaledLineHeight);
+                grad.addColorStop(0, '#FFE898'); grad.addColorStop(0.5, '#C5A059'); grad.addColorStop(1, '#8A6D3B');
+                fillStyle = grad;
+            } else if (props.fillType === 'silver') {
+                let grad = ctx.createLinearGradient(0, y, 0, y + scaledLineHeight);
+                grad.addColorStop(0, '#FFFFFF'); grad.addColorStop(0.5, '#A9B0B7'); grad.addColorStop(1, '#5C636A');
+                fillStyle = grad;
+            } else if (props.fillType === 'bronze') {
+                let grad = ctx.createLinearGradient(0, y, 0, y + scaledLineHeight);
+                grad.addColorStop(0, '#FFA87E'); grad.addColorStop(0.5, '#B75F33'); grad.addColorStop(1, '#5D2910');
+                fillStyle = grad;
+            }
+
+            if (props.depth3D > 0 && props.effectType === 'normal') {
+                ctx.save();
+                ctx.fillStyle = (props.fillType === 'solid') ? hexToRgba(props.fillColor, 0.3) : '#1a1a1a';
+                ctx.shadowColor = 'transparent';
+                for (let i = props.depth3D * scale; i > 0; i -= 0.5) {
+                    ctx.fillText(text.trim(), x + i, y + i);
                 }
                 ctx.restore();
+            }
+
+            ctx.save();
+            if (props.effectType === 'neon') {
+                ctx.shadowColor = hexToRgba(props.shadowColorHex, props.shadowOpacity);
+                ctx.fillStyle = '#ffffff'; 
+                [35, 20, 10, 5].forEach(b => {
+                    ctx.shadowBlur = b * scale;
+                    ctx.fillText(text.trim(), x, y);
+                });
+            } else if (props.effectType === 'engrave') {
+                ctx.shadowColor = 'rgba(255,255,255,0.3)'; 
+                ctx.shadowOffsetX = 2 * scale; ctx.shadowOffsetY = 2 * scale; ctx.shadowBlur = 1 * scale;
+                ctx.fillStyle = hexToRgba(props.fillColor, 0.85);
+                ctx.fillText(text.trim(), x, y);
+                ctx.restore(); 
+                ctx.save();
+                ctx.strokeStyle = 'rgba(0,0,0,0.6)'; ctx.lineWidth = 1.5 * scale;
+                ctx.strokeText(text.trim(), x, y);
+            } else {
+                ctx.shadowColor = hexToRgba(props.shadowColorHex, props.shadowOpacity);
+                ctx.shadowBlur = props.shadowBlur * scale;
+                ctx.shadowOffsetX = props.shadowOffset * scale;
+                ctx.shadowOffsetY = props.shadowOffset * scale;
+                ctx.fillStyle = fillStyle;
+                ctx.fillText(text.trim(), x, y);
+            }
+            ctx.restore();
+
+            if (props.strokeWidth > 0 && props.effectType === 'normal') {
+                ctx.save();
+                ctx.lineJoin = 'round';
+                ctx.lineWidth = props.strokeWidth * scale;
+                ctx.strokeStyle = props.strokeColor;
+                ctx.shadowColor = 'transparent'; 
+                ctx.strokeText(text.trim(), x, y);
+                ctx.fillStyle = fillStyle;
+                ctx.fillText(text.trim(), x, y);
+                ctx.restore();
+            }
+
+            if (styleObj.underline || styleObj.strike) {
+                ctx.save();
+                ctx.fillStyle = (props.fillType !== 'solid') ? '#c5a059' : props.fillColor; 
+                ctx.shadowColor = 'transparent';
+                if (styleObj.underline) ctx.fillRect(lineX, y + scaledLineHeight * 0.85, width, Math.max(2, 4 * (scaledLineHeight/65)));
+                if (styleObj.strike) ctx.fillRect(lineX, y + scaledLineHeight * 0.45, width, Math.max(2, 4 * (scaledLineHeight/65)));
+                ctx.restore();
+            }
+        }
+
+        function drawFrame(ctx, frameStyle, off, w, h) {
+            if (frameStyle === 'classic') {
+                ctx.globalAlpha = 0.5; ctx.lineWidth = 2; ctx.strokeRect(off, off, w - off*2, h - off*2);
+            } else if (frameStyle === 'double') {
+                ctx.globalAlpha = 0.5; ctx.lineWidth = 2; ctx.strokeRect(off, off, w - off*2, h - off*2);
+                ctx.globalAlpha = 0.3; ctx.lineWidth = 1; ctx.strokeRect(off+12, off+12, w - (off+12)*2, h - (off+12)*2);
+            } else if (frameStyle === 'thick') {
+                ctx.globalAlpha = 0.6; ctx.lineWidth = 8; ctx.strokeRect(off, off, w - off*2, h - off*2);
+            } else if (frameStyle === 'elegantInner') {
+                ctx.globalAlpha = 0.4; ctx.lineWidth = 1; ctx.strokeRect(off, off, w - off*2, h - off*2);
+                ctx.globalAlpha = 0.2; ctx.strokeRect(off+60, off+60, w - (off+60)*2, h - (off+60)*2);
+            } else if (frameStyle === 'corner') {
+                const len = 80; ctx.globalAlpha = 0.15; ctx.lineWidth = 1; ctx.strokeRect(off, off, w - off*2, h - off*2);
+                ctx.globalAlpha = 0.8; ctx.lineWidth = 4;
+                ctx.beginPath(); ctx.moveTo(off, off+len); ctx.lineTo(off, off); ctx.lineTo(off+len, off); ctx.stroke();
+                ctx.beginPath(); ctx.moveTo(w-off-len, off); ctx.lineTo(w-off, off); ctx.lineTo(w-off, off+len); ctx.stroke();
+                ctx.beginPath(); ctx.moveTo(off, h-off-len); ctx.lineTo(off, h-off); ctx.lineTo(off+len, h-off); ctx.stroke();
+                ctx.beginPath(); ctx.moveTo(w-off, h-off-len); ctx.lineTo(w-off, h-off); ctx.lineTo(w-off-len, h-off); ctx.stroke();
+            } else if (frameStyle === 'doubleCorner') {
+                const len = 90; const inOff = off+15; const inLen = 60; ctx.globalAlpha = 0.8; ctx.lineWidth = 3;
+                ctx.beginPath(); ctx.moveTo(off, off+len); ctx.lineTo(off, off); ctx.lineTo(off+len, off); ctx.stroke();
+                ctx.beginPath(); ctx.moveTo(w-off-len, off); ctx.lineTo(w-off, off); ctx.lineTo(w-off, off+len); ctx.stroke();
+                ctx.beginPath(); ctx.moveTo(off, h-off-len); ctx.lineTo(off, h-off); ctx.lineTo(off+len, h-off); ctx.stroke();
+                ctx.beginPath(); ctx.moveTo(w-off, h-off-len); ctx.lineTo(w-off, h-off); ctx.lineTo(w-off-len, h-off); ctx.stroke();
+                ctx.globalAlpha = 0.4; ctx.lineWidth = 1.5;
+                ctx.beginPath(); ctx.moveTo(inOff, inOff+inLen); ctx.lineTo(inOff, inOff); ctx.lineTo(inOff+inLen, inOff); ctx.stroke();
+                ctx.beginPath(); ctx.moveTo(w-inOff-inLen, inOff); ctx.lineTo(w-inOff, inOff); ctx.lineTo(w-inOff, inOff+inLen); ctx.stroke();
+                ctx.beginPath(); ctx.moveTo(inOff, h-inOff-inLen); ctx.lineTo(inOff, h-inOff); ctx.lineTo(inOff+inLen, h-inOff); ctx.stroke();
+                ctx.beginPath(); ctx.moveTo(w-inOff, h-inOff-inLen); ctx.lineTo(w-inOff, h-inOff); ctx.lineTo(w-inOff-inLen, h-inOff); ctx.stroke();
+            } else if (frameStyle === 'bracket') {
+                const len = 120; ctx.globalAlpha = 0.6; ctx.lineWidth = 4;
+                ctx.beginPath(); ctx.moveTo(off+len, off); ctx.lineTo(off, off); ctx.lineTo(off, h-off); ctx.lineTo(off+len, h-off); ctx.stroke();
+                ctx.beginPath(); ctx.moveTo(w-off-len, off); ctx.lineTo(w-off, off); ctx.lineTo(w-off, h-off); ctx.lineTo(w-off-len, h-off); ctx.stroke();
+            } else if (frameStyle === 'minimalTopBottom') {
+                ctx.globalAlpha = 0.5; ctx.lineWidth = 2;
+                ctx.beginPath(); ctx.moveTo(off*2, off); ctx.lineTo(w - off*2, off); ctx.stroke();
+                ctx.beginPath(); ctx.moveTo(off*2, h - off); ctx.lineTo(w - off*2, h - off); ctx.stroke();
+            } else if (frameStyle === 'minimalLeftRight') {
+                ctx.globalAlpha = 0.5; ctx.lineWidth = 2;
+                ctx.beginPath(); ctx.moveTo(off, off*2); ctx.lineTo(off, h - off*2); ctx.stroke();
+                ctx.beginPath(); ctx.moveTo(w - off, off*2); ctx.lineTo(w - off, h - off*2); ctx.stroke();
+            } else if (frameStyle === 'dashed') {
+                ctx.globalAlpha = 0.6; ctx.lineWidth = 3; ctx.setLineDash([15, 15]); ctx.strokeRect(off, off, w - off*2, h - off*2);
+            } else if (frameStyle === 'dotted') {
+                ctx.globalAlpha = 0.6; ctx.lineWidth = 4; ctx.setLineDash([4, 12]); ctx.strokeRect(off, off, w - off*2, h - off*2);
             }
         }
 
         function downloadImage() {
             const canvas = document.getElementById('canvas');
             const link = document.createElement('a');
-            link.download = 'TalibTRB_Tasvirmatik.png';
-            link.href = canvas.toDataURL('image/png', 1.0);
-            link.click();
+            link.download = 'Tasvirmatik_Eser.png'; link.href = canvas.toDataURL('image/png', 1.0); link.click();
+            showToast();
         }
 
-        // AKILLI "TEK TUŞLA PAYLAŞ" MOTORU
         async function shareImage() {
             const canvas = document.getElementById('canvas');
-            
             canvas.toBlob(async (blob) => {
-                const file = new File([blob], 'TalibTRB_Tasvirmatik.png', { type: 'image/png' });
-                const shareData = {
-                    files: [file],
-                    title: 'Eserî İnfografik',
-                    text: '@TalibTRB Tasvirmatik ile hazırlandı.'
-                };
-
-                // 1. Cihazın Orjinal Paylaşım Menüsünü Açmayı Dene (Mobil ve Güncel PC'ler)
+                const file = new File([blob], 'Tasvirmatik_Eser.png', { type: 'image/png' });
+                const shareData = { files: [file], title: 'Eserî İnfografik', text: 'Tasvirmatik ile hazırlandı.' };
                 if (navigator.canShare && navigator.canShare(shareData)) {
-                    try {
-                        await navigator.share(shareData);
-                        return; // Menü başarıyla açıldıysa işlemi bitir
-                    } catch (err) {
-                        // Kullanıcı bilerek iptal ettiyse hiçbir şey yapma. 
-                        // Sistem hatası varsa 2. aşamaya (kopyalamaya) geç.
-                        if (err.name !== 'AbortError') {
-                            fallbackCopyToClipboard(blob);
-                        }
-                    }
-                } else {
-                    // 2. Desteklemeyen Cihazlar İçin (Eski tarayıcılar)
-                    fallbackCopyToClipboard(blob);
-                }
+                    try { await navigator.share(shareData); return; } catch (err) { if (err.name !== 'AbortError') fallbackCopyToClipboard(blob); }
+                } else { fallbackCopyToClipboard(blob); }
             }, 'image/png', 1.0);
         }
 
         async function fallbackCopyToClipboard(blob) {
             try {
-                await navigator.clipboard.write([
-                    new ClipboardItem({ 'image/png': blob })
-                ]);
+                await navigator.clipboard.write([ new ClipboardItem({ 'image/png': blob }) ]);
                 alert("✅ Sisteminiz doğrudan paylaşım ekranını desteklemiyor ancak görsel hafızaya kopyalandı!\n\nPaylaşım yapmak istediğiniz yeri (X, WhatsApp, Telegram vb.) açıp 'Yapıştır' (Ctrl+V) diyerek resmi ekleyebilirsiniz.");
-            } catch (err) {
-                alert("Tarayıcınız paylaşımı desteklemiyor. Lütfen resmi 'İndir' butonuyla cihaza kaydedip öyle paylaşın.");
-            }
+            } catch (err) { alert("Tarayıcınız paylaşımı desteklemiyor. Lütfen resmi 'İndir' butonuyla cihaza kaydedip öyle paylaşın."); }
         }
     </script>
     <script>
-  if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('sw.js')
-      .then(() => console.log('Uygulama Motoru Aktif'))
-      .catch((err) => console.log('Motor Hatası:', err));
-  }
-</script>
+      if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('sw.js').then(() => console.log('Uygulama Motoru Aktif')).catch((err) => console.log('Motor Hatası:', err));
+      }
+    </script>
 </body>
 </html>
