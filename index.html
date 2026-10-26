@@ -1165,23 +1165,6 @@
         }
     }
 </script>
-    
-    // Başarı Popup Efekti
-    function showInstallSuccessPopup() {
-        const popup = document.createElement('div');
-        popup.innerHTML = `
-            <div style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.8); display: flex; align-items: center; justify-content: center; z-index: 10000; backdrop-filter: blur(5px); animation: fadeIn 0.3s ease;">
-                <div style="background: #161618; border: 1px solid var(--accent); padding: 30px 40px; border-radius: 16px; text-align: center; box-shadow: 0 20px 50px rgba(0,0,0,0.9), 0 0 20px rgba(197,160,89,0.3); max-width: 320px; width: 90%;">
-                    <div style="font-size: 48px; color: var(--accent); margin-bottom: 15px;">
-                        <i class="fas fa-check-circle" style="filter: drop-shadow(0 0 10px rgba(197,160,89,0.5));"></i>
-                    </div>
-                    <h3 style="font-family: 'Cinzel', serif; color: #fff; margin: 0 0 10px 0; font-size: 20px; letter-spacing: 1px;">Tasvirmatik</h3>
-                    <p style="color: #aaa; font-size: 14px; margin: 0 0 20px 0; font-family: 'Montserrat', sans-serif;">Cihazınıza başarıyla yüklendi!</p>
-                    <button onclick="this.parentElement.parentElement.remove()" style="background: var(--accent); color: #000; border: none; padding: 10px 25px; font-weight: bold; border-radius: 30px; cursor: pointer; font-family: 'Cinzel', serif; letter-spacing: 1px; transition: 0.2s;">Harika</button>
-                </div>
-            </div>
-        `;
-        document.body.appendChild(popup);
-    }
+   
 </body>
 </html>
