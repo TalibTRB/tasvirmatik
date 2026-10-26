@@ -1,11 +1,12 @@
 {
-  "name": "Tasvirmatik 1.0",
+  "name": "Tasvirmatik",
   "short_name": "Tasvirmatik",
-  "start_url": "./index.html",
+  "start_url": "./",
+  "scope": "./",
   "display": "standalone",
   "background_color": "#0a0a0c",
   "theme_color": "#c5a059",
-  "orientation": "any",
+  "orientation": "portrait-primary",
   "icons": [
     {
       "src": "icon.png",
