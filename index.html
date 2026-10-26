@@ -13,6 +13,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tasvirmatik 1.0 | @TalibTRB</title>
+    <link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#c5a059">
     <!-- Zengin Font Kütüphanesi -->
     <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400;1,700&family=Scheherazade+New:wght@400;700&family=Lora:ital,wght@0,400;0,700;1,400;1,700&family=Cinzel:wght@400;700&display=swap" rel="stylesheet">
     <!-- FontAwesome İkonları (Ara yüz için) -->
@@ -589,5 +591,12 @@
             }
         }
     </script>
+    <script>
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('sw.js')
+      .then(() => console.log('Uygulama Motoru Aktif'))
+      .catch((err) => console.log('Motor Hatası:', err));
+  }
+</script>
 </body>
 </html>
