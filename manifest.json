@@ -1,0 +1,21 @@
+{
+  "name": "Tasvirmatik 1.0 | @TalibTRB",
+  "short_name": "Tasvirmatik",
+  "description": "İslâmî, reklamsız ve ücretsiz alıntı kartı jeneratörü.",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#0a0a0c",
+  "theme_color": "#c5a059",
+  "icons": [
+    {
+      "src": "icon.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "icon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
