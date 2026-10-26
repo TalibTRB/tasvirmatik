@@ -20,7 +20,8 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Tasvirmatik">
     
-    <link rel="manifest" href="manifest.json?v=3">
+    <!-- URL parametresi kaldırılarak Service Worker cache'i ile uyumlu hale getirildi -->
+    <link rel="manifest" href="manifest.json">
     <link rel="icon" type="image/png" href="icon.png">
     <link rel="apple-touch-icon" href="icon.png">
     <meta name="theme-color" content="#c5a059">
@@ -524,6 +525,10 @@
             <h4><i class="fas fa-mobile-alt"></i> Uygulama Olarak Yükle (PWA)</h4>
             <p><strong>PC'de:</strong> Tarayıcı adres çubuğunun sağındaki <i class="fas fa-download" style="font-size:11px;"></i> (Yükle) simgesine tıklayın.</p>
             <p><strong>Mobil'de:</strong> Tarayıcı seçeneklerinden (⋮) <em>"Ana Ekrana Ekle"</em> butonuna dokunarak gerçek bir app gibi kullanın.</p>
+            <!-- EKSİK OLAN VE ARTIK EKLENEN YÜKLEME BUTONU -->
+            <button id="pwaInstallBtn" onclick="installPWA()" class="btn-primary" style="display: none; margin-top: 15px; width: 100%;">
+                <i class="fas fa-download"></i> Cihaza Yükle
+            </button>
         </div>
         
         <div class="sidebar-footer">
@@ -706,9 +711,17 @@
             ctx.shadowBlur = 28; ctx.shadowOffsetX = 0; ctx.shadowOffsetY = 4; 
         }
 
+        // TAKILMAYI (DONMAYI) ÖNLEYEN YENİ ÇİZİM FONKSİYONU 
+        let isDrawing = false;
         function drawAllCanvases() {
-            renderCanvasToTarget('canvas');
-            renderCanvasToTarget('mobileCanvas');
+            if (!isDrawing) {
+                isDrawing = true;
+                requestAnimationFrame(() => {
+                    renderCanvasToTarget('canvas');
+                    renderCanvasToTarget('mobileCanvas');
+                    isDrawing = false;
+                });
+            }
         }
 
         function renderCanvasToTarget(targetId) {
