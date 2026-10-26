@@ -1073,9 +1073,50 @@
         }
     </script>
     <script>
-      if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('sw.js').then(() => console.log('Uygulama Motoru Aktif')).catch((err) => console.log('Motor Hatası:', err));
-      }
-    </script>
+    let deferredPrompt;
+
+    // Mobil tarayıcılarda (Brave/Chrome) yükleme istemcisini yakala
+    window.addEventListener('beforeinstallprompt', (e) => {
+        e.preventDefault();
+        deferredPrompt = e;
+        const installBtn = document.getElementById('pwaInstallBtn');
+        if (installBtn) {
+            installBtn.style.display = 'inline-flex';
+        }
+    });
+
+    // Tek tıkla PWA yükleme fonksiyonu
+    async function installPWA() {
+        if (deferredPrompt) {
+            deferredPrompt.prompt();
+            const choiceResult = await deferredPrompt.userChoice;
+            if (choiceResult.outcome === 'accepted') {
+                console.log('Kullanıcı PWA kurulumunu onayladı.');
+            }
+            deferredPrompt = null;
+        } else {
+            alert("Uygulama zaten cihazınızda yüklü veya tarayıcınız otomatik yükleme istemini henüz hazır etmedi.\n\nTarayıcı menüsünden (⋮) 'Ana Ekrana Ekle' seçeneğini kullanabilirsiniz.");
+        }
+    }
+
+    // Service Worker Kaydı ve Otomatik Güncelleme Motoru
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+            navigator.serviceWorker.register('sw.js').then((reg) => {
+                // Sayfa her açıldığında sunucuda yeni sw.js var mı kontrol et
+                reg.update();
+            });
+        });
+
+        // Yeni sürüm aktifleştiğinde sayfayı otomatik yenile
+        let refreshing = false;
+        navigator.serviceWorker.addEventListener('controllerchange', () => {
+            if (!refreshing) {
+                refreshing = true;
+                window.location.reload();
+            }
+        });
+    }
+</script>
 </body>
 </html>
