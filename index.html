@@ -1050,15 +1050,15 @@
         function downloadImage() {
             const canvas = document.getElementById('canvas');
             const link = document.createElement('a');
-            link.download = 'Tasvirmatik_Eser.png'; link.href = canvas.toDataURL('image/png', 1.0); link.click();
+            link.download = 'Tasvirmatik_Eseri.png'; link.href = canvas.toDataURL('image/png', 1.0); link.click();
             showToast();
         }
 
         async function shareImage() {
             const canvas = document.getElementById('canvas');
             canvas.toBlob(async (blob) => {
-                const file = new File([blob], 'Tasvirmatik_Eser.png', { type: 'image/png' });
-                const shareData = { files: [file], title: 'Eserî İnfografik', text: 'Tasvirmatik ile hazırlandı.' };
+                const file = new File([blob], 'Tasvirmatik_Eseri.png', { type: 'image/png' });
+                const shareData = { files: [file], title: 'Tasvirmatik', text: 'Tasvirmatik ile hazırlandı by @TalibTRB.' };
                 if (navigator.canShare && navigator.canShare(shareData)) {
                     try { await navigator.share(shareData); return; } catch (err) { if (err.name !== 'AbortError') fallbackCopyToClipboard(blob); }
                 } else { fallbackCopyToClipboard(blob); }
