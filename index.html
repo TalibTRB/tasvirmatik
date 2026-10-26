@@ -520,16 +520,27 @@
             <button class="btn-primary btn-share" onclick="shareImage()"><i class="fas fa-share-alt"></i> Paylaş</button>
         </div>
 
-        <!-- UYGULAMA OLARAK YÜKLEME YÖNERGESİ -->
-        <div class="app-install-card">
-            <h4><i class="fas fa-mobile-alt"></i> Uygulama Olarak Yükle (PWA)</h4>
-            <p><strong>PC'de:</strong> Tarayıcı adres çubuğunun sağındaki <i class="fas fa-download" style="font-size:11px;"></i> (Yükle) simgesine tıklayın.</p>
-            <p><strong>Mobil'de:</strong> Tarayıcı seçeneklerinden (⋮) <em>"Ana Ekrana Ekle"</em> butonuna dokunarak gerçek bir app gibi kullanın.</p>
-            <!-- EKSİK OLAN VE ARTIK EKLENEN YÜKLEME BUTONU -->
-            <button id="pwaInstallBtn" onclick="installPWA()" class="btn-primary" style="display: none; margin-top: 15px; width: 100%;">
-                <i class="fas fa-download"></i> Cihaza Yükle
-            </button>
+        <!-- UYGULAMA OLARAK YÜKLEME KARTI VE ANİMASYONLU YÜKLEME ÇUBUĞU -->
+<div class="app-install-card">
+    <h4><i class="fas fa-mobile-alt"></i> Uygulama Olarak Yükle (PWA)</h4>
+    <p><strong>PC'de:</strong> Tarayıcı adres çubuğunun sağındaki <i class="fas fa-download" style="font-size:11px;"></i> (Yükle) simgesine tıklayın.</p>
+    <p><strong>Mobil'de:</strong> Tarayıcı seçeneklerinden (⋮) <em>"Ana Ekrana Ekle"</em> butonuna dokunarak gerçek bir app gibi kullanın.</p>
+    
+    <button id="pwaInstallBtn" onclick="installPWA()" class="btn-primary" style="display: none; margin-top: 15px; width: 100%;">
+        <i class="fas fa-download"></i> Cihaza Yükle
+    </button>
+
+    <!-- Kaliteli Dolan Yüklenme Çubuğu (Başlangıçta Gizli) -->
+    <div id="installProgressContainer" style="display: none; margin-top: 15px;">
+        <div style="display: flex; justify-content: space-between; font-size: 11px; color: var(--accent); margin-bottom: 5px; font-family: 'Cinzel', serif; font-weight: bold;">
+            <span>Tasvirmatik Hazırlanıyor...</span>
+            <span id="progressPercent">0%</span>
         </div>
+        <div style="width: 100%; height: 8px; background: #111; border-radius: 10px; overflow: hidden; border: 1px solid #333; box-shadow: inset 0 1px 3px rgba(0,0,0,0.8);">
+            <div id="installProgressBar" style="width: 0%; height: 100%; background: linear-gradient(90deg, #8a6d3b, #c5a059, #ffeba8); border-radius: 10px; transition: width 0.1s ease; box-shadow: 0 0 10px rgba(197,160,89,0.6);"></div>
+        </div>
+    </div>
+</div>
         
         <div class="sidebar-footer">
             Tasvirmatik 1.0 by @TalibTRB <br>
@@ -1094,7 +1105,7 @@
     <script>
     let deferredPrompt;
 
-    // Mobil tarayıcılarda (Brave/Chrome) yükleme istemcisini yakala
+    // Mobil tarayıcılarda yükleme istemcisini yakala
     window.addEventListener('beforeinstallprompt', (e) => {
         e.preventDefault();
         deferredPrompt = e;
@@ -1104,38 +1115,73 @@
         }
     });
 
-    // Tek tıkla PWA yükleme fonksiyonu
+    // Kaliteli dolan yükleme sütunu ve başarı popup'ı entegre edilmiş fonksiyon
     async function installPWA() {
         if (deferredPrompt) {
+            const installBtn = document.getElementById('pwaInstallBtn');
+            const progressContainer = document.getElementById('installProgressContainer');
+            const progressBar = document.getElementById('installProgressBar');
+            const progressPercent = document.getElementById('progressPercent');
+
+            // Butonu gizle, şık yükleme çubuğunu aç
+            installBtn.style.display = 'none';
+            progressContainer.style.display = 'block';
+
+            let currentProgress = 0;
+            // Estetik ve akıcı bir dolum efekti simülasyonu
+            let progressInterval = setInterval(() => {
+                if (currentProgress < 90) {
+                    currentProgress += Math.floor(Math.random() * 8) + 3;
+                    if (currentProgress > 90) currentProgress = 90;
+                    progressBar.style.width = currentProgress + '%';
+                    progressPercent.innerText = currentProgress + '%';
+                }
+            }, 80);
+
+            // Tarayıcının orijinal kurulum penceresini çağır
             deferredPrompt.prompt();
             const choiceResult = await deferredPrompt.userChoice;
+            
+            clearInterval(progressInterval);
+
             if (choiceResult.outcome === 'accepted') {
-                console.log('Kullanıcı PWA kurulumunu onayladı.');
+                // Kurulum onaylandıysa çubuğu %100'e tamamla
+                progressBar.style.width = '100%';
+                progressPercent.innerText = '100%';
+
+                setTimeout(() => {
+                    progressContainer.style.display = 'none';
+                    // Özel Tasvirmatik Yüklendi Popup'ını tetikle
+                    showInstallSuccessPopup();
+                }, 500);
+            } else {
+                // Kullanıcı iptal ederse arayüzü eski haline döndür
+                progressContainer.style.display = 'none';
+                installBtn.style.display = 'inline-flex';
             }
             deferredPrompt = null;
         } else {
             alert("Uygulama zaten cihazınızda yüklü veya tarayıcınız otomatik yükleme istemini henüz hazır etmedi.\n\nTarayıcı menüsünden (⋮) 'Ana Ekrana Ekle' seçeneğini kullanabilirsiniz.");
         }
     }
-
-    // Service Worker Kaydı ve Otomatik Güncelleme Motoru
-    if ('serviceWorker' in navigator) {
-        window.addEventListener('load', () => {
-            navigator.serviceWorker.register('sw.js').then((reg) => {
-                // Sayfa her açıldığında sunucuda yeni sw.js var mı kontrol et
-                reg.update();
-            });
-        });
-
-        // Yeni sürüm aktifleştiğinde sayfayı otomatik yenile
-        let refreshing = false;
-        navigator.serviceWorker.addEventListener('controllerchange', () => {
-            if (!refreshing) {
-                refreshing = true;
-                window.location.reload();
-            }
-        });
-    }
 </script>
+    
+    // Başarı Popup Efekti
+    function showInstallSuccessPopup() {
+        const popup = document.createElement('div');
+        popup.innerHTML = `
+            <div style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.8); display: flex; align-items: center; justify-content: center; z-index: 10000; backdrop-filter: blur(5px); animation: fadeIn 0.3s ease;">
+                <div style="background: #161618; border: 1px solid var(--accent); padding: 30px 40px; border-radius: 16px; text-align: center; box-shadow: 0 20px 50px rgba(0,0,0,0.9), 0 0 20px rgba(197,160,89,0.3); max-width: 320px; width: 90%;">
+                    <div style="font-size: 48px; color: var(--accent); margin-bottom: 15px;">
+                        <i class="fas fa-check-circle" style="filter: drop-shadow(0 0 10px rgba(197,160,89,0.5));"></i>
+                    </div>
+                    <h3 style="font-family: 'Cinzel', serif; color: #fff; margin: 0 0 10px 0; font-size: 20px; letter-spacing: 1px;">Tasvirmatik</h3>
+                    <p style="color: #aaa; font-size: 14px; margin: 0 0 20px 0; font-family: 'Montserrat', sans-serif;">Cihazınıza başarıyla yüklendi!</p>
+                    <button onclick="this.parentElement.parentElement.remove()" style="background: var(--accent); color: #000; border: none; padding: 10px 25px; font-weight: bold; border-radius: 30px; cursor: pointer; font-family: 'Cinzel', serif; letter-spacing: 1px; transition: 0.2s;">Harika</button>
+                </div>
+            </div>
+        `;
+        document.body.appendChild(popup);
+    }
 </body>
 </html>
