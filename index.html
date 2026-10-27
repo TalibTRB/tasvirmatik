@@ -576,29 +576,29 @@
             </div>
         </div>
 
-                                 <!-- ÇÖZÜNÜRLÜK SEÇİMLİ İNDİR VE PAYLAŞ BUTONLARI -->
+                                   <!-- ÇÖZÜNÜRLÜK SEÇİMLİ İNDİR VE PAYLAŞ BUTONLARI -->
         <div class="action-buttons">
-            <!-- 1. Grup: Tek Kapsül -->
-            <div style="display: flex; flex: 1; align-items: stretch; border-radius: 8px; overflow: hidden; background: #2a2a2a;">
+            <!-- 1. Grup: İndir ve Çözünürlük (Alan Payı: flex 3 - Daha Geniş) -->
+            <div style="display: flex; flex: 3; align-items: stretch; border-radius: 8px; overflow: hidden; background: #2a2a2a;">
                 
-                <!-- Sol Kısım: Sabit Genişlikli ve Asla Daralmayan (flex-shrink: 0) Kutu -->
-                <div style="position: relative; display: flex; align-items: center; width: 95px; flex-shrink: 0; border-right: 1px solid #111;">
-                    <select id="downloadRes" style="width: 100%; height: 100%; background: transparent; color: #fff; border: none; outline: none; font-size: 13px; font-family: 'Cinzel', serif; font-weight: bold; appearance: none; -webkit-appearance: none; padding: 0 20px 0 15px; margin: 0; cursor: pointer;" title="İndirme Çözünürlüğü">
+                <!-- Sol Kısım: Minimal FHD Seçici -->
+                <div style="position: relative; display: flex; align-items: center; width: 72px; flex-shrink: 0; border-right: 1px solid #111;">
+                    <select id="downloadRes" style="width: 100%; height: 100%; background: transparent; color: #fff; border: none; outline: none; font-size: 13px; font-family: 'Cinzel', serif; font-weight: bold; appearance: none; -webkit-appearance: none; padding: 0 14px 0 10px; margin: 0; cursor: pointer;" title="İndirme Çözünürlüğü">
                         <option value="1" style="background: #161618;">FHD</option>
                         <option value="2" style="background: #161618;">4K</option>
                         <option value="4" style="background: #161618;">8K</option>
                     </select>
-                    <i class="fas fa-chevron-down" style="position: absolute; right: 12px; color: #c5a059; font-size: 10px; pointer-events: none;"></i>
+                    <i class="fas fa-chevron-down" style="position: absolute; right: 6px; color: #c5a059; font-size: 9px; pointer-events: none;"></i>
                 </div>
 
-                <!-- Sağ Kısım: Ana İndir Butonu -->
-                <button class="btn-primary" onclick="downloadImage()" style="flex: 1; margin: 0; border-radius: 0; border: none; padding: 15px 10px;">
-                    <i class="fas fa-download"></i> İndir
+                <!-- Sağ Kısım: Ana İndir Butonu (Geniş Alan, Kesilme Korumalı) -->
+                <button class="btn-primary" onclick="downloadImage()" style="flex: 1; margin: 0; border-radius: 0; border: none; padding: 15px 5px; white-space: nowrap;">
+                    <i class="fas fa-download"></i> İNDİR
                 </button>
             </div>
             
-            <!-- 2. Grup: Paylaş Butonu -->
-            <button class="btn-primary btn-share" onclick="shareImage()"><i class="fas fa-share-alt"></i> Paylaş</button>
+            <!-- 2. Grup: Paylaş Butonu (Alan Payı: flex 2 - Biraz Daha Dar) -->
+            <button class="btn-primary btn-share" onclick="shareImage()" style="flex: 2; white-space: nowrap;"><i class="fas fa-share-alt"></i> PAYLAŞ</button>
         </div>
 
 
