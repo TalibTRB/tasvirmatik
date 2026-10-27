@@ -285,12 +285,21 @@
         .app-install-card p:last-child { margin: 0; }
         .app-install-card strong { color: var(--accent); }
 
-        /* FHD / 4K / 8K Seçim Kutusu Düzeltmesi */
+                /* FHD / 4K / 8K Seçim Kutusu Kesin Çözüm */
         #downloadRes {
-            padding: 0 4px 0 10px !important;
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            background-color: #2a2a2a !important;
+            color: #fff !important;
+            padding: 0 20px 0 8px !important;
             text-align: center;
             text-align-last: center;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="%23c5a059" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>');
+            background-repeat: no-repeat;
+            background-position: right 6px center;
         }
+
         
         @media screen and (max-width: 860px) {
             body { flex-direction: column; height: auto; overflow-y: auto; padding: 0; gap: 0; }
