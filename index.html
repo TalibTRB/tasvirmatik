@@ -297,6 +297,9 @@
 
     <div id="toast" class="toast">Elhamdulillah...</div>
 
+    <!-- 4K / 8K İndirmeler için Gizli Arka Plan Tuvali -->
+    <canvas id="exportCanvas" style="display:none;"></canvas>
+
     <div class="sidebar">
         <!-- MOBİL İÇİN ÜSTTE SIFIR BOŞLUKLU TAM GENİŞLİKTE SABİT ÖNİZLEME -->
         <div class="mobile-sticky-preview">
@@ -557,9 +560,18 @@
             </div>
         </div>
 
-        <!-- İndir ve Paylaş Butonları -->
+        <!-- ÇÖZÜNÜRLÜK SEÇİMLİ İNDİR VE PAYLAŞ BUTONLARI -->
         <div class="action-buttons">
-            <button class="btn-primary" onclick="downloadImage()"><i class="fas fa-download"></i> Görsel'i İndir</button>
+            <div style="display: flex; flex: 1;">
+                <select id="downloadRes" class="btn-primary" style="flex: 0.35; padding: 0 5px; margin: 0; border-right: 1px solid #111; border-top-right-radius: 0; border-bottom-right-radius: 0; background: #2a2a2a; color: #fff; text-transform: none; letter-spacing: 0; font-size: 12px; font-family: 'Cinzel', serif;" title="İndirme Çözünürlüğü">
+                    <option value="1">FHD</option>
+                    <option value="2">4K</option>
+                    <option value="4">8K</option>
+                </select>
+                <button class="btn-primary" onclick="downloadImage()" style="flex: 0.65; border-top-left-radius: 0; border-bottom-left-radius: 0;">
+                    <i class="fas fa-download"></i> İndir
+                </button>
+            </div>
             <button class="btn-primary btn-share" onclick="shareImage()"><i class="fas fa-share-alt"></i> Paylaş</button>
         </div>
 
@@ -630,8 +642,9 @@
 
         document.fonts.ready.then(() => { drawAllCanvases(); });
 
-        function showToast() {
+        function showToast(msg = "Elhamdulillah...") {
             const toast = document.getElementById('toast');
+            toast.innerText = msg;
             toast.classList.add('show');
             setTimeout(() => { toast.classList.remove('show'); }, 3000);
         }
@@ -645,7 +658,6 @@
             return `rgba(${r}, ${g}, ${b}, ${opacity})`;
         }
 
-        // Renk tonunu aydınlatmak veya koyulaştırmak için dinamik yardımcılar
         function adjustColorBrightness(hex, percent) {
             hex = hex.replace(/^#/, '');
             if (hex.length === 3) hex = hex.split('').map(x => x + x).join('');
@@ -658,7 +670,7 @@
             return `rgb(${r}, ${g}, ${b})`;
         }
 
-        function drawBackground(ctx, w, h, theme) {
+        function drawBackground(ctx, w, h, theme, exportMultiplier = 1) {
             ctx.shadowColor = 'transparent'; 
             if (theme === 'solidDark') { ctx.fillStyle = '#0a0a0c'; ctx.fillRect(0, 0, w, h); } 
             else if (theme === 'solidLight') { ctx.fillStyle = '#f5f5f0'; ctx.fillRect(0, 0, w, h); } 
@@ -765,20 +777,20 @@
             ctx.shadowBlur = 28; ctx.shadowOffsetX = 0; ctx.shadowOffsetY = 4; 
         }
 
-        // TAKILMAYI (DONMAYI) ÖNLEYEN YENİ ÇİZİM FONKSİYONU 
+        // TAKILMAYI (DONMAYI) ÖNLEYEN ÇİZİM FONKSİYONU 
         let isDrawing = false;
         function drawAllCanvases() {
             if (!isDrawing) {
                 isDrawing = true;
                 requestAnimationFrame(() => {
-                    renderCanvasToTarget('canvas');
-                    renderCanvasToTarget('mobileCanvas');
+                    renderCanvasToTarget('canvas', 1);
+                    renderCanvasToTarget('mobileCanvas', 1);
                     isDrawing = false;
                 });
             }
         }
 
-        function renderCanvasToTarget(targetId) {
+        function renderCanvasToTarget(targetId, exportMultiplier = 1) {
             const canvas = document.getElementById(targetId);
             if (!canvas) return;
             const ctx = canvas.getContext('2d');
@@ -831,14 +843,21 @@
             const author = document.getElementById('author').value;
             const source = document.getElementById('source').value;
             
-            canvas.width = format === '169' ? 1920 : 1080;
-            canvas.height = 1080;
+            const baseW = format === '169' ? 1920 : 1080;
+            const baseH = 1080;
+
+            canvas.width = baseW * exportMultiplier;
+            canvas.height = baseH * exportMultiplier;
+            
+            ctx.setTransform(1, 0, 0, 1, 0, 0); 
+            ctx.scale(exportMultiplier, exportMultiplier);
+
             ctx.textBaseline = 'top';
             ctx.imageSmoothingEnabled = true;
             ctx.imageSmoothingQuality = 'high';
             ctx.textRendering = "optimizeLegibility";
 
-            drawBackground(ctx, canvas.width, canvas.height, theme);
+            drawBackground(ctx, baseW, baseH, theme, exportMultiplier);
 
             const isLightTheme = (theme === 'solidLight' || theme === 'oldPaper' || theme === 'parchment' || theme === 'sandStorm');
             const frameColor = isLightTheme ? '#333333' : footerColor;
@@ -847,13 +866,13 @@
             ctx.shadowColor = 'transparent';
             ctx.setLineDash([]); 
             
-            const off = 60; const w = canvas.width; const h = canvas.height;
-            drawFrame(ctx, frameStyle, off, w, h); 
+            const off = 60; 
+            drawFrame(ctx, frameStyle, off, baseW, baseH); 
 
             ctx.globalAlpha = 1.0;
 
-            const maxContentHeight = canvas.height - 350;
-            const maxWidth = canvas.width - 240;
+            const maxContentHeight = baseH - 350;
+            const maxWidth = baseW - 240;
             
             let arFontSize = 65 * arSizeMultiplier, trFontSize = 45 * trSizeMultiplier;
             let arLineHeight = 90 * arSizeMultiplier, trLineHeight = 65 * arSizeMultiplier;
@@ -900,7 +919,7 @@
                 arLayout.lines.forEach(l => {
                     if (l.isSpacer) { currentY += (arLineHeight * scale * 0.5); } 
                     else {
-                        drawAdvancedTextLine(ctx, l.text, canvas.width, currentY, arLineHeight * scale, styles.ar, xOffset, arProps, scale, document.getElementById('arColor').value);
+                        drawAdvancedTextLine(ctx, l.text, baseW, currentY, arLineHeight * scale, styles.ar, xOffset, arProps, scale, document.getElementById('arColor').value);
                         currentY += arLineHeight * scale;
                     }
                 });
@@ -909,8 +928,8 @@
                     currentY += 30 * scale; 
                     ctx.shadowColor = 'transparent';
                     ctx.beginPath();
-                    ctx.moveTo(canvas.width/2 - (80 * scale) + xOffset, currentY);
-                    ctx.lineTo(canvas.width/2 + (80 * scale) + xOffset, currentY);
+                    ctx.moveTo(baseW/2 - (80 * scale) + xOffset, currentY);
+                    ctx.lineTo(baseW/2 + (80 * scale) + xOffset, currentY);
                     ctx.strokeStyle = footerColor; ctx.globalAlpha = 0.4; ctx.lineWidth = 2; ctx.stroke(); ctx.globalAlpha = 1.0;
                     currentY += 60 * scale; 
                 }
@@ -923,14 +942,14 @@
                 trLayout.lines.forEach(l => {
                     if (l.isSpacer) { currentY += (trLineHeight * scale * 0.5); } 
                     else {
-                        drawAdvancedTextLine(ctx, l.text, canvas.width, currentY, trLineHeight * scale, styles.tr, xOffset, trProps, scale, document.getElementById('trColor').value);
+                        drawAdvancedTextLine(ctx, l.text, baseW, currentY, trLineHeight * scale, styles.tr, xOffset, trProps, scale, document.getElementById('trColor').value);
                         currentY += trLineHeight * scale;
                     }
                 });
             }
             if ('letterSpacing' in ctx) ctx.letterSpacing = '0px'; 
 
-            let bottomY = canvas.height - 200 + yOffset; 
+            let bottomY = baseH - 200 + yOffset; 
             
             if (author.trim() !== '') {
                 ctx.save();
@@ -940,7 +959,7 @@
                 let authGrad = ctx.createLinearGradient(0, bottomY - 30, 0, bottomY + 10);
                 authGrad.addColorStop(0, '#ffeba8'); authGrad.addColorStop(0.5, footerColor); authGrad.addColorStop(1, '#8a6d3b');
                 ctx.fillStyle = authGrad;
-                ctx.fillText(author, canvas.width / 2 + xOffset, bottomY);
+                ctx.fillText(author, baseW / 2 + xOffset, bottomY);
                 ctx.restore();
             }
             if (source.trim() !== '') {
@@ -950,7 +969,7 @@
                 setSoftShadow(ctx, theme);
                 ctx.fillStyle = footerColor; 
                 ctx.globalAlpha = 0.85; 
-                ctx.fillText(source, canvas.width / 2 + xOffset, bottomY + 55); 
+                ctx.fillText(source, baseW / 2 + xOffset, bottomY + 55); 
                 ctx.restore();
             }
 
@@ -960,7 +979,7 @@
             ctx.font = "24px 'Lora', serif"; 
             ctx.textAlign = 'left'; 
             ctx.globalAlpha = 0.8;
-            ctx.fillText(brandText, 90, canvas.height - 100);
+            ctx.fillText(brandText, 90, baseH - 100);
             ctx.restore();
         }
 
@@ -991,7 +1010,6 @@
                 grad.addColorStop(0, '#FFE898'); grad.addColorStop(0.5, '#C5A059'); grad.addColorStop(1, '#8A6D3B');
                 fillStyle = grad;
             } else if (props.fillType === 'superGlowDynamic') {
-                // Hangi renk seçildiyse o rengi baz alarak üstten parlak beyaz/açık ton, ortada ana renk, altta derin ton ile ultra yumuşak dinamik geçiş üretir
                 let grad = ctx.createLinearGradient(0, y, 0, y + scaledLineHeight);
                 grad.addColorStop(0.0, '#ffffff');
                 grad.addColorStop(0.3, adjustColorBrightness(baseColorHex, 35));
@@ -1039,7 +1057,7 @@
                 ctx.shadowColor = hexToRgba(props.shadowColorHex, props.shadowOpacity);
                 if (props.fillType === 'superGlowDynamic') {
                     ctx.shadowBlur = Math.max(props.shadowBlur * scale, 35 * scale);
-                    ctx.shadowColor = hexToRgba(baseColorHex, 0.6); // Seçilen rengin tonunda ışıma
+                    ctx.shadowColor = hexToRgba(baseColorHex, 0.6); 
                 } else {
                     ctx.shadowBlur = props.shadowBlur * scale;
                 }
@@ -1120,11 +1138,23 @@
             }
         }
 
+        // ÇÖZÜNÜRLÜK SEÇİMLİ İNDİRME FONKSİYONU (FHD / 4K / 8K)
         function downloadImage() {
-            const canvas = document.getElementById('canvas');
-            const link = document.createElement('a');
-            link.download = 'Tasvirmatik_Eseri.png'; link.href = canvas.toDataURL('image/png', 1.0); link.click();
-            showToast();
+            const resVal = parseInt(document.getElementById('downloadRes').value) || 1;
+            const resText = resVal === 1 ? "Standart (FHD)" : (resVal === 2 ? "4K (Ultra HD)" : "8K (Master)");
+            const suffix = resVal === 1 ? "FHD" : (resVal === 2 ? "4K" : "8K");
+
+            showToast(`⚙️ ${resText} Çözünürlüğünde İşleniyor...`);
+            
+            setTimeout(() => {
+                renderCanvasToTarget('exportCanvas', resVal);
+                
+                const exportCanvas = document.getElementById('exportCanvas');
+                const link = document.createElement('a');
+                link.download = `Tasvirmatik_Eseri_${suffix}.png`; 
+                link.href = exportCanvas.toDataURL('image/png', 1.0); 
+                link.click();
+            }, 150);
         }
 
         async function shareImage() {
@@ -1148,7 +1178,6 @@
     <script>
     let deferredPrompt;
 
-    // Mobil tarayıcılarda yükleme istemcisini yakala
     window.addEventListener('beforeinstallprompt', (e) => {
         e.preventDefault();
         deferredPrompt = e;
@@ -1158,7 +1187,6 @@
         }
     });
 
-    // Kaliteli dolan yükleme sütunu ve başarı popup'ı entegre edilmiş fonksiyon
     async function installPWA() {
         if (deferredPrompt) {
             const installBtn = document.getElementById('pwaInstallBtn');
@@ -1166,12 +1194,10 @@
             const progressBar = document.getElementById('installProgressBar');
             const progressPercent = document.getElementById('progressPercent');
 
-            // Butonu gizle, şık yükleme çubuğunu aç
             installBtn.style.display = 'none';
             progressContainer.style.display = 'block';
 
             let currentProgress = 0;
-            // Estetik ve akıcı bir dolum efekti simülasyonu
             let progressInterval = setInterval(() => {
                 if (currentProgress < 90) {
                     currentProgress += Math.floor(Math.random() * 8) + 3;
@@ -1181,24 +1207,20 @@
                 }
             }, 80);
 
-            // Tarayıcının orijinal kurulum penceresini çağır
             deferredPrompt.prompt();
             const choiceResult = await deferredPrompt.userChoice;
             
             clearInterval(progressInterval);
 
             if (choiceResult.outcome === 'accepted') {
-                // Kurulum onaylandıysa çubuğu %100'e tamamla
                 progressBar.style.width = '100%';
                 progressPercent.innerText = '100%';
 
                 setTimeout(() => {
                     progressContainer.style.display = 'none';
-                    // Özel Tasvirmatik Yüklendi Popup'ını tetikle
                     showInstallSuccessPopup();
                 }, 500);
             } else {
-                // Kullanıcı iptal ederse arayüzü eski haline döndür
                 progressContainer.style.display = 'none';
                 installBtn.style.display = 'inline-flex';
             }
