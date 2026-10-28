@@ -343,11 +343,29 @@
                 <option value="oldPaper">10. Klasik Eski Kağıt</option>
                 <option value="parchment">11. Yıpranmış Parşömen</option>
                 <option value="sandStorm">12. Kum Fırtınası (Açık)</option>
-                <!-- YENİ EKLENEN FEMİNEN RENKLER -->
                 <option value="lightPink">13. Açık Pembe (Soft)</option>
                 <option value="pink">14. Pembe (Canlı & Derin)</option>
                 <option value="darkPink">15. Koyu Pembe (Zarif)</option>
                 <option value="dustyRose">16. Gül Kurusu (Vintage)</option>
+            </select>
+
+            <!-- YENİ EKLENEN 15 ADET IŞIK, YILDIZ VE EFEKT KATMANI -->
+            <select id="overlayEffect" onchange="drawAllCanvases()">
+                <option value="none">✨ Efekt Katmanı Yok (Sade)</option>
+                <option value="goldStarsFew">⭐ Altın Yıldızlar (Seyrek & Zarif)</option>
+                <option value="goldStarsDense">🌟 Altın Yıldızlar (Yoğun Parıltı)</option>
+                <option value="silverStars">✨ Gümüş Yıldız Parıltıları</option>
+                <option value="bokehWarm">💫 Sıcak Bokeh Işıkları (Yumuşak)</option>
+                <option value="bokehCool">❄️ Soğuk Mavi Bokeh Işıkları</option>
+                <option value="lightLeakGold">☀️ Altın Işık Hüzmesi (Sağ Üst)</option>
+                <option value="lightLeakTop">⛅ Üstten Süzülen İlahi Işık Demeti</option>
+                <option value="cosmicDust">🌌 Kozmik Toz Parçacıkları</option>
+                <option value="diamondGlitter">💎 Elmas Pırıltılı Keskin Yıldızlar</option>
+                <option value="roseGlow">🌸 Pembe / Gül Kurusu Işık Hüzmeleri</option>
+                <option value="emeraldDust">🍀 Zümrüt Yeşili Parıltılar</option>
+                <option value="mysticLight">🌙 Mistik Ay Işığı Süzmesi</option>
+                <option value="vintageFlare">📜 Nostaljik Işık Sızıntısı (Light Leak)</option>
+                <option value="starryNight">✨ Samanyolu Yıldız Kümesi</option>
             </select>
 
             <select id="frameStyle" onchange="drawAllCanvases()">
@@ -902,6 +920,146 @@
             }
         }
 
+        // YENİ: PROSEDÜREL IŞIK VE YILDIZ EFEKTİ ÇİZİM MOTORU
+        function drawOverlayEffects(ctx, w, h, effectType) {
+            if (effectType === 'none') return;
+            ctx.save();
+            ctx.shadowColor = 'transparent';
+
+            // Sabit ama estetik dağılım için pseudo-random (deterministic) koordinat üretici
+            const seedRandom = (seed) => {
+                let x = Math.sin(seed++) * 10000;
+                return x - Math.floor(x);
+            };
+
+            if (effectType === 'goldStarsFew' || effectType === 'goldStarsDense') {
+                const count = effectType === 'goldStarsFew' ? 25 : 70;
+                for (let i = 0; i < count; i++) {
+                    let x = seedRandom(i * 13) * w;
+                    let y = seedRandom(i * 17) * h;
+                    let r = seedRandom(i * 19) * 2.5 + 1;
+                    let alpha = seedRandom(i * 23) * 0.7 + 0.3;
+                    
+                    ctx.fillStyle = `rgba(255, 235, 168, ${alpha})`;
+                    ctx.beginPath(); ctx.arc(x, y, r, 0, Math.PI * 2); ctx.fill();
+                    
+                    // Nadiren 4 kollu parıltı ekle
+                    if (i % 5 === 0) {
+                        ctx.strokeStyle = `rgba(255, 255, 255, ${alpha * 0.8})`;
+                        ctx.lineWidth = 1;
+                        ctx.beginPath();
+                        ctx.moveTo(x - r * 3, y); ctx.lineTo(x + r * 3, y);
+                        ctx.moveTo(x, y - r * 3); ctx.lineTo(x, y + r * 3);
+                        ctx.stroke();
+                    }
+                }
+            }
+            else if (effectType === 'silverStars') {
+                for (let i = 0; i < 50; i++) {
+                    let x = seedRandom(i * 11) * w;
+                    let y = seedRandom(i * 19) * h;
+                    let r = seedRandom(i * 23) * 2 + 0.8;
+                    ctx.fillStyle = `rgba(220, 230, 242, ${seedRandom(i) * 0.8 + 0.2})`;
+                    ctx.beginPath(); ctx.arc(x, y, r, 0, Math.PI * 2); ctx.fill();
+                }
+            }
+            else if (effectType === 'bokehWarm' || effectType === 'bokehCool') {
+                const baseColor = effectType === 'bokehWarm' ? '255, 190, 100' : '100, 180, 255';
+                for (let i = 0; i < 18; i++) {
+                    let x = seedRandom(i * 31) * w;
+                    let y = seedRandom(i * 37) * h;
+                    let r = seedRandom(i * 41) * 45 + 15;
+                    let alpha = seedRandom(i * 43) * 0.18 + 0.05;
+
+                    ctx.fillStyle = `rgba(${baseColor}, ${alpha})`;
+                    ctx.beginPath(); ctx.arc(x, y, r, 0, Math.PI * 2); ctx.fill();
+                }
+            }
+            else if (effectType === 'lightLeakGold') {
+                let grd = ctx.createRadialGradient(w, 0, 0, w, 0, w * 0.8);
+                grd.addColorStop(0, 'rgba(255, 215, 0, 0.45)');
+                grd.addColorStop(0.5, 'rgba(255, 140, 0, 0.15)');
+                grd.addColorStop(1, 'transparent');
+                ctx.fillStyle = grd; ctx.fillRect(0, 0, w, h);
+            }
+            else if (effectType === 'lightLeakTop') {
+                let grd = ctx.createLinearGradient(0, 0, 0, h * 0.7);
+                grd.addColorStop(0, 'rgba(255, 245, 210, 0.35)');
+                grd.addColorStop(1, 'transparent');
+                ctx.fillStyle = grd; ctx.fillRect(0, 0, w, h);
+            }
+            else if (effectType === 'cosmicDust') {
+                for (let i = 0; i < 120; i++) {
+                    let x = seedRandom(i * 7) * w;
+                    let y = seedRandom(i * 11) * h;
+                    let r = seedRandom(i * 13) * 1.5;
+                    ctx.fillStyle = `rgba(255, 255, 255, ${seedRandom(i * 17) * 0.5 + 0.1})`;
+                    ctx.beginPath(); ctx.arc(x, y, r, 0, Math.PI * 2); ctx.fill();
+                }
+            }
+            else if (effectType === 'diamondGlitter') {
+                for (let i = 0; i < 30; i++) {
+                    let x = seedRandom(i * 29) * w;
+                    let y = seedRandom(i * 31) * h;
+                    let size = seedRandom(i * 37) * 12 + 6;
+                    
+                    ctx.strokeStyle = `rgba(255, 255, 255, ${seedRandom(i) * 0.7 + 0.3})`;
+                    ctx.lineWidth = 1.5;
+                    ctx.beginPath();
+                    ctx.moveTo(x - size, y); ctx.lineTo(x + size, y);
+                    ctx.moveTo(x, y - size); ctx.lineTo(x, y + size);
+                    ctx.stroke();
+
+                    ctx.fillStyle = '#ffeba8';
+                    ctx.beginPath(); ctx.arc(x, y, 2, 0, Math.PI * 2); ctx.fill();
+                }
+            }
+            else if (effectType === 'roseGlow') {
+                let grd = ctx.createRadialGradient(w * 0.2, h * 0.8, 0, w * 0.2, h * 0.8, w * 0.7);
+                grd.addColorStop(0, 'rgba(244, 143, 177, 0.35)');
+                grd.addColorStop(1, 'transparent');
+                ctx.fillStyle = grd; ctx.fillRect(0, 0, w, h);
+
+                let grd2 = ctx.createRadialGradient(w * 0.8, h * 0.2, 0, w * 0.8, h * 0.2, w * 0.6);
+                grd2.addColorStop(0, 'rgba(233, 30, 99, 0.25)');
+                grd2.addColorStop(1, 'transparent');
+                ctx.fillStyle = grd2; ctx.fillRect(0, 0, w, h);
+            }
+            else if (effectType === 'emeraldDust') {
+                for (let i = 0; i < 45; i++) {
+                    let x = seedRandom(i * 5) * w;
+                    let y = seedRandom(i * 7) * h;
+                    let r = seedRandom(i * 9) * 2 + 1;
+                    ctx.fillStyle = `rgba(168, 255, 208, ${seedRandom(i) * 0.7 + 0.2})`;
+                    ctx.beginPath(); ctx.arc(x, y, r, 0, Math.PI * 2); ctx.fill();
+                }
+            }
+            else if (effectType === 'mysticLight') {
+                let grd = ctx.createRadialGradient(w * 0.5, h * 0.3, 0, w * 0.5, h * 0.3, w * 0.8);
+                grd.addColorStop(0, 'rgba(200, 220, 255, 0.3)');
+                grd.addColorStop(1, 'transparent');
+                ctx.fillStyle = grd; ctx.fillRect(0, 0, w, h);
+            }
+            else if (effectType === 'vintageFlare') {
+                let grd = ctx.createLinearGradient(0, 0, w, h);
+                grd.addColorStop(0, 'rgba(255, 180, 50, 0.25)');
+                grd.addColorStop(0.5, 'transparent');
+                grd.addColorStop(1, 'rgba(100, 50, 150, 0.2)');
+                ctx.fillStyle = grd; ctx.fillRect(0, 0, w, h);
+            }
+            else if (effectType === 'starryNight') {
+                for (let i = 0; i < 150; i++) {
+                    let x = seedRandom(i * 3) * w;
+                    let y = seedRandom(i * 5) * h;
+                    let r = seedRandom(i * 7) * 1.8;
+                    let alpha = seedRandom(i * 11) * 0.8 + 0.2;
+                    ctx.fillStyle = i % 3 === 0 ? `rgba(255, 240, 200, ${alpha})` : `rgba(255, 255, 255, ${alpha})`;
+                    ctx.beginPath(); ctx.arc(x, y, r, 0, Math.PI * 2); ctx.fill();
+                }
+            }
+            ctx.restore();
+        }
+
         function getWrappedLines(ctx, text, maxWidth) {
             const paragraphs = text.split('\n');
             let lines = [];
@@ -954,6 +1112,7 @@
             
             const format = document.getElementById('format').value;
             const theme = document.getElementById('bgTheme').value;
+            const overlayEffect = document.getElementById('overlayEffect').value;
             const frameStyle = document.getElementById('frameStyle').value;
             const yOffset = document.getElementById('yOffset') ? parseInt(document.getElementById('yOffset').value) : 0;
             const xOffset = document.getElementById('xOffset') ? parseInt(document.getElementById('xOffset').value) : 0;
@@ -1032,7 +1191,11 @@
             ctx.imageSmoothingQuality = 'high';
             ctx.textRendering = "optimizeLegibility";
 
+            // 1. Arka Planı Çiz
             drawBackground(ctx, baseW, baseH, theme, exportMultiplier);
+
+            // 2. Efekt Katmanını Çiz (Yıldızlar ve Işık Hüzmeleri - Çerçevenin ve Yazının Altında Atmosfer Oluşturur)
+            drawOverlayEffects(ctx, baseW, baseH, overlayEffect);
 
             const isLightTheme = (theme === 'solidLight' || theme === 'oldPaper' || theme === 'parchment' || theme === 'sandStorm' || theme === 'lightPink');
             const frameColor = isLightTheme ? '#333333' : footerColor;
@@ -1050,7 +1213,7 @@
             const maxWidth = baseW - 240;
             
             let arFontSize = 65 * arSizeMultiplier, trFontSize = 45 * trSizeMultiplier, exFontSize = 45 * exSizeMultiplier;
-            let arLineHeight = 90 * arSizeMultiplier, trLineHeight = 65 * trSizeMultiplier, exLineHeight = 65 * exSizeMultiplier;
+            let arLineHeight = 90 * arSizeMultiplier, trLineHeight = 65 * arSizeMultiplier, exLineHeight = 65 * arSizeMultiplier;
             
             let arLayout = { lines: [], maxLineWidth: 0 };
             let trLayout = { lines: [], maxLineWidth: 0 };
