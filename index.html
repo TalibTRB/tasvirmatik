@@ -371,6 +371,17 @@
             <canvas id="mobileCanvas"></canvas>
         </div>
 
+        <!-- Geri/İleri Al Kontrol Paneli -->
+        <div class="history-controls">
+            <button class="btn-history" id="btnUndo" onclick="undoAction()" disabled title="Son işlemi geri al">
+                <i class="fas fa-undo-alt"></i> Geri Al
+            </button>
+            <button class="btn-history" id="btnRedo" onclick="redoAction()" disabled title="Geri alınan işlemi yinele">
+                <i class="fas fa-redo-alt"></i> İleri Al
+            </button>
+        </div>
+        
+        
         <!-- 1. TUVAL VE GÖRSEL AYARLARI -->
         <div class="section">
             <div class="section-title">Tuval & Görsel Ayarları</div>
@@ -1923,6 +1934,115 @@ document.getElementById('localBgUpload').addEventListener('change', function(e) 
                 openModal("Hata", "Tarayıcınız paylaşımı desteklemiyor. Lütfen resmi 'İNDİR' butonuyla cihaza kaydedip öyle paylaşın.", null);
             }
         }
+
+        // ==========================================
+        // YENİ: GERİ AL / İLERİ AL (HISTORY) MOTORU
+        // ==========================================
+        const MAX_HISTORY = 40; // Son 40 adımı hafızada tutar
+        let stateHistory = [];
+        let historyIndex = -1;
+        let isUndoRedoAction = false; 
+
+        function captureStateForHistory() {
+            const state = { 
+                inputs: {}, 
+                styles: JSON.parse(JSON.stringify(styles)), 
+                dragOffsets: JSON.parse(JSON.stringify(dragOffsets)), 
+                bgImage: customBgImage ? customBgImage.src : null 
+            };
+            document.querySelectorAll('input, select, textarea').forEach(el => {
+                if(el.id && el.type !== 'file' && el.type !== 'button') {
+                    state.inputs[el.id] = el.type === 'checkbox' ? el.checked : el.value;
+                }
+            });
+            return JSON.stringify(state);
+        }
+
+        function pushToHistory() {
+            if (isUndoRedoAction) return; // Kullanıcı butona basarken yeni kayıt alma
+            const currentState = captureStateForHistory();
+            
+            if (historyIndex >= 0 && stateHistory[historyIndex] === currentState) return; // Değişiklik yoksa kaydetme
+
+            // Geçmişe dönülüp yeni bir şey yapıldıysa, ileri (redo) hafızasını sil
+            if (historyIndex < stateHistory.length - 1) {
+                stateHistory = stateHistory.slice(0, historyIndex + 1);
+            }
+
+            stateHistory.push(currentState);
+            if (stateHistory.length > MAX_HISTORY) stateHistory.shift(); 
+            else historyIndex++;
+            
+            updateHistoryButtonsUI();
+        }
+
+        function updateHistoryButtonsUI() {
+            const btnUndo = document.getElementById('btnUndo');
+            const btnRedo = document.getElementById('btnRedo');
+            if(btnUndo) btnUndo.disabled = historyIndex <= 0;
+            if(btnRedo) btnRedo.disabled = historyIndex >= stateHistory.length - 1;
+        }
+
+        function applyHistoryState(stateStr) {
+            isUndoRedoAction = true; // Döngüye girmemesi için kilit
+            const state = JSON.parse(stateStr);
+            
+            styles = state.styles;
+            dragOffsets = state.dragOffsets;
+            
+            for(const id in state.inputs) {
+                const el = document.getElementById(id);
+                if(el) {
+                    if(el.type === 'checkbox') el.checked = state.inputs[id];
+                    else el.value = state.inputs[id];
+                }
+            }
+            
+            if (state.bgImage) { loadCustomBackground(state.bgImage, false); } 
+            else { customBgImage = null; }
+
+            updateStyleButtonsUI();
+            drawAllCanvases();
+            
+            // LocalStorage'ı da güncelle ki sayfa yenilendiğinde güncel kalsın
+            localStorage.setItem(STORAGE_KEY, stateStr);
+            
+            setTimeout(() => { isUndoRedoAction = false; }, 200);
+        }
+
+        function undoAction() {
+            if (historyIndex > 0) {
+                historyIndex--;
+                applyHistoryState(stateHistory[historyIndex]);
+                updateHistoryButtonsUI();
+                showToast("↩️ Adım Geri Alındı");
+            }
+        }
+
+        function redoAction() {
+            if (historyIndex < stateHistory.length - 1) {
+                historyIndex++;
+                applyHistoryState(stateHistory[historyIndex]);
+                updateHistoryButtonsUI();
+                showToast("↪️ Adım İleri Alındı");
+            }
+        }
+
+        // Mevcut Tasvirmatik sistemine zarar vermeden kenetlenme (Monkey Patching)
+        const originalSaveState = saveStateToLocal;
+        saveStateToLocal = function() {
+            originalSaveState();
+            pushToHistory(); // Her oto-kayıtta tarihçeye de yedekle
+        };
+
+        const originalLoadState = loadStateFromLocal;
+        loadStateFromLocal = function() {
+            originalLoadState();
+            // Sayfa ilk yüklendiğinde mevcut durumu 1. adım olarak kaydet
+            setTimeout(() => { pushToHistory(); }, 800); 
+        };
+                
+                    
     </script>
     <script>
     let deferredPrompt;
