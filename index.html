@@ -231,10 +231,11 @@
         .mobile-sticky-preview {
             display: none; background: #000; position: sticky; top: 0; z-index: 1000;
             box-shadow: 0 8px 25px rgba(0,0,0,0.9); line-height: 0;
+            display: none; justify-content: center; align-items: center; width: 100%;
         }
         .mobile-sticky-preview canvas {
             width: 100% !important; height: auto !important; max-height: none !important;
-            border-radius: 0 !important; box-shadow: none !important; display: block;
+            border-radius: 0 !important; box-shadow: none !important; display: block; margin: 0 auto;
         }
         
         /* PC İÇİN ALT MERKEZ YÜZEN İPUCU ROZETİ (Yalnızca masaüstünde görünür) */
@@ -308,7 +309,7 @@
             body { flex-direction: column; height: auto; overflow-y: auto; padding: 0; gap: 0; }
             .sidebar { width: 100%; height: 100vh; border-radius: 0; border: none; }
             .workspace { display: none; } 
-            .mobile-sticky-preview { display: block; }
+            .mobile-sticky-preview { display: flex !important; }
             .drag-hint-pc { display: none !important; }
         }
     </style>
