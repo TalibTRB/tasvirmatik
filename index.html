@@ -429,14 +429,14 @@
                 <option value="bokehWarm">💫 Sıcak Bokeh Işıkları (Yumuşak)</option>
                 <option value="bokehCool">❄️ Soğuk Mavi Bokeh Işıkları</option>
                 <option value="lightLeakGold">☀️ Altın Işık Hüzmesi (Sağ Üst)</option>
-                <option value="lightLeakTop">⛅ Üstten Süzülen İlahi Işık Demeti</option>
-                <option value="cosmicDust">🌌 Kozmik Toz Parçacıkları</option>
+                <option value="lightLeakTop">⛅ Üstten Süzülen Işık Demeti</option>
+                <option value="cosmicDust">🌌 Toz Parçacıkları</option>
                 <option value="diamondGlitter">💎 Elmas Pırıltılı Keskin Yıldızlar</option>
-                <option value="roseGlow">🌸 Pembe / Gül Kurusu Işık Hüzmeleri</option>
+                <option value="roseGlow">🌸 Gül Kurusu Işık Hüzmeleri</option>
                 <option value="emeraldDust">🍀 Zümrüt Yeşili Parıltılar</option>
-                <option value="mysticLight">🌙 Mistik Ay Işığı Süzmesi</option>
-                <option value="vintageFlare">📜 Nostaljik Işık Sızıntısı (Light Leak)</option>
-                <option value="starryNight">✨ Samanyolu Yıldız Kümesi</option>
+                <option value="mysticLight">🌙 Ay Işığı Süzmesi</option>
+                <option value="vintageFlare">📜 Nostaljik Işık Sızıntısı</option>
+                <option value="starryNight">✨ Yıldız Kümesi</option>
             </select>
 
             <select id="frameStyle" onchange="scheduleSaveAndDraw()">
@@ -444,8 +444,8 @@
                 <option value="double">2. Çerçeve: Çift Çizgi</option>
                 <option value="thick">3. Çerçeve: Kalın Çizgi</option>
                 <option value="elegantInner">4. Çerçeve: Zarif İç Çizgi</option>
-                <option value="corner">5. Motif: İslami Köşe</option>
-                <option value="doubleCorner">6. Motif: Çift İslami Köşe</option>
+                <option value="corner">5. Motif: Dört Köşe</option>
+                <option value="doubleCorner">6. Motif: Çift Dört Köşe</option>
                 <option value="bracket">7. Motif: Köşeli Parantez</option>
                 <option value="minimalTopBottom">8. Minimal: Sadece Alt-Üst</option>
                 <option value="minimalLeftRight">9. Minimal: Sadece Sağ-Sol</option>
@@ -455,9 +455,9 @@
             </select>
 
             <div style="background: #1e1e22; padding: 10px; border-radius: 6px; border: 1px solid #333; margin-top: 10px;">
-                <div class="slider-label"><span><i class="fas fa-arrows-alt-h"></i> Komple Sağa / Sola Kaydır</span></div>
+                <div class="slider-label"><span><i class="fas fa-arrows-alt-h"></i> Sağa / Sola Kaydır</span></div>
                 <input type="range" id="xOffset" min="-400" max="400" value="0" oninput="scheduleSaveAndDraw()">
-                <div class="slider-label"><span><i class="fas fa-arrows-alt-v"></i> Komple Yukarı / Aşağı Kaydır</span></div>
+                <div class="slider-label"><span><i class="fas fa-arrows-alt-v"></i> Yukarı / Aşağı Kaydır</span></div>
                 <input type="range" id="yOffset" min="-400" max="400" value="0" oninput="scheduleSaveAndDraw()">
                 
                 <!-- BAĞIMSIZ SÜRÜKLEMEYİ SIFIRLA BUTONU -->
@@ -582,11 +582,11 @@
                     <option value="Lora">1. Lora (Klasik Tırnaklı)</option>
                     <option value="Cinzel">2. Cinzel (Tarihi / Kitabe)</option>
                     <option value="Segoe UI">3. Segoe UI (Sistem Modern)</option>
-                    <option value="Roboto">4. Roboto (Google Standart)</option>
+                    <option value="Roboto">4. Roboto (Standart)</option>
                     <option value="Montserrat">5. Montserrat (Modern Yuvarlak)</option>
                     <option value="Playfair Display">6. Playfair (Zarif Başlık)</option>
                     <option value="Merriweather">7. Merriweather (Okunaklı Kitap)</option>
-                    <option value="Oswald">8. Oswald (Dar and Uzun)</option>
+                    <option value="Oswald">8. Oswald (Dar ve Uzun)</option>
                     <option value="Raleway">9. Raleway (İnce Zarif)</option>
                     <option value="Noto Serif">10. Noto Serif (Akademik)</option>
                     <option value="Ubuntu">11. Ubuntu (Yumuşak Kavisli)</option>
@@ -681,11 +681,11 @@
                     <option value="Lora" selected>1. Lora (Klasik Tırnaklı)</option>
                     <option value="Cinzel">2. Cinzel (Tarihi / Kitabe)</option>
                     <option value="Segoe UI">3. Segoe UI (Sistem Modern)</option>
-                    <option value="Roboto">4. Roboto (Google Standart)</option>
+                    <option value="Roboto">4. Roboto (Standart)</option>
                     <option value="Montserrat">5. Montserrat (Modern Yuvarlak)</option>
                     <option value="Playfair Display">6. Playfair (Zarif Başlık)</option>
                     <option value="Merriweather">7. Merriweather (Okunaklı Kitap)</option>
-                    <option value="Oswald">8. Oswald (Dar and Uzun)</option>
+                    <option value="Oswald">8. Oswald (Dar ve Uzun)</option>
                     <option value="Raleway">9. Raleway (İnce Zarif)</option>
                     <option value="Noto Serif">10. Noto Serif (Akademik)</option>
                     <option value="Ubuntu">11. Ubuntu (Yumuşak Kavisli)</option>
