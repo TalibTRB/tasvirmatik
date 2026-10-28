@@ -354,7 +354,7 @@
                 <option value="11">X Kare (1080x1080)</option>
             </select>
             
-            <select id="bgTheme" onchange="scheduleSaveAndDraw()">
+            <select id="bgTheme" onchange="document.getElementById('bgImageSelect').value=''; customBgImage=null; scheduleSaveAndDraw()">
                 <option value="darkSmoke">1. Koyu Dumanlı</option>
                 <option value="graySmoke">2. Gri Dumanlı (Sisli)</option>
                 <option value="stainSmoke">3. Lekeli Duman (Eskitme)</option>
@@ -383,25 +383,25 @@
         <optgroup label="Doğa & Manzara">
             <option value="https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=1920&q=80">1. Alp Dağları ve Vadi</option>
             <option value="https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?w=1920&q=80">2. Sisli Günbatımı</option>
-            <option value="https://images.unsplash.com/photo-1447752875215-b2761acb3c5d?w=1920&q=80">3. Çam Ağaçları Arasından Yol</option>
+            <option value="https://images.unsplash.com/photo-1447752875215-b2761acb3c5d?w=1920&q=80">3. Çam Ağaçları Arasındaki Yol</option>
             <option value="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=1920&q=80">4. Karlı Zirveler</option>
             <option value="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=1920&q=80">5. Tropikal Sahil ve Turkuaz</option>
             <option value="https://images.unsplash.com/photo-1519681393784-d120267933ba?w=1920&q=80">6. Yıldızlı Gece ve Dağlar</option>
             <option value="https://images.unsplash.com/photo-1454496522488-7a8e488e8606?w=1920&q=80">7. Dağ Sırtları ve Bulutlar</option>
             <option value="https://images.unsplash.com/photo-1509316975850-ff9c5deb0cd9?w=1920&q=80">8. Çam Ormanı Sonbahar</option>
-            <option value="https://images.unsplash.com/photo-1523712999610-f77fbcfc3843?w=1920&q=80">9. Güneşli Orman</option>
-            <option value="https://images.unsplash.com/photo-1465146344425-f00d5f5c8f07?w=1920&q=80">10. Çiçekler</option>
+            <option value="https://images.unsplash.com/photo-1523712999610-f77fbcfc3843?w=1920&q=80">9. Orman Günbatımı</option>
+            <option value="https://images.unsplash.com/photo-1465146344425-f00d5f5c8f07?w=1920&q=80">10. Çiçekli Vadi</option>
         </optgroup>
 
-        <!-- Gökyüzü ve Atmosfer -->
+        <!-- Gökyüzü, Uzay ve Atmosfer -->
         <optgroup label="Gökyüzü & Atmosfer">
             <option value="https://images.unsplash.com/photo-1534447677768-be436bb09401?w=1920&q=80">11. Gemi ve Yıldızlar</option>
             <option value="https://images.unsplash.com/photo-1502134249126-9f3755a50d78?w=1920&q=80">12. Kuzey Işıkları</option>
             <option value="https://images.unsplash.com/photo-1513002749550-c59d786b8e6c?w=1920&q=80">13. Gökyüzü ve Bulut Katmanları</option>
-            <option value="https://images.unsplash.com/photo-1505533321630-975218a5f66f?w=1920&q=80">14. Gri Bulutlar</option>
+            <option value="https://images.unsplash.com/photo-1505533321630-975218a5f66f?w=1920&q=80">14. Bulut Üstü Gün Batımı</option>
             <option value="https://images.unsplash.com/photo-1517483000871-1dbf64a6e1c6?w=1920&q=80">15. Fırtına Bulutları</option>
-            <option value="https://images.unsplash.com/photo-1444703686981-a3abbc4d4fe3?w=1920&q=80">16. Gökyüzüne Bakış</option>
-            <option value="https://images.unsplash.com/photo-1508739773434-c26b3d09e071?w=1920&q=80">17. Güneş Doğarken</option>
+            <option value="https://images.unsplash.com/photo-1444703686981-a3abbc4d4fe3?w=1920&q=80">16. Semaya Bakan</option>
+            <option value="https://images.unsplash.com/photo-1508739773434-c26b3d09e071?w=1920&q=80">17. Gündoğumu ve Dağlar</option>
             <option value="https://images.unsplash.com/photo-1504608524841-42fe6f032b4b?w=1920&q=80">18. Güneş Işınları ve Bulut</option>
         </optgroup>
 
@@ -412,7 +412,7 @@
             <option value="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=1920&q=80">21. 3D Dalga Doku</option>
             <option value="https://images.unsplash.com/photo-1541701494587-cb58502866ab?w=1920&q=80">22. Renkli Boya Dokusu</option>
             <option value="https://images.unsplash.com/photo-1557683316-973673baf926?w=1920&q=80">23. Soyut Mor Geçiş</option>
-            <option value="https://images.unsplash.com/photo-1513694203232-719a280e022f?w=1920&q=80">24. Sade İç Mekan</option>
+            <option value="https://images.unsplash.com/photo-1513694203232-719a280e022f?w=1920&q=80">24. Sade İç Mekan Soyut</option>
             <option value="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1920&q=80">25. Gökdelen Mimari Geometri</option>
             <option value="https://images.unsplash.com/photo-1558470598-a5dda9640f68?w=1920&q=80">26. Renk Patlaması</option>
             <option value="https://images.unsplash.com/photo-1518837695005-2083093ee35b?w=1920&q=80">27. Su Damlası Yüzey Dokusu</option>
