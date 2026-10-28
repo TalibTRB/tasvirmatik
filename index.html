@@ -285,7 +285,7 @@
         .app-install-card p:last-child { margin: 0; }
         .app-install-card strong { color: var(--accent); }
 
-                /* FHD / 4K / 8K Seçim Kutusu Kesin Çözüm */
+        /* FHD / 4K / 8K Seçim Kutusu Kesin Çözüm */
         #downloadRes {
             appearance: none;
             -webkit-appearance: none;
@@ -343,6 +343,11 @@
                 <option value="oldPaper">10. Klasik Eski Kağıt</option>
                 <option value="parchment">11. Yıpranmış Parşömen</option>
                 <option value="sandStorm">12. Kum Fırtınası (Açık)</option>
+                <!-- YENİ EKLENEN FEMİNEN RENKLER -->
+                <option value="lightPink">13. Açık Pembe (Soft)</option>
+                <option value="pink">14. Pembe (Canlı & Derin)</option>
+                <option value="darkPink">15. Koyu Pembe (Zarif)</option>
+                <option value="dustyRose">16. Gül Kurusu (Vintage)</option>
             </select>
 
             <select id="frameStyle" onchange="drawAllCanvases()">
@@ -563,7 +568,106 @@
             <textarea id="turkishText" oninput="drawAllCanvases()" style="font-family: 'Lora';">"İyi bilin ki, halis din yalnız Allah'ındır."</textarea>
         </div>
 
-        <!-- 4. ALT BİLGİ VE İMZA -->
+        <!-- 4. SERBEST METİN / ALT BAŞLIK (İSTEĞE BAĞLI) -->
+        <div class="section">
+            <div class="section-title" style="background: linear-gradient(180deg, #b0b0b0 0%, #ffffff 40%, #a0a0a0 60%, #e0e0e0 100%); -webkit-background-clip: text;">Serbest Metin / Alt Başlık</div>
+            <div class="toolbar" id="ex-tools">
+                <button class="tool-btn" id="ex-bold" onclick="toggleStyle('ex', 'bold')"><i class="fas fa-bold"></i></button>
+                <button class="tool-btn" id="ex-italic" onclick="toggleStyle('ex', 'italic')"><i class="fas fa-italic"></i></button>
+                <button class="tool-btn" id="ex-underline" onclick="toggleStyle('ex', 'underline')"><i class="fas fa-underline"></i></button>
+                <button class="tool-btn" id="ex-strike" onclick="toggleStyle('ex', 'strike')"><i class="fas fa-strikethrough"></i></button>
+                <span style="border-left: 1px solid #444; margin: 0 2px;"></span>
+                <button class="tool-btn" id="ex-align-left" onclick="setAlignment('ex', 'left')"><i class="fas fa-align-left"></i></button>
+                <button class="tool-btn active" id="ex-align-center" onclick="setAlignment('ex', 'center')"><i class="fas fa-align-center"></i></button>
+                <button class="tool-btn" id="ex-align-right" onclick="setAlignment('ex', 'right')"><i class="fas fa-align-right"></i></button>
+            </div>
+            
+            <div style="display:flex; gap:10px; margin-bottom:10px;">
+                <select id="exFont" onchange="changeFontImmediate('exFont', 'extraText')" style="margin:0;">
+                    <option value="Lora">1. Lora (Klasik Tırnaklı)</option>
+                    <option value="Cinzel">2. Cinzel (Tarihi / Kitabe)</option>
+                    <option value="Segoe UI">3. Segoe UI (Sistem Modern)</option>
+                    <option value="Roboto">4. Roboto (Google Standart)</option>
+                    <option value="Montserrat">5. Montserrat (Modern Yuvarlak)</option>
+                    <option value="Playfair Display">6. Playfair (Zarif Başlık)</option>
+                    <option value="Merriweather">7. Merriweather (Okunaklı Kitap)</option>
+                    <option value="Oswald">8. Oswald (Dar ve Uzun)</option>
+                    <option value="Raleway">9. Raleway (İnce Zarif)</option>
+                    <option value="Noto Serif">10. Noto Serif (Akademik)</option>
+                    <option value="Ubuntu">11. Ubuntu (Yumuşak Kavisli)</option>
+                    <option value="Poppins">12. Poppins (Geometrik Sans)</option>
+                    <option value="Tinos">13. Tinos (Times Benzeri Klasik)</option>
+                    <option value="Cormorant Garamond">14. Garamond (Eski Basım)</option>
+                    <option value="Open Sans">15. Open Sans (Temiz Web)</option>
+                </select>
+                <div class="color-picker-wrap">
+                    <input type="color" id="exColor" value="#b0b0b0" title="Düz Yazı Rengi" oninput="drawAllCanvases()">
+                </div>
+            </div>
+
+            <div class="slider-label"><span>Ek Metin Boyutu</span></div>
+            <input type="range" id="exSizeMultiplier" min="0.5" max="2.0" step="0.05" value="1.0" oninput="drawAllCanvases()" style="margin-bottom:10px;">
+
+            <details class="effect-panel">
+                <summary><i class="fas fa-layer-group"></i> ✨ Gelişmiş Efektler ve 3D</summary>
+                <div class="effect-content">
+                    <div class="slider-label"><span style="color:var(--accent);">Harf Aralığı (Kerning)</span></div>
+                    <input type="range" id="exLetterSpacing" min="-5" max="30" step="1" value="0" oninput="drawAllCanvases()">
+                    <hr style="border: 0; border-top: 1px solid #333; margin: 5px 0;">
+                    <div class="effect-row">
+                        <span>Dolgu (Renk/Doku):</span>
+                        <select id="exFillType" onchange="drawAllCanvases()" style="width:140px; margin:0; padding:5px;">
+                            <option value="solid" selected>Düz Renk</option>
+                            <option value="superGlowDynamic">✨ Ultra Yumuşak & Parlak</option>
+                            <option value="gold">Altın Varak (Gold)</option>
+                            <option value="silver">Gümüş (Silver)</option>
+                            <option value="bronze">Bronz (Bronze)</option>
+                        </select>
+                    </div>
+                    <div class="effect-row">
+                        <span>Efekt Motoru:</span>
+                        <select id="exEffectType" onchange="drawAllCanvases()" style="width:140px; margin:0; padding:5px;">
+                            <option value="normal">Normal (Standart Gölge)</option>
+                            <option value="engrave">Kazıma (İç Gölge / Pres)</option>
+                            <option value="neon">Neon (Katmanlı Işıldama)</option>
+                        </select>
+                    </div>
+                    <hr style="border: 0; border-top: 1px solid #333; margin: 5px 0;">
+                    <div class="slider-label"><span>3D Hacim (Derinlik)</span></div>
+                    <input type="range" id="ex3DDepth" min="0" max="20" step="1" value="0" oninput="drawAllCanvases()">
+                    <div class="effect-row" style="margin-top:5px;">
+                        <span>Kenarlık Rengi & Kalınlığı:</span>
+                        <input type="color" id="exStrokeColor" value="#000000" oninput="drawAllCanvases()">
+                    </div>
+                    <input type="range" id="exStrokeWidth" min="0" max="15" step="0.5" value="0" oninput="drawAllCanvases()">
+                    <div class="effect-row" style="margin-top:5px;">
+                        <span>Gölge (Shadow/Glow) Rengi:</span>
+                        <input type="color" id="exShadowColor" value="#000000" oninput="drawAllCanvases()">
+                    </div>
+                    <div class="multi-col">
+                        <div>
+                            <div class="slider-label"><span>Şeffaflık</span></div>
+                            <input type="range" id="exShadowOpacity" min="0" max="1" step="0.1" value="0.8" oninput="drawAllCanvases()">
+                        </div>
+                        <div>
+                            <div class="slider-label"><span>Bulanıklık</span></div>
+                            <input type="range" id="exShadowBlur" min="0" max="60" value="28" oninput="drawAllCanvases()">
+                        </div>
+                    </div>
+                    <hr style="border: 0; border-top: 1px solid #333; margin: 5px 0;">
+                    <div class="effect-row">
+                        <label style="display:flex; align-items:center; gap:5px; cursor:pointer; color:#e0e0e0;">
+                            <input type="checkbox" id="exHighlight" onchange="drawAllCanvases()"> Satır Vurgu (Arka Plan Kutusu)
+                        </label>
+                        <input type="color" id="exHighlightColor" value="#555555" oninput="drawAllCanvases()">
+                    </div>
+                </div>
+            </details>
+
+            <textarea id="extraText" oninput="drawAllCanvases()" style="font-family: 'Lora';" placeholder="(İsteğe bağlı) Ek açıklama, 3. dil veya alt başlık buraya..."></textarea>
+        </div>
+
+        <!-- 5. ALT BİLGİ VE İMZA -->
         <div class="section" style="border-bottom: none;">
             <div class="section-title">Müellif, Kaynak & İmza</div>
             <input type="text" id="author" placeholder="Alim veya Eser Sahibi" value="Zümer Suresi, 3" oninput="drawAllCanvases()">
@@ -576,7 +680,7 @@
             </div>
         </div>
 
-                                   <!-- ÇÖZÜNÜRLÜK SEÇİMLİ İNDİR VE PAYLAŞ BUTONLARI -->
+        <!-- ÇÖZÜNÜRLÜK SEÇİMLİ İNDİR VE PAYLAŞ BUTONLARI -->
         <div class="action-buttons">
             <!-- 1. Grup: İndir ve Çözünürlük (Alan Payı: flex 3 - Daha Geniş) -->
             <div style="display: flex; flex: 3; align-items: stretch; border-radius: 8px; overflow: hidden; background: #2a2a2a;">
@@ -641,7 +745,8 @@
     <script>
         const styles = {
             ar: { bold: true, italic: false, underline: false, strike: false, align: 'center' },
-            tr: { bold: false, italic: false, underline: false, strike: false, align: 'center' }
+            tr: { bold: false, italic: false, underline: false, strike: false, align: 'center' },
+            ex: { bold: false, italic: false, underline: false, strike: false, align: 'center' }
         };
 
         function toggleStyle(lang, prop) {
@@ -771,6 +876,30 @@
                 grd.addColorStop(0, 'rgba(200, 180, 140, 0.4)'); grd.addColorStop(1, 'rgba(120, 90, 50, 0.6)');
                 ctx.fillStyle = grd; ctx.fillRect(0, 0, w, h);
             }
+            else if (theme === 'lightPink') {
+                ctx.fillStyle = '#fce4ec'; ctx.fillRect(0, 0, w, h);
+                let grd = ctx.createRadialGradient(w/2, h/2, 0, w/2, h/2, w);
+                grd.addColorStop(0, 'rgba(255, 255, 255, 0.7)'); grd.addColorStop(1, 'rgba(244, 143, 177, 0.2)');
+                ctx.fillStyle = grd; ctx.fillRect(0, 0, w, h);
+            }
+            else if (theme === 'pink') {
+                ctx.fillStyle = '#8a0030'; ctx.fillRect(0, 0, w, h);
+                let grd = ctx.createRadialGradient(w/2, h/2, 0, w/2, h/2, w);
+                grd.addColorStop(0, 'rgba(216, 27, 96, 0.9)'); grd.addColorStop(1, 'transparent');
+                ctx.fillStyle = grd; ctx.fillRect(0, 0, w, h);
+            }
+            else if (theme === 'darkPink') {
+                ctx.fillStyle = '#3a001e'; ctx.fillRect(0, 0, w, h);
+                let grd = ctx.createRadialGradient(w/2, h/2, 0, w/2, h/2, w);
+                grd.addColorStop(0, 'rgba(136, 14, 79, 0.9)'); grd.addColorStop(1, 'transparent');
+                ctx.fillStyle = grd; ctx.fillRect(0, 0, w, h);
+            }
+            else if (theme === 'dustyRose') {
+                ctx.fillStyle = '#7a434d'; ctx.fillRect(0, 0, w, h);
+                let grd = ctx.createLinearGradient(0, 0, w, h);
+                grd.addColorStop(0, 'rgba(181, 101, 118, 0.6)'); grd.addColorStop(1, 'rgba(92, 36, 44, 0.8)');
+                ctx.fillStyle = grd; ctx.fillRect(0, 0, w, h);
+            }
         }
 
         function getWrappedLines(ctx, text, maxWidth) {
@@ -799,7 +928,7 @@
         }
 
         function setSoftShadow(ctx, theme) {
-            if (theme === 'solidLight' || theme === 'oldPaper' || theme === 'parchment' || theme === 'sandStorm') {
+            if (theme === 'solidLight' || theme === 'oldPaper' || theme === 'parchment' || theme === 'sandStorm' || theme === 'lightPink') {
                 ctx.shadowColor = 'rgba(0, 0, 0, 0.25)'; 
             } else { ctx.shadowColor = 'rgba(0, 0, 0, 0.85)'; }
             ctx.shadowBlur = 28; ctx.shadowOffsetX = 0; ctx.shadowOffsetY = 4; 
@@ -831,6 +960,7 @@
             
             const arSizeMultiplier = parseFloat(document.getElementById('arSizeMultiplier').value);
             const trSizeMultiplier = parseFloat(document.getElementById('trSizeMultiplier').value);
+            const exSizeMultiplier = parseFloat(document.getElementById('exSizeMultiplier').value);
 
             const arProps = {
                 fillType: document.getElementById('arFillType').value,
@@ -863,11 +993,28 @@
                 letterSpacing: parseInt(document.getElementById('trLetterSpacing').value)
             };
 
+            const exProps = {
+                fillType: document.getElementById('exFillType').value,
+                effectType: document.getElementById('exEffectType').value,
+                depth3D: parseInt(document.getElementById('ex3DDepth').value),
+                fillColor: document.getElementById('exColor').value,
+                strokeColor: document.getElementById('exStrokeColor').value,
+                strokeWidth: parseFloat(document.getElementById('exStrokeWidth').value),
+                shadowColorHex: document.getElementById('exShadowColor').value,
+                shadowOpacity: parseFloat(document.getElementById('exShadowOpacity').value),
+                shadowBlur: parseInt(document.getElementById('exShadowBlur').value),
+                shadowOffset: 4,
+                highlight: document.getElementById('exHighlight').checked,
+                highlightColor: document.getElementById('exHighlightColor').value,
+                letterSpacing: parseInt(document.getElementById('exLetterSpacing').value)
+            };
+
             const brandText = document.getElementById('brandText').value;
             const footerColor = document.getElementById('footerColor').value;
             
             const arText = document.getElementById('arabicText').value;
             const trText = document.getElementById('turkishText').value;
+            const exText = document.getElementById('extraText').value;
             const author = document.getElementById('author').value;
             const source = document.getElementById('source').value;
             
@@ -887,7 +1034,7 @@
 
             drawBackground(ctx, baseW, baseH, theme, exportMultiplier);
 
-            const isLightTheme = (theme === 'solidLight' || theme === 'oldPaper' || theme === 'parchment' || theme === 'sandStorm');
+            const isLightTheme = (theme === 'solidLight' || theme === 'oldPaper' || theme === 'parchment' || theme === 'sandStorm' || theme === 'lightPink');
             const frameColor = isLightTheme ? '#333333' : footerColor;
             
             ctx.strokeStyle = frameColor;
@@ -902,17 +1049,19 @@
             const maxContentHeight = baseH - 350;
             const maxWidth = baseW - 240;
             
-            let arFontSize = 65 * arSizeMultiplier, trFontSize = 45 * trSizeMultiplier;
-            let arLineHeight = 90 * arSizeMultiplier, trLineHeight = 65 * arSizeMultiplier;
+            let arFontSize = 65 * arSizeMultiplier, trFontSize = 45 * trSizeMultiplier, exFontSize = 45 * exSizeMultiplier;
+            let arLineHeight = 90 * arSizeMultiplier, trLineHeight = 65 * trSizeMultiplier, exLineHeight = 65 * exSizeMultiplier;
             
             let arLayout = { lines: [], maxLineWidth: 0 };
             let trLayout = { lines: [], maxLineWidth: 0 };
-            let arTotalHeight = 0, trTotalHeight = 0, gaps = 0, totalHeight = 0;
+            let exLayout = { lines: [], maxLineWidth: 0 };
+            let arTotalHeight = 0, trTotalHeight = 0, exTotalHeight = 0, gaps = 0, totalHeight = 0;
 
             let scale = 1.0;
             while (scale > 0.15) {
                 let currentArFont = `${styles.ar.italic ? 'italic ' : ''}${styles.ar.bold ? 'bold ' : ''}${arFontSize * scale}px '${document.getElementById('arFont').value}'`;
                 let currentTrFont = `${styles.tr.italic ? 'italic ' : ''}${styles.tr.bold ? 'bold ' : ''}${trFontSize * scale}px '${document.getElementById('trFont').value}'`;
+                let currentExFont = `${styles.ex.italic ? 'italic ' : ''}${styles.ex.bold ? 'bold ' : ''}${exFontSize * scale}px '${document.getElementById('exFont').value}'`;
                 
                 arTotalHeight = 0;
                 if (arText.trim() !== '') {
@@ -929,17 +1078,30 @@
                     trLayout = getWrappedLines(ctx, trText, maxWidth);
                     trLayout.lines.forEach(l => { trTotalHeight += l.isSpacer ? (trLineHeight * scale * 0.5) : (trLineHeight * scale); });
                 }
+
+                exTotalHeight = 0;
+                if (exText.trim() !== '') {
+                    if ('letterSpacing' in ctx) ctx.letterSpacing = (exProps.letterSpacing * scale) + 'px'; 
+                    ctx.font = currentExFont;
+                    exLayout = getWrappedLines(ctx, exText, maxWidth);
+                    exLayout.lines.forEach(l => { exTotalHeight += l.isSpacer ? (exLineHeight * scale * 0.5) : (exLineHeight * scale); });
+                }
                 
-                gaps = (arText.trim() !== '' && trText.trim() !== '') ? (100 * scale) : 0; 
-                totalHeight = arTotalHeight + trTotalHeight + gaps;
+                let gapsCount = 0;
+                if (arText.trim() !== '' && (trText.trim() !== '' || exText.trim() !== '')) gapsCount++;
+                if (trText.trim() !== '' && exText.trim() !== '') gapsCount++;
                 
-                if (totalHeight <= maxContentHeight && arLayout.maxLineWidth <= maxWidth && trLayout.maxLineWidth <= maxWidth) break; 
+                gaps = gapsCount * (100 * scale); 
+                totalHeight = arTotalHeight + trTotalHeight + exTotalHeight + gaps;
+                
+                if (totalHeight <= maxContentHeight && arLayout.maxLineWidth <= maxWidth && trLayout.maxLineWidth <= maxWidth && exLayout.maxLineWidth <= maxWidth) break; 
                 scale -= 0.02;
             }
 
             const contentAreaTop = 130;
             let currentY = contentAreaTop + (maxContentHeight - totalHeight) / 2 + yOffset; 
 
+            // 1. Arapça Çizim
             if (arText.trim() !== '') {
                 if ('letterSpacing' in ctx) ctx.letterSpacing = '0px';
                 ctx.font = `${styles.ar.italic ? 'italic ' : ''}${styles.ar.bold ? 'bold ' : ''}${arFontSize * scale}px '${document.getElementById('arFont').value}'`;
@@ -951,18 +1113,20 @@
                         currentY += arLineHeight * scale;
                     }
                 });
-                
-                if (trText.trim() !== '') {
-                    currentY += 30 * scale; 
-                    ctx.shadowColor = 'transparent';
-                    ctx.beginPath();
-                    ctx.moveTo(baseW/2 - (80 * scale) + xOffset, currentY);
-                    ctx.lineTo(baseW/2 + (80 * scale) + xOffset, currentY);
-                    ctx.strokeStyle = footerColor; ctx.globalAlpha = 0.4; ctx.lineWidth = 2; ctx.stroke(); ctx.globalAlpha = 1.0;
-                    currentY += 60 * scale; 
-                }
             }
 
+            // Arapça Sonrası Ayraç Çizgisi
+            if (arText.trim() !== '' && (trText.trim() !== '' || exText.trim() !== '')) {
+                currentY += 30 * scale; 
+                ctx.shadowColor = 'transparent';
+                ctx.beginPath();
+                ctx.moveTo(baseW/2 - (80 * scale) + xOffset, currentY);
+                ctx.lineTo(baseW/2 + (80 * scale) + xOffset, currentY);
+                ctx.strokeStyle = footerColor; ctx.globalAlpha = 0.4; ctx.lineWidth = 2; ctx.stroke(); ctx.globalAlpha = 1.0;
+                currentY += 60 * scale; 
+            }
+
+            // 2. Türkçe Çizim
             if (trText.trim() !== '') {
                 if ('letterSpacing' in ctx) ctx.letterSpacing = (trProps.letterSpacing * scale) + 'px';
                 ctx.font = `${styles.tr.italic ? 'italic ' : ''}${styles.tr.bold ? 'bold ' : ''}${trFontSize * scale}px '${document.getElementById('trFont').value}'`;
@@ -975,8 +1139,35 @@
                     }
                 });
             }
+
+            // Türkçe Sonrası Ayraç Çizgisi
+            if (trText.trim() !== '' && exText.trim() !== '') {
+                currentY += 30 * scale; 
+                ctx.shadowColor = 'transparent';
+                ctx.beginPath();
+                ctx.moveTo(baseW/2 - (80 * scale) + xOffset, currentY);
+                ctx.lineTo(baseW/2 + (80 * scale) + xOffset, currentY);
+                ctx.strokeStyle = footerColor; ctx.globalAlpha = 0.4; ctx.lineWidth = 2; ctx.stroke(); ctx.globalAlpha = 1.0;
+                currentY += 60 * scale; 
+            }
+
+            // 3. Serbest Metin / Alt Başlık Çizimi
+            if (exText.trim() !== '') {
+                if ('letterSpacing' in ctx) ctx.letterSpacing = (exProps.letterSpacing * scale) + 'px';
+                ctx.font = `${styles.ex.italic ? 'italic ' : ''}${styles.ex.bold ? 'bold ' : ''}${exFontSize * scale}px '${document.getElementById('exFont').value}'`;
+                
+                exLayout.lines.forEach(l => {
+                    if (l.isSpacer) { currentY += (exLineHeight * scale * 0.5); } 
+                    else {
+                        drawAdvancedTextLine(ctx, l.text, baseW, currentY, exLineHeight * scale, styles.ex, xOffset, exProps, scale, document.getElementById('exColor').value);
+                        currentY += exLineHeight * scale;
+                    }
+                });
+            }
+
             if ('letterSpacing' in ctx) ctx.letterSpacing = '0px'; 
 
+            // Alt Bilgi ve İmza
             let bottomY = baseH - 200 + yOffset; 
             
             if (author.trim() !== '') {
