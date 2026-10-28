@@ -935,6 +935,34 @@
             loadCustomBackground(e.target.value, true);
         });
 
+// Cihazdan Yerel Görsel Yükleme Dinleyicisi (PREMIUM)
+document.getElementById('localBgUpload').addEventListener('change', function(e) {
+    const file = e.target.files[0];
+    if (!file) return; // Kullanıcı iptale basarsa işlem yapma
+
+    const reader = new FileReader();
+    reader.onload = function(event) {
+        const img = new Image();
+        img.onload = function() {
+            customBgImage = img; // Görseli tuval motoruna aktar
+            
+            // Çakışmayı önlemek için diğer arka plan seçimlerini sıfırla
+            document.getElementById('bgImageSelect').value = ''; 
+            document.getElementById('bgTheme').value = 'solidDark';
+            
+            scheduleSaveAndDraw(); // Tuvali hemen güncelle
+            showToast("📸 Özel görseliniz başarıyla yüklendi!"); // Kullanıcıya zarif bir bildirim ver
+        };
+        img.src = event.target.result;
+    };
+    // Dosyayı sunucuya göndermeden, doğrudan cihaz rami üzerinden yüksek hızda oku
+    reader.readAsDataURL(file);
+    
+    // Aynı dosyayı üst üste seçebilmek için input'u sıfırla
+    this.value = ''; 
+});
+                                 
+        
         function updateStyleButtonsUI() {
             ['ar', 'tr', 'ex'].forEach(lang => {
                 document.getElementById(`${lang}-bold`).classList.toggle('active', styles[lang].bold);
