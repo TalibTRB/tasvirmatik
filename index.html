@@ -373,6 +373,53 @@
                 <option value="dustyRose">16. Gül Kurusu (Vintage)</option>
             </select>
 
+<!-- Arka Plan Görsel Seçim Alanı -->
+<div class="setting-group" style="margin-bottom: 15px;">
+    <label for="bgImageSelect" style="display: block; font-size: 12px; margin-bottom: 5px; color: #c9d1d9;">Arka Plan Görseli (Geniş Seçenekler)</label>
+    <select id="bgImageSelect" style="width: 100%; padding: 8px; background: #161b22; color: #c9d1d9; border: 1px solid #30363d; border-radius: 6px; font-size: 13px;">
+        <option value="">-- Düz Renk / Varsayılan --</option>
+        
+        <!-- Doğa ve Manzara -->
+        <optgroup label="Doğa & Manzara">
+            <option value="https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=1920&q=80">1. Alp Dağları ve Vadi</option>
+            <option value="https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?w=1920&q=80">2. Sisli Günbatımı</option>
+            <option value="https://images.unsplash.com/photo-1447752875215-b2761acb3c5d?w=1920&q=80">3. Çam Ağaçları Arasından Yol</option>
+            <option value="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=1920&q=80">4. Karlı Zirveler</option>
+            <option value="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=1920&q=80">5. Tropikal Sahil ve Turkuaz</option>
+            <option value="https://images.unsplash.com/photo-1519681393784-d120267933ba?w=1920&q=80">6. Yıldızlı Gece ve Dağlar</option>
+            <option value="https://images.unsplash.com/photo-1454496522488-7a8e488e8606?w=1920&q=80">7. Dağ Sırtları ve Bulutlar</option>
+            <option value="https://images.unsplash.com/photo-1509316975850-ff9c5deb0cd9?w=1920&q=80">8. Çam Ormanı Sonbahar</option>
+            <option value="https://images.unsplash.com/photo-1523712999610-f77fbcfc3843?w=1920&q=80">9. Güneşli Orman</option>
+            <option value="https://images.unsplash.com/photo-1465146344425-f00d5f5c8f07?w=1920&q=80">10. Çiçekler</option>
+        </optgroup>
+
+        <!-- Gökyüzü ve Atmosfer -->
+        <optgroup label="Gökyüzü & Atmosfer">
+            <option value="https://images.unsplash.com/photo-1534447677768-be436bb09401?w=1920&q=80">11. Gemi ve Yıldızlar</option>
+            <option value="https://images.unsplash.com/photo-1502134249126-9f3755a50d78?w=1920&q=80">12. Kuzey Işıkları</option>
+            <option value="https://images.unsplash.com/photo-1513002749550-c59d786b8e6c?w=1920&q=80">13. Gökyüzü ve Bulut Katmanları</option>
+            <option value="https://images.unsplash.com/photo-1505533321630-975218a5f66f?w=1920&q=80">14. Gri Bulutlar</option>
+            <option value="https://images.unsplash.com/photo-1517483000871-1dbf64a6e1c6?w=1920&q=80">15. Fırtına Bulutları</option>
+            <option value="https://images.unsplash.com/photo-1444703686981-a3abbc4d4fe3?w=1920&q=80">16. Gökyüzüne Bakış</option>
+            <option value="https://images.unsplash.com/photo-1508739773434-c26b3d09e071?w=1920&q=80">17. Güneş Doğarken</option>
+            <option value="https://images.unsplash.com/photo-1504608524841-42fe6f032b4b?w=1920&q=80">18. Güneş Işınları ve Bulut</option>
+        </optgroup>
+
+        <!-- Mimari ve Soyut Doku -->
+        <optgroup label="Mimari & Soyut Dokular">
+            <option value="https://images.unsplash.com/photo-1579546929518-9e396f3cc809?w=1920&q=80">19. Soyut Renk Geçişi (Gradient)</option>
+            <option value="https://images.unsplash.com/photo-1550684848-fac1c5b4e853?w=1920&q=80">20. Renkli Taşlar</option>
+            <option value="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=1920&q=80">21. 3D Dalga Doku</option>
+            <option value="https://images.unsplash.com/photo-1541701494587-cb58502866ab?w=1920&q=80">22. Renkli Boya Dokusu</option>
+            <option value="https://images.unsplash.com/photo-1557683316-973673baf926?w=1920&q=80">23. Soyut Mor Geçiş</option>
+            <option value="https://images.unsplash.com/photo-1513694203232-719a280e022f?w=1920&q=80">24. Sade İç Mekan</option>
+            <option value="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1920&q=80">25. Gökdelen Mimari Geometri</option>
+            <option value="https://images.unsplash.com/photo-1558470598-a5dda9640f68?w=1920&q=80">26. Renk Patlaması</option>
+            <option value="https://images.unsplash.com/photo-1518837695005-2083093ee35b?w=1920&q=80">27. Su Damlası Yüzey Dokusu</option>
+        </optgroup>
+    </select>
+</div>
+
             <select id="overlayEffect" onchange="scheduleSaveAndDraw()">
                 <option value="none">✨ Efekt Katmanı Yok (Sade)</option>
                 <option value="goldStarsFew">⭐ Altın Yıldızlar (Seyrek & Zarif)</option>
@@ -767,6 +814,22 @@
         </div>
         
         <div class="sidebar-footer">
+
+<!-- Sol Panel Alt Kısım - Android APK İndir Butonu -->
+<div style="margin-top: 15px; margin-bottom: 15px; width: 100%; box-sizing: border-box;">
+    <a href="https://github.com/TalibTRB/tasvirmatik/releases/download/v1.0.0/tasvirmatik.apk" 
+       style="display: flex; align-items: center; justify-content: center; gap: 8px; background-color: #21262d; color: #c9d1d9; border: 1px solid #30363d; padding: 12px 15px; border-radius: 6px; text-decoration: none; font-family: sans-serif; font-size: 13px; font-weight: 500; width: 100%; box-sizing: border-box; transition: all 0.2s;"
+       target="_blank" 
+       rel="noopener noreferrer"
+       onmouseover="this.style.backgroundColor='#30363d'; this.style.color='#ffffff';"
+       onmouseout="this.style.backgroundColor='#21262d'; this.style.color='#c9d1d9';">
+        <svg height="16" viewBox="0 0 24 24" width="16" xmlns="http://www.w3.org/2000/svg" fill="currentColor">
+            <path d="M17.523 15.341c-.551 0-.998-.447-.998-.998s.447-.998.998-.998.998.447.998.998-.447.998-.998.998zm-11.046 0c-.551 0-.998-.447-.998-.998s.447-.998.998-.998.998.447.998.998-.447.998-.998.998zm11.968-5.83l1.895-3.282c.162-.281.066-.64-.215-.802-.281-.162-.64-.066-.802.215l-1.928 3.339c-1.423-.65-3.023-1.018-4.702-1.018s-3.279.368-4.702 1.018l-1.928-3.339c-.162-.281-.521-.377-.802-.215-.281.162-.377.521-.215.802l1.895 3.282C3.593 11.23 2 13.913 2 17h20c0-3.087-1.593-5.77-3.523-7.489z"/>
+        </svg>
+        <span>Android Uygulamasını İndir (APK)</span>
+    </a>
+</div>
+
             Tasvirmatik 1.0 by @TalibTRB <br>
             X: <a href="https://x.com/TalibTRB" target="_blank"><i class="fab fa-x-twitter"></i> x.com/TalibTRB</a> <br>
             Tamamen ücretsiz and reklamsızdır.
@@ -797,6 +860,9 @@
         };
 
         let hitBoxes = { ar: null, tr: null, ex: null, author: null, brand: null };
+
+        // Arka plan görseli önbellek nesnesi
+        let customBgImage = null;
 
         const STORAGE_KEY = 'tasvirmatik_autosave_v2';
         let saveTimeout;
@@ -844,9 +910,36 @@
                         }
                     }
                 }
+                
+                // Kayıttan yükleme sonrası seçili arka plan görseli varsa onu da yükle
+                const bgSelectVal = document.getElementById('bgImageSelect').value;
+                if (bgSelectVal) {
+                    loadCustomBackground(bgSelectVal, false);
+                }
+
                 updateStyleButtonsUI();
             } catch(e) { console.error("Kayıt yüklenemedi", e); }
         }
+
+        function loadCustomBackground(url, redraw = true) {
+            if (!url) {
+                customBgImage = null;
+                if (redraw) scheduleSaveAndDraw();
+                return;
+            }
+            const img = new Image();
+            img.crossOrigin = "anonymous";
+            img.onload = function() {
+                customBgImage = img;
+                if (redraw) scheduleSaveAndDraw();
+            };
+            img.src = url;
+        }
+
+        // Görsel seçim dinleyicisi
+        document.getElementById('bgImageSelect').addEventListener('change', function(e) {
+            loadCustomBackground(e.target.value, true);
+        });
 
         function updateStyleButtonsUI() {
             ['ar', 'tr', 'ex'].forEach(lang => {
@@ -947,6 +1040,13 @@
 
         function drawBackground(ctx, w, h, theme, exportMultiplier = 1) {
             ctx.shadowColor = 'transparent'; 
+
+            // Eğer kullanıcı 50 görselden birini seçtiyse doğrudan tuvale kapla
+            if (customBgImage) {
+                ctx.drawImage(customBgImage, 0, 0, w, h);
+                return;
+            }
+
             if (theme === 'solidDark') { ctx.fillStyle = '#0a0a0c'; ctx.fillRect(0, 0, w, h); } 
             else if (theme === 'solidLight') { ctx.fillStyle = '#f5f5f0'; ctx.fillRect(0, 0, w, h); } 
             else if (theme === 'darkSmoke') {
@@ -1176,7 +1276,7 @@
         }
 
         function setSoftShadow(ctx, theme) {
-            if (theme === 'solidLight' || theme === 'oldPaper' || theme === 'parchment' || theme === 'sandStorm' || theme === 'lightPink') {
+            if (!customBgImage && (theme === 'solidLight' || theme === 'oldPaper' || theme === 'parchment' || theme === 'sandStorm' || theme === 'lightPink')) {
                 ctx.shadowColor = 'rgba(0, 0, 0, 0.25)'; 
             } else { ctx.shadowColor = 'rgba(0, 0, 0, 0.85)'; }
             ctx.shadowBlur = 28; ctx.shadowOffsetX = 0; ctx.shadowOffsetY = 4; 
@@ -1267,7 +1367,7 @@
             drawBackground(ctx, baseW, baseH, theme, exportMultiplier);
             drawOverlayEffects(ctx, baseW, baseH, overlayEffect);
 
-            const isLightTheme = (theme === 'solidLight' || theme === 'oldPaper' || theme === 'parchment' || theme === 'sandStorm' || theme === 'lightPink');
+            const isLightTheme = !customBgImage && (theme === 'solidLight' || theme === 'oldPaper' || theme === 'parchment' || theme === 'sandStorm' || theme === 'lightPink');
             const frameColor = isLightTheme ? '#333333' : footerColor;
             
             ctx.strokeStyle = frameColor;
@@ -1283,7 +1383,7 @@
             const maxWidth = baseW - 240;
             
             let arFontSize = 65 * arSizeMultiplier, trFontSize = 45 * trSizeMultiplier, exFontSize = 45 * exSizeMultiplier;
-            let arLineHeight = 90 * arSizeMultiplier, trLineHeight = 65 * trSizeMultiplier, exLineHeight = 65 * exSizeMultiplier;
+            let arLineHeight = 90 * arSizeMultiplier, trLineHeight = 65 * trSizeMultiplier, exLineHeight = 65 * trSizeMultiplier;
             
             let arLayout = { lines: [], maxLineWidth: 0 };
             let trLayout = { lines: [], maxLineWidth: 0 };
@@ -1789,6 +1889,6 @@
         });
       }
     </script>
-    
+
 </body>
 </html>
