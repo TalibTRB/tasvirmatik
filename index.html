@@ -420,7 +420,15 @@
         </optgroup>
     </select>
 </div>
-
+            
+<!-- Cihazdan Özel Arka Plan Yükleme Butonu (PREMIUM) -->
+<div class="custom-upload-wrapper" style="margin-bottom: 15px;">
+    <input type="file" id="localBgUpload" accept="image/png, image/jpeg, image/webp, image/jpg" style="display: none;">
+    <label for="localBgUpload" class="btn-tool-action" style="margin-top: 0; background: #1a1a1d; border: 1px dashed #c5a059; color: #e0e0e0; padding: 12px; transition: all 0.3s; justify-content: center; box-shadow: inset 0 0 15px rgba(0,0,0,0.5);">
+        <i class="fas fa-cloud-upload-alt" style="color: #c5a059; font-size: 16px;"></i> Cihazdan Kendi Görselini Yükle
+    </label>
+</div>
+            
             <select id="overlayEffect" onchange="scheduleSaveAndDraw()">
                 <option value="none">✨ Efekt Katmanı Yok (Sade)</option>
                 <option value="goldStarsFew">⭐ Altın Yıldızlar (Seyrek & Zarif)</option>
