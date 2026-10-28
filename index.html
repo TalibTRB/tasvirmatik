@@ -1258,6 +1258,19 @@
         }
     }
 </script>
-   
+
+        <!-- SERVICE WORKER KAYIT (Çevrimdışı Çalışma Motoru) -->
+    <script>
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+          navigator.serviceWorker.register('./sw.js').then((registration) => {
+            console.log('Elhamdulillah! Offline Motoru Aktif:', registration.scope);
+          }).catch((error) => {
+            console.log('Offline Motoru kurulamadı:', error);
+          });
+        });
+      }
+    </script>
+    
 </body>
 </html>
