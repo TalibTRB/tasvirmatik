@@ -1404,8 +1404,50 @@ document.getElementById('localBgUpload').addEventListener('change', function(e) 
             ctx.imageSmoothingQuality = 'high';
             ctx.textRendering = "optimizeLegibility";
 
+                        // YENİ: Arka plan filtre değerlerini HTML'den al
+            const bgBlurVal = document.getElementById('bgBlur') ? parseInt(document.getElementById('bgBlur').value) : 0;
+            const bgDarkenVal = document.getElementById('bgDarken') ? parseFloat(document.getElementById('bgDarken').value) : 0;
+            const bgBrightenVal = document.getElementById('bgBrighten') ? parseFloat(document.getElementById('bgBrighten').value) : 0;
+            const bgVignetteVal = document.getElementById('bgVignette') ? parseFloat(document.getElementById('bgVignette').value) : 0;
+
+            // 1. Bulanıklık (Blur) Filtresini Uygula
+            if (bgBlurVal > 0) {
+                // 4K/8K dışa aktarımlarda blur değerini orantılı olarak büyütüyoruz
+                ctx.filter = `blur(${bgBlurVal * exportMultiplier}px)`;
+            }
+
+            // Ana arkaplanı çiz
             drawBackground(ctx, baseW, baseH, theme, exportMultiplier);
+            
+            // Blur filtresini KAPAT ki yazılar bulanıklaşmasın
+            ctx.filter = 'none';
+
+            // 2. Karartma Katmanı
+            if (bgDarkenVal > 0) {
+                ctx.fillStyle = `rgba(0, 0, 0, ${bgDarkenVal})`;
+                ctx.fillRect(0, 0, baseW, baseH);
+            }
+
+            // 3. Ultra Parlak Yumuşatma Katmanı
+            if (bgBrightenVal > 0) {
+                ctx.fillStyle = `rgba(255, 255, 255, ${bgBrightenVal})`;
+                ctx.globalCompositeOperation = 'overlay'; // Renkleri canlandırarak parlatır
+                ctx.fillRect(0, 0, baseW, baseH);
+                ctx.globalCompositeOperation = 'source-over'; // Çizim modunu normale döndür
+            }
+
+            // 4. Vinyet (Kenar Gölgelendirme) Katmanı
+            if (bgVignetteVal > 0) {
+                const vignetteGrad = ctx.createRadialGradient(baseW/2, baseH/2, baseH/2.5, baseW/2, baseH/2, baseW*0.65);
+                vignetteGrad.addColorStop(0, 'rgba(0,0,0,0)');
+                vignetteGrad.addColorStop(1, `rgba(0,0,0,${bgVignetteVal})`);
+                ctx.fillStyle = vignetteGrad;
+                ctx.fillRect(0, 0, baseW, baseH);
+            }
+
+            // Üst efektleri (yıldız, toz vb.) çizmeye devam et
             drawOverlayEffects(ctx, baseW, baseH, overlayEffect);
+
 
             const isLightTheme = !customBgImage && (theme === 'solidLight' || theme === 'oldPaper' || theme === 'parchment' || theme === 'sandStorm' || theme === 'lightPink');
             const frameColor = isLightTheme ? '#333333' : footerColor;
