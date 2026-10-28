@@ -63,7 +63,6 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Tasvirmatik">
     
-    <!-- URL parametresi kaldırılarak Service Worker cache'i ile uyumlu hale getirildi -->
     <link rel="manifest" href="manifest.json">
     <link rel="icon" type="image/png" href="icon.png">
     <link rel="apple-touch-icon" href="icon.png">
@@ -111,6 +110,7 @@
         }
         .sidebar::-webkit-scrollbar { width: 6px; }
         .sidebar::-webkit-scrollbar-thumb { background: #444; border-radius: 10px; }
+        
         .section {
             padding: 15px 20px;
             border-bottom: 1px solid var(--border);
@@ -141,7 +141,7 @@
             position: relative;
             padding: 20px;
             box-sizing: border-box;
-            overflow-y: auto;
+            overflow: hidden;
         }
 
         .workspace-title {
@@ -177,52 +177,86 @@
             align-items: center;
             gap: 5px;
         }
-        .sidebar-footer a:hover {
-            color: #ffeba8;
-            text-shadow: 0 0 10px rgba(197, 160, 89, 0.6);
-        }
+        .sidebar-footer a:hover { color: #ffeba8; text-shadow: 0 0 10px rgba(197, 160, 89, 0.6); }
 
         .toast {
-            position: fixed;
-            bottom: 40px;
-            left: 50%;
-            transform: translateX(-50%) translateY(30px);
-            background: linear-gradient(135deg, #c5a059, #8a6d3b);
-            color: #0a0a0c;
-            padding: 12px 30px;
-            border-radius: 50px;
-            font-size: 18px;
-            font-weight: bold;
+            position: fixed; bottom: 40px; left: 50%; transform: translateX(-50%) translateY(30px);
+            background: linear-gradient(135deg, #c5a059, #8a6d3b); color: #0a0a0c;
+            padding: 12px 30px; border-radius: 50px; font-size: 18px; font-weight: bold;
             box-shadow: 0 15px 40px rgba(0,0,0,0.6), inset 0 2px 2px rgba(255,255,255,0.4);
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            z-index: 9999;
-            font-family: 'Cinzel', serif;
-            letter-spacing: 1px;
+            opacity: 0; visibility: hidden; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            z-index: 9999; font-family: 'Cinzel', serif; letter-spacing: 1px;
         }
         .toast.show { opacity: 1; visibility: visible; transform: translateX(-50%) translateY(0); }
 
+        /* ÖZEL POP-UP MODAL (PREMIUM) */
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.75); backdrop-filter: blur(5px);
+            display: flex; justify-content: center; align-items: center;
+            z-index: 10000; opacity: 0; visibility: hidden; transition: all 0.3s ease;
+        }
+        .modal-overlay.active { opacity: 1; visibility: visible; }
+        .modal-content {
+            background: #161618; border: 1px solid #333; border-radius: 12px; padding: 25px;
+            width: 90%; max-width: 380px; text-align: center;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.9);
+            transform: translateY(20px) scale(0.95); transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .modal-overlay.active .modal-content { transform: translateY(0) scale(1); }
+        .modal-title { font-family: 'Cinzel', serif; font-size: 20px; color: var(--accent); margin: 0 0 10px 0; }
+        .modal-body { font-size: 14px; color: #aaa; line-height: 1.5; margin-bottom: 25px; }
+        .modal-buttons { display: flex; gap: 15px; }
+        .btn-modal { flex: 1; padding: 12px; border-radius: 6px; font-weight: bold; border: none; cursor: pointer; transition: 0.2s; font-size: 14px; }
+        .btn-modal-cancel { background: #2a2a2a; color: #aaa; }
+        .btn-modal-cancel:hover { background: #333; color: #fff; }
+        .btn-modal-confirm { background: var(--accent); color: #000; }
+        .btn-modal-confirm:hover { background: #dfb668; box-shadow: 0 0 10px rgba(197, 160, 89, 0.4); }
+
+        .btn-tool-action {
+            background: #1e1e22; color: #aaa; border: 1px solid #333; padding: 10px;
+            border-radius: 6px; cursor: pointer; font-size: 13px; display: flex; align-items: center; justify-content: center; gap: 8px;
+            transition: 0.2s; font-weight: bold; width: 100%; margin-top: 10px;
+        }
+        .btn-tool-action:hover { background: #333; color: #fff; border-color: #555; }
+        .btn-danger-action { color: #ff6b6b; border-color: #4a2020; background: #241515; margin-top: 0; }
+        .btn-danger-action:hover { background: #3a1c1c; color: #ff8787; border-color: #ff6b6b; }
+
         canvas {
             max-width: 95%; max-height: 75%; box-shadow: 0 20px 50px rgba(0,0,0,0.8); border-radius: 4px;
+            cursor: grab;
         }
+        canvas:active { cursor: grabbing; }
 
         .mobile-sticky-preview {
-            display: none;
-            background: #000;
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-            box-shadow: 0 8px 25px rgba(0,0,0,0.9);
-            line-height: 0;
+            display: none; background: #000; position: sticky; top: 0; z-index: 1000;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.9); line-height: 0;
         }
         .mobile-sticky-preview canvas {
-            width: 100% !important;
-            height: auto !important;
-            max-height: none !important;
-            border-radius: 0 !important;
-            box-shadow: none !important;
-            display: block;
+            width: 100% !important; height: auto !important; max-height: none !important;
+            border-radius: 0 !important; box-shadow: none !important; display: block;
+        }
+        
+        /* PC İÇİN ALT MERKEZ YÜZEN İPUCU ROZETİ (Yalnızca masaüstünde görünür) */
+        .drag-hint-pc {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 13px;
+            color: #aaa;
+            background: rgba(22, 22, 24, 0.7);
+            backdrop-filter: blur(8px);
+            padding: 10px 25px;
+            border-radius: 30px;
+            pointer-events: none;
+            border: 1px solid #333;
+            z-index: 10;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.8);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            letter-spacing: 0.5px;
         }
 
         textarea, input[type="text"], select {
@@ -231,29 +265,17 @@
         textarea { resize: vertical; min-height: 70px; }
         .arabic-input { font-size: 22px; direction: rtl; font-family: 'Amiri', sans-serif; }
         
-        .toolbar {
-            display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 10px; background: #121214; padding: 5px; border-radius: 6px; border: 1px solid #333;
-        }
-        .tool-btn {
-            background: transparent; color: #aaa; border: none; padding: 6px 10px; cursor: pointer; border-radius: 4px; transition: 0.2s; font-size: 14px; user-select: none; flex: 1; text-align: center;
-        }
+        .toolbar { display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 10px; background: #121214; padding: 5px; border-radius: 6px; border: 1px solid #333; }
+        .tool-btn { background: transparent; color: #aaa; border: none; padding: 6px 10px; cursor: pointer; border-radius: 4px; transition: 0.2s; font-size: 14px; user-select: none; flex: 1; text-align: center; }
         .tool-btn:hover { background: #333; color: #fff; }
         .tool-btn.active { background: var(--accent); color: #000; }
         
-        .color-picker-wrap {
-            display: flex; align-items: center; gap: 10px; font-size: 12px; color: #888;
-        }
-        input[type="color"] {
-            width: 32px; height: 32px; padding: 0; border: none; border-radius: 4px; cursor: pointer; background: transparent;
-        }
+        .color-picker-wrap { display: flex; align-items: center; gap: 10px; font-size: 12px; color: #888; }
+        input[type="color"] { width: 32px; height: 32px; padding: 0; border: none; border-radius: 4px; cursor: pointer; background: transparent; }
         input[type="checkbox"] { accent-color: var(--accent); width: 16px; height: 16px; cursor: pointer; }
 
-        .effect-panel {
-            background: #121214; border: 1px solid #333; border-radius: 6px; padding: 10px; margin-bottom: 10px;
-        }
-        .effect-panel summary {
-            font-size: 12px; color: #e0e0e0; cursor: pointer; font-weight: bold; outline: none; display:flex; align-items: center; gap: 8px; user-select: none;
-        }
+        .effect-panel { background: #121214; border: 1px solid #333; border-radius: 6px; padding: 10px; margin-bottom: 10px; }
+        .effect-panel summary { font-size: 12px; color: #e0e0e0; cursor: pointer; font-weight: bold; outline: none; display:flex; align-items: center; gap: 8px; user-select: none; }
         .effect-panel summary:hover { color: var(--accent); }
         .effect-content { margin-top: 15px; display: flex; flex-direction: column; gap: 10px; }
         .effect-row { display: flex; justify-content: space-between; align-items: center; font-size: 11px; color: #888; }
@@ -261,23 +283,13 @@
         .multi-col > div { flex: 1; }
 
         .action-buttons { display: flex; gap: 15px; margin: 20px; }
-        .btn-primary {
-            flex: 1; background: var(--accent); color: #000; border: none; padding: 15px 10px; font-size: 15px; font-weight: bold; border-radius: 8px; cursor: pointer; transition: 0.3s; text-transform: uppercase; letter-spacing: 1px; display: flex; justify-content: center; align-items: center; gap: 8px;
-        }
+        .btn-primary { flex: 1; background: var(--accent); color: #000; border: none; padding: 15px 10px; font-size: 15px; font-weight: bold; border-radius: 8px; cursor: pointer; transition: 0.3s; text-transform: uppercase; letter-spacing: 1px; display: flex; justify-content: center; align-items: center; gap: 8px; }
         .btn-primary:hover { background: #dfb668; box-shadow: 0 0 15px rgba(197, 160, 89, 0.4); transform: translateY(-2px); }
         .btn-share { background: #2a2a2a; color: #fff; }
         .btn-share:hover { background: #444; box-shadow: 0 0 15px rgba(255, 255, 255, 0.1); }
 
         .slider-label { font-size: 11px; color: #aaa; display: flex; justify-content: space-between; margin-bottom: 5px; }
-        
-        input[type="range"] { 
-            width: 100%; 
-            margin-bottom: 5px; 
-            accent-color: var(--accent); 
-            touch-action: pan-y; 
-            cursor: pointer;
-            padding: 8px 0; 
-        }
+        input[type="range"] { width: 100%; margin-bottom: 5px; accent-color: var(--accent); touch-action: pan-y; cursor: pointer; padding: 8px 0; }
 
         .app-install-card { background: #121214; border: 1px solid #333; border-radius: 8px; padding: 15px; margin: 0 20px 20px 20px; }
         .app-install-card h4 { margin: 0 0 10px 0; color: #d4d4d4; font-size: 13px; display: flex; align-items: center; gap: 8px; }
@@ -285,27 +297,20 @@
         .app-install-card p:last-child { margin: 0; }
         .app-install-card strong { color: var(--accent); }
 
-        /* FHD / 4K / 8K Seçim Kutusu Kesin Çözüm */
         #downloadRes {
-            appearance: none;
-            -webkit-appearance: none;
-            -moz-appearance: none;
-            background-color: #2a2a2a !important;
-            color: #fff !important;
-            padding: 0 20px 0 8px !important;
-            text-align: center;
-            text-align-last: center;
+            appearance: none; -webkit-appearance: none; -moz-appearance: none; background-color: #2a2a2a !important; color: #fff !important;
+            padding: 0 20px 0 8px !important; text-align: center; text-align-last: center;
             background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="%23c5a059" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>');
-            background-repeat: no-repeat;
-            background-position: right 6px center;
+            background-repeat: no-repeat; background-position: right 6px center;
         }
 
-        
         @media screen and (max-width: 860px) {
             body { flex-direction: column; height: auto; overflow-y: auto; padding: 0; gap: 0; }
             .sidebar { width: 100%; height: 100vh; border-radius: 0; border: none; }
             .workspace { display: none; } 
             .mobile-sticky-preview { display: block; }
+            /* Mobilde PC ipucu rozeti kesinlikle gizlenir */
+            .drag-hint-pc { display: none !important; }
         }
     </style>
 </head>
@@ -313,10 +318,30 @@
 
     <div id="toast" class="toast">Elhamdulillah...</div>
 
+    <!-- ÖZEL 3D MODAL POP-UP -->
+    <div id="customModal" class="modal-overlay">
+        <div class="modal-content">
+            <h3 id="modalTitle" class="modal-title">Başlık</h3>
+            <p id="modalText" class="modal-body">Mesajınız buraya gelecek.</p>
+            <div class="modal-buttons">
+                <button class="btn-modal btn-modal-cancel" onclick="closeModal()">İPTAL</button>
+                <button class="btn-modal btn-modal-confirm" onclick="confirmModal()">ONAYLA</button>
+            </div>
+        </div>
+    </div>
+
     <!-- 4K / 8K İndirmeler için Gizli Arka Plan Tuvali -->
     <canvas id="exportCanvas" style="display:none;"></canvas>
 
     <div class="sidebar">
+        
+        <!-- YUKARIDA BULUNAN OTO-KAYIT SIFIRLAMA BÖLÜMÜ -->
+        <div class="section" style="padding-bottom: 10px; padding-top: 20px; border-bottom: none;">
+            <button class="btn-tool-action btn-danger-action" onclick="askClearAutoSave()">
+                <i class="fas fa-trash-restore"></i> Oto Kayıtları Temizle (Fabrika Ayarı)
+            </button>
+        </div>
+
         <!-- MOBİL İÇİN ÜSTTE SIFIR BOŞLUKLU TAM GENİŞLİKTE SABİT ÖNİZLEME -->
         <div class="mobile-sticky-preview">
             <canvas id="mobileCanvas"></canvas>
@@ -325,12 +350,12 @@
         <!-- 1. TUVAL VE GÖRSEL AYARLARI -->
         <div class="section">
             <div class="section-title">Tuval & Görsel Ayarları</div>
-            <select id="format" onchange="drawAllCanvases()">
+            <select id="format" onchange="scheduleSaveAndDraw()">
                 <option value="169">X Manzara (1920x1080)</option>
                 <option value="11">X Kare (1080x1080)</option>
             </select>
             
-            <select id="bgTheme" onchange="drawAllCanvases()">
+            <select id="bgTheme" onchange="scheduleSaveAndDraw()">
                 <option value="darkSmoke">1. Koyu Dumanlı</option>
                 <option value="graySmoke">2. Gri Dumanlı (Sisli)</option>
                 <option value="stainSmoke">3. Lekeli Duman (Eskitme)</option>
@@ -349,8 +374,7 @@
                 <option value="dustyRose">16. Gül Kurusu (Vintage)</option>
             </select>
 
-            <!-- YENİ EKLENEN 15 ADET IŞIK, YILDIZ VE EFEKT KATMANI -->
-            <select id="overlayEffect" onchange="drawAllCanvases()">
+            <select id="overlayEffect" onchange="scheduleSaveAndDraw()">
                 <option value="none">✨ Efekt Katmanı Yok (Sade)</option>
                 <option value="goldStarsFew">⭐ Altın Yıldızlar (Seyrek & Zarif)</option>
                 <option value="goldStarsDense">🌟 Altın Yıldızlar (Yoğun Parıltı)</option>
@@ -358,17 +382,17 @@
                 <option value="bokehWarm">💫 Sıcak Bokeh Işıkları (Yumuşak)</option>
                 <option value="bokehCool">❄️ Soğuk Mavi Bokeh Işıkları</option>
                 <option value="lightLeakGold">☀️ Altın Işık Hüzmesi (Sağ Üst)</option>
-                <option value="lightLeakTop">⛅ Üstten Süzülen Işık Demeti</option>
+                <option value="lightLeakTop">⛅ Üstten Süzülen İlahi Işık Demeti</option>
                 <option value="cosmicDust">🌌 Kozmik Toz Parçacıkları</option>
                 <option value="diamondGlitter">💎 Elmas Pırıltılı Keskin Yıldızlar</option>
                 <option value="roseGlow">🌸 Pembe / Gül Kurusu Işık Hüzmeleri</option>
                 <option value="emeraldDust">🍀 Zümrüt Yeşili Parıltılar</option>
-                <option value="mysticLight">🌙 Ay Işığı Süzmesi</option>
-                <option value="vintageFlare">📜 Nostaljik Işık Sızıntısı</option>
-                <option value="starryNight">✨ Yıldız Kümesi</option>
+                <option value="mysticLight">🌙 Mistik Ay Işığı Süzmesi</option>
+                <option value="vintageFlare">📜 Nostaljik Işık Sızıntısı (Light Leak)</option>
+                <option value="starryNight">✨ Samanyolu Yıldız Kümesi</option>
             </select>
 
-            <select id="frameStyle" onchange="drawAllCanvases()">
+            <select id="frameStyle" onchange="scheduleSaveAndDraw()">
                 <option value="classic">1. Çerçeve: Klasik Tek Çizgi</option>
                 <option value="double">2. Çerçeve: Çift Çizgi</option>
                 <option value="thick">3. Çerçeve: Kalın Çizgi</option>
@@ -383,11 +407,16 @@
                 <option value="none">12. Çerçevesiz (Tam Sayfa)</option>
             </select>
 
-            <div>
-                <div class="slider-label"><span>Sağa / Sola Kaydır (X Ekseni)</span></div>
-                <input type="range" id="xOffset" min="-400" max="400" value="0" oninput="drawAllCanvases()">
-                <div class="slider-label"><span>Yukarı / Aşağı Kaydır (Y Ekseni)</span></div>
-                <input type="range" id="yOffset" min="-400" max="400" value="0" oninput="drawAllCanvases()">
+            <div style="background: #1e1e22; padding: 10px; border-radius: 6px; border: 1px solid #333; margin-top: 10px;">
+                <div class="slider-label"><span><i class="fas fa-arrows-alt-h"></i> Komple Sağa / Sola Kaydır</span></div>
+                <input type="range" id="xOffset" min="-400" max="400" value="0" oninput="scheduleSaveAndDraw()">
+                <div class="slider-label"><span><i class="fas fa-arrows-alt-v"></i> Komple Yukarı / Aşağı Kaydır</span></div>
+                <input type="range" id="yOffset" min="-400" max="400" value="0" oninput="scheduleSaveAndDraw()">
+                
+                <!-- BAĞIMSIZ SÜRÜKLEMEYİ SIFIRLA BUTONU -->
+                <button class="btn-tool-action" onclick="askClearDragOffsets()">
+                    <i class="fas fa-compress-arrows-alt"></i> Bağımsız Sürüklemeyi Sıfırla
+                </button>
             </div>
         </div>
 
@@ -424,19 +453,19 @@
                     <option value="Harmattan">15. Harmattan (Sade Düz)</option>
                 </select>
                 <div class="color-picker-wrap">
-                    <input type="color" id="arColor" value="#ffffff" title="Düz Yazı Rengi" oninput="drawAllCanvases()">
+                    <input type="color" id="arColor" value="#ffffff" title="Düz Yazı Rengi" oninput="scheduleSaveAndDraw()">
                 </div>
             </div>
             
             <div class="slider-label"><span>Arapça Metin Boyutu</span></div>
-            <input type="range" id="arSizeMultiplier" min="0.5" max="2.0" step="0.05" value="1.0" oninput="drawAllCanvases()" style="margin-bottom:10px;">
+            <input type="range" id="arSizeMultiplier" min="0.5" max="2.0" step="0.05" value="1.0" oninput="scheduleSaveAndDraw()" style="margin-bottom:10px;">
 
             <details class="effect-panel">
                 <summary><i class="fas fa-layer-group"></i> ✨ Gelişmiş Efektler ve 3D</summary>
                 <div class="effect-content">
                     <div class="effect-row">
                         <span>Dolgu (Renk/Doku):</span>
-                        <select id="arFillType" onchange="drawAllCanvases()" style="width:140px; margin:0; padding:5px;">
+                        <select id="arFillType" onchange="scheduleSaveAndDraw()" style="width:140px; margin:0; padding:5px;">
                             <option value="solid">Düz Renk</option>
                             <option value="superGlowDynamic" selected>✨ Ultra Yumuşak & Parlak (Dinamik)</option>
                             <option value="gold">Altın Varak (Gold)</option>
@@ -446,7 +475,7 @@
                     </div>
                     <div class="effect-row">
                         <span>Efekt Motoru:</span>
-                        <select id="arEffectType" onchange="drawAllCanvases()" style="width:140px; margin:0; padding:5px;">
+                        <select id="arEffectType" onchange="scheduleSaveAndDraw()" style="width:140px; margin:0; padding:5px;">
                             <option value="normal">Normal (Standart Gölge)</option>
                             <option value="engrave">Kazıma (İç Gölge / Pres)</option>
                             <option value="neon">Neon (Katmanlı Işıldama)</option>
@@ -454,37 +483,37 @@
                     </div>
                     <hr style="border: 0; border-top: 1px solid #333; margin: 5px 0;">
                     <div class="slider-label"><span>3D Hacim (Derinlik)</span></div>
-                    <input type="range" id="ar3DDepth" min="0" max="20" step="1" value="0" oninput="drawAllCanvases()">
+                    <input type="range" id="ar3DDepth" min="0" max="20" step="1" value="0" oninput="scheduleSaveAndDraw()">
                     <div class="effect-row" style="margin-top:5px;">
                         <span>Kenarlık Rengi & Kalınlığı:</span>
-                        <input type="color" id="arStrokeColor" value="#000000" oninput="drawAllCanvases()">
+                        <input type="color" id="arStrokeColor" value="#000000" oninput="scheduleSaveAndDraw()">
                     </div>
-                    <input type="range" id="arStrokeWidth" min="0" max="15" step="0.5" value="0" oninput="drawAllCanvases()">
+                    <input type="range" id="arStrokeWidth" min="0" max="15" step="0.5" value="0" oninput="scheduleSaveAndDraw()">
                     <div class="effect-row" style="margin-top:5px;">
                         <span>Gölge (Shadow/Glow) Rengi:</span>
-                        <input type="color" id="arShadowColor" value="#000000" oninput="drawAllCanvases()">
+                        <input type="color" id="arShadowColor" value="#000000" oninput="scheduleSaveAndDraw()">
                     </div>
                     <div class="multi-col">
                         <div>
                             <div class="slider-label"><span>Şeffaflık</span></div>
-                            <input type="range" id="arShadowOpacity" min="0" max="1" step="0.1" value="0.8" oninput="drawAllCanvases()">
+                            <input type="range" id="arShadowOpacity" min="0" max="1" step="0.1" value="0.8" oninput="scheduleSaveAndDraw()">
                         </div>
                         <div>
                             <div class="slider-label"><span>Bulanıklık</span></div>
-                            <input type="range" id="arShadowBlur" min="0" max="60" value="28" oninput="drawAllCanvases()">
+                            <input type="range" id="arShadowBlur" min="0" max="60" value="28" oninput="scheduleSaveAndDraw()">
                         </div>
                     </div>
                     <hr style="border: 0; border-top: 1px solid #333; margin: 5px 0;">
                     <div class="effect-row">
                         <label style="display:flex; align-items:center; gap:5px; cursor:pointer; color:#e0e0e0;">
-                            <input type="checkbox" id="arHighlight" onchange="drawAllCanvases()"> Satır Vurgu (Arka Plan Kutusu)
+                            <input type="checkbox" id="arHighlight" onchange="scheduleSaveAndDraw()"> Satır Vurgu (Arka Plan Kutusu)
                         </label>
-                        <input type="color" id="arHighlightColor" value="#c5a059" oninput="drawAllCanvases()">
+                        <input type="color" id="arHighlightColor" value="#c5a059" oninput="scheduleSaveAndDraw()">
                     </div>
                 </div>
             </details>
 
-            <textarea id="arabicText" class="arabic-input" oninput="drawAllCanvases()" style="font-family: 'Amiri';">أَلَا لِلَّهِ الدِّينُ الْخَالِصُ</textarea>
+            <textarea id="arabicText" class="arabic-input" oninput="scheduleSaveAndDraw()" style="font-family: 'Amiri';">أَلَا لِلَّهِ الدِّينُ الْخَالِصُ</textarea>
         </div>
 
         <!-- 3. TÜRKÇE METİN -->
@@ -520,22 +549,22 @@
                     <option value="Open Sans">15. Open Sans (Temiz Web)</option>
                 </select>
                 <div class="color-picker-wrap">
-                    <input type="color" id="trColor" value="#d4d4d4" title="Düz Yazı Rengi" oninput="drawAllCanvases()">
+                    <input type="color" id="trColor" value="#d4d4d4" title="Düz Yazı Rengi" oninput="scheduleSaveAndDraw()">
                 </div>
             </div>
 
             <div class="slider-label"><span>Türkçe Metin Boyutu</span></div>
-            <input type="range" id="trSizeMultiplier" min="0.5" max="2.0" step="0.05" value="1.0" oninput="drawAllCanvases()" style="margin-bottom:10px;">
+            <input type="range" id="trSizeMultiplier" min="0.5" max="2.0" step="0.05" value="1.0" oninput="scheduleSaveAndDraw()" style="margin-bottom:10px;">
 
             <details class="effect-panel">
                 <summary><i class="fas fa-layer-group"></i> ✨ Gelişmiş Efektler ve 3D</summary>
                 <div class="effect-content">
                     <div class="slider-label"><span style="color:var(--accent);">Harf Aralığı (Kerning - Sadece Latin)</span></div>
-                    <input type="range" id="trLetterSpacing" min="-5" max="30" step="1" value="0" oninput="drawAllCanvases()">
+                    <input type="range" id="trLetterSpacing" min="-5" max="30" step="1" value="0" oninput="scheduleSaveAndDraw()">
                     <hr style="border: 0; border-top: 1px solid #333; margin: 5px 0;">
                     <div class="effect-row">
                         <span>Dolgu (Renk/Doku):</span>
-                        <select id="trFillType" onchange="drawAllCanvases()" style="width:140px; margin:0; padding:5px;">
+                        <select id="trFillType" onchange="scheduleSaveAndDraw()" style="width:140px; margin:0; padding:5px;">
                             <option value="solid">Düz Renk</option>
                             <option value="superGlowDynamic" selected>✨ Ultra Yumuşak & Parlak (Dinamik)</option>
                             <option value="gold">Altın Varak (Gold)</option>
@@ -545,7 +574,7 @@
                     </div>
                     <div class="effect-row">
                         <span>Efekt Motoru:</span>
-                        <select id="trEffectType" onchange="drawAllCanvases()" style="width:140px; margin:0; padding:5px;">
+                        <select id="trEffectType" onchange="scheduleSaveAndDraw()" style="width:140px; margin:0; padding:5px;">
                             <option value="normal">Normal (Standart Gölge)</option>
                             <option value="engrave">Kazıma (İç Gölge / Pres)</option>
                             <option value="neon">Neon (Katmanlı Işıldama)</option>
@@ -553,37 +582,37 @@
                     </div>
                     <hr style="border: 0; border-top: 1px solid #333; margin: 5px 0;">
                     <div class="slider-label"><span>3D Hacim (Derinlik)</span></div>
-                    <input type="range" id="tr3DDepth" min="0" max="20" step="1" value="0" oninput="drawAllCanvases()">
+                    <input type="range" id="tr3DDepth" min="0" max="20" step="1" value="0" oninput="scheduleSaveAndDraw()">
                     <div class="effect-row" style="margin-top:5px;">
                         <span>Kenarlık Rengi & Kalınlığı:</span>
-                        <input type="color" id="trStrokeColor" value="#000000" oninput="drawAllCanvases()">
+                        <input type="color" id="trStrokeColor" value="#000000" oninput="scheduleSaveAndDraw()">
                     </div>
-                    <input type="range" id="trStrokeWidth" min="0" max="15" step="0.5" value="0" oninput="drawAllCanvases()">
+                    <input type="range" id="trStrokeWidth" min="0" max="15" step="0.5" value="0" oninput="scheduleSaveAndDraw()">
                     <div class="effect-row" style="margin-top:5px;">
                         <span>Gölge (Shadow/Glow) Rengi:</span>
-                        <input type="color" id="trShadowColor" value="#000000" oninput="drawAllCanvases()">
+                        <input type="color" id="trShadowColor" value="#000000" oninput="scheduleSaveAndDraw()">
                     </div>
                     <div class="multi-col">
                         <div>
                             <div class="slider-label"><span>Şeffaflık</span></div>
-                            <input type="range" id="trShadowOpacity" min="0" max="1" step="0.1" value="0.8" oninput="drawAllCanvases()">
+                            <input type="range" id="trShadowOpacity" min="0" max="1" step="0.1" value="0.8" oninput="scheduleSaveAndDraw()">
                         </div>
                         <div>
                             <div class="slider-label"><span>Bulanıklık</span></div>
-                            <input type="range" id="trShadowBlur" min="0" max="60" value="28" oninput="drawAllCanvases()">
+                            <input type="range" id="trShadowBlur" min="0" max="60" value="28" oninput="scheduleSaveAndDraw()">
                         </div>
                     </div>
                     <hr style="border: 0; border-top: 1px solid #333; margin: 5px 0;">
                     <div class="effect-row">
                         <label style="display:flex; align-items:center; gap:5px; cursor:pointer; color:#e0e0e0;">
-                            <input type="checkbox" id="trHighlight" onchange="drawAllCanvases()"> Satır Vurgu (Arka Plan Kutusu)
+                            <input type="checkbox" id="trHighlight" onchange="scheduleSaveAndDraw()"> Satır Vurgu (Arka Plan Kutusu)
                         </label>
-                        <input type="color" id="trHighlightColor" value="#c5a059" oninput="drawAllCanvases()">
+                        <input type="color" id="trHighlightColor" value="#c5a059" oninput="scheduleSaveAndDraw()">
                     </div>
                 </div>
             </details>
 
-            <textarea id="turkishText" oninput="drawAllCanvases()" style="font-family: 'Lora';">"İyi bilin ki, halis din yalnız Allah'ındır."</textarea>
+            <textarea id="turkishText" oninput="scheduleSaveAndDraw()" style="font-family: 'Lora';">"İyi bilin ki, halis din yalnız Allah'ındır."</textarea>
         </div>
 
         <!-- 4. SERBEST METİN / ALT BAŞLIK (İSTEĞE BAĞLI) -->
@@ -619,22 +648,22 @@
                     <option value="Open Sans">15. Open Sans (Temiz Web)</option>
                 </select>
                 <div class="color-picker-wrap">
-                    <input type="color" id="exColor" value="#b0b0b0" title="Düz Yazı Rengi" oninput="drawAllCanvases()">
+                    <input type="color" id="exColor" value="#b0b0b0" title="Düz Yazı Rengi" oninput="scheduleSaveAndDraw()">
                 </div>
             </div>
 
             <div class="slider-label"><span>Ek Metin Boyutu</span></div>
-            <input type="range" id="exSizeMultiplier" min="0.5" max="2.0" step="0.05" value="1.0" oninput="drawAllCanvases()" style="margin-bottom:10px;">
+            <input type="range" id="exSizeMultiplier" min="0.5" max="2.0" step="0.05" value="1.0" oninput="scheduleSaveAndDraw()" style="margin-bottom:10px;">
 
             <details class="effect-panel">
                 <summary><i class="fas fa-layer-group"></i> ✨ Gelişmiş Efektler ve 3D</summary>
                 <div class="effect-content">
                     <div class="slider-label"><span style="color:var(--accent);">Harf Aralığı (Kerning)</span></div>
-                    <input type="range" id="exLetterSpacing" min="-5" max="30" step="1" value="0" oninput="drawAllCanvases()">
+                    <input type="range" id="exLetterSpacing" min="-5" max="30" step="1" value="0" oninput="scheduleSaveAndDraw()">
                     <hr style="border: 0; border-top: 1px solid #333; margin: 5px 0;">
                     <div class="effect-row">
                         <span>Dolgu (Renk/Doku):</span>
-                        <select id="exFillType" onchange="drawAllCanvases()" style="width:140px; margin:0; padding:5px;">
+                        <select id="exFillType" onchange="scheduleSaveAndDraw()" style="width:140px; margin:0; padding:5px;">
                             <option value="solid" selected>Düz Renk</option>
                             <option value="superGlowDynamic">✨ Ultra Yumuşak & Parlak</option>
                             <option value="gold">Altın Varak (Gold)</option>
@@ -644,7 +673,7 @@
                     </div>
                     <div class="effect-row">
                         <span>Efekt Motoru:</span>
-                        <select id="exEffectType" onchange="drawAllCanvases()" style="width:140px; margin:0; padding:5px;">
+                        <select id="exEffectType" onchange="scheduleSaveAndDraw()" style="width:140px; margin:0; padding:5px;">
                             <option value="normal">Normal (Standart Gölge)</option>
                             <option value="engrave">Kazıma (İç Gölge / Pres)</option>
                             <option value="neon">Neon (Katmanlı Işıldama)</option>
@@ -652,58 +681,55 @@
                     </div>
                     <hr style="border: 0; border-top: 1px solid #333; margin: 5px 0;">
                     <div class="slider-label"><span>3D Hacim (Derinlik)</span></div>
-                    <input type="range" id="ex3DDepth" min="0" max="20" step="1" value="0" oninput="drawAllCanvases()">
+                    <input type="range" id="ex3DDepth" min="0" max="20" step="1" value="0" oninput="scheduleSaveAndDraw()">
                     <div class="effect-row" style="margin-top:5px;">
                         <span>Kenarlık Rengi & Kalınlığı:</span>
-                        <input type="color" id="exStrokeColor" value="#000000" oninput="drawAllCanvases()">
+                        <input type="color" id="exStrokeColor" value="#000000" oninput="scheduleSaveAndDraw()">
                     </div>
-                    <input type="range" id="exStrokeWidth" min="0" max="15" step="0.5" value="0" oninput="drawAllCanvases()">
+                    <input type="range" id="exStrokeWidth" min="0" max="15" step="0.5" value="0" oninput="scheduleSaveAndDraw()">
                     <div class="effect-row" style="margin-top:5px;">
                         <span>Gölge (Shadow/Glow) Rengi:</span>
-                        <input type="color" id="exShadowColor" value="#000000" oninput="drawAllCanvases()">
+                        <input type="color" id="exShadowColor" value="#000000" oninput="scheduleSaveAndDraw()">
                     </div>
                     <div class="multi-col">
                         <div>
                             <div class="slider-label"><span>Şeffaflık</span></div>
-                            <input type="range" id="exShadowOpacity" min="0" max="1" step="0.1" value="0.8" oninput="drawAllCanvases()">
+                            <input type="range" id="exShadowOpacity" min="0" max="1" step="0.1" value="0.8" oninput="scheduleSaveAndDraw()">
                         </div>
                         <div>
                             <div class="slider-label"><span>Bulanıklık</span></div>
-                            <input type="range" id="exShadowBlur" min="0" max="60" value="28" oninput="drawAllCanvases()">
+                            <input type="range" id="exShadowBlur" min="0" max="60" value="28" oninput="scheduleSaveAndDraw()">
                         </div>
                     </div>
                     <hr style="border: 0; border-top: 1px solid #333; margin: 5px 0;">
                     <div class="effect-row">
                         <label style="display:flex; align-items:center; gap:5px; cursor:pointer; color:#e0e0e0;">
-                            <input type="checkbox" id="exHighlight" onchange="drawAllCanvases()"> Satır Vurgu (Arka Plan Kutusu)
+                            <input type="checkbox" id="exHighlight" onchange="scheduleSaveAndDraw()"> Satır Vurgu (Arka Plan Kutusu)
                         </label>
-                        <input type="color" id="exHighlightColor" value="#555555" oninput="drawAllCanvases()">
+                        <input type="color" id="exHighlightColor" value="#555555" oninput="scheduleSaveAndDraw()">
                     </div>
                 </div>
             </details>
 
-            <textarea id="extraText" oninput="drawAllCanvases()" style="font-family: 'Lora';" placeholder="(İsteğe bağlı) Ek açıklama, 3. dil veya alt başlık buraya..."></textarea>
+            <textarea id="extraText" oninput="scheduleSaveAndDraw()" style="font-family: 'Lora';" placeholder="(İsteğe bağlı) Ek açıklama, 3. dil veya alt başlık buraya..."></textarea>
         </div>
 
         <!-- 5. ALT BİLGİ VE İMZA -->
         <div class="section" style="border-bottom: none;">
             <div class="section-title">Müellif, Kaynak & İmza</div>
-            <input type="text" id="author" placeholder="Alim veya Eser Sahibi" value="Zümer Suresi, 3" oninput="drawAllCanvases()">
-            <input type="text" id="source" placeholder="Cilt, Sayfa veya Referans" value="Kur'an-ı Kerim" oninput="drawAllCanvases()">
-            <input type="text" id="brandText" placeholder="Özel İmzanız" value="Tasvirmatik" oninput="drawAllCanvases()" style="border-color: var(--accent); color: var(--accent); font-weight:bold;">
+            <input type="text" id="author" placeholder="Alim veya Eser Sahibi" value="Zümer Suresi, 3" oninput="scheduleSaveAndDraw()">
+            <input type="text" id="source" placeholder="Cilt, Sayfa veya Referans" value="Kur'an-ı Kerim" oninput="scheduleSaveAndDraw()">
+            <input type="text" id="brandText" placeholder="Özel İmzanız" value="Tasvirmatik" oninput="scheduleSaveAndDraw()" style="border-color: var(--accent); color: var(--accent); font-weight:bold;">
             
             <div class="color-picker-wrap" style="margin-top:5px;">
                 <span>Alt Bilgi ve Çizgi Rengi: </span>
-                <input type="color" id="footerColor" value="#a38847" oninput="drawAllCanvases()">
+                <input type="color" id="footerColor" value="#a38847" oninput="scheduleSaveAndDraw()">
             </div>
         </div>
 
         <!-- ÇÖZÜNÜRLÜK SEÇİMLİ İNDİR VE PAYLAŞ BUTONLARI -->
         <div class="action-buttons">
-            <!-- 1. Grup: İndir ve Çözünürlük (Alan Payı: flex 3 - Daha Geniş) -->
             <div style="display: flex; flex: 3; align-items: stretch; border-radius: 8px; overflow: hidden; background: #2a2a2a;">
-                
-                <!-- Sol Kısım: Minimal FHD Seçici -->
                 <div style="position: relative; display: flex; align-items: center; width: 72px; flex-shrink: 0; border-right: 1px solid #111;">
                     <select id="downloadRes" style="width: 100%; height: 100%; background: transparent; color: #fff; border: none; outline: none; font-size: 13px; font-family: 'Cinzel', serif; font-weight: bold; appearance: none; -webkit-appearance: none; padding: 0 14px 0 10px; margin: 0; cursor: pointer;" title="İndirme Çözünürlüğü">
                         <option value="1" style="background: #161618;">FHD</option>
@@ -712,40 +738,33 @@
                     </select>
                     <i class="fas fa-chevron-down" style="position: absolute; right: 6px; color: #c5a059; font-size: 9px; pointer-events: none;"></i>
                 </div>
-
-                <!-- Sağ Kısım: Ana İndir Butonu (Geniş Alan, Kesilme Korumalı) -->
                 <button class="btn-primary" onclick="downloadImage()" style="flex: 1; margin: 0; border-radius: 0; border: none; padding: 15px 5px; white-space: nowrap;">
                     <i class="fas fa-download"></i> İNDİR
                 </button>
             </div>
-            
-            <!-- 2. Grup: Paylaş Butonu (Alan Payı: flex 2 - Biraz Daha Dar) -->
             <button class="btn-primary btn-share" onclick="shareImage()" style="flex: 2; white-space: nowrap;"><i class="fas fa-share-alt"></i> PAYLAŞ</button>
         </div>
 
-
-
-        <!-- UYGULAMA OLARAK YÜKLEME KARTI VE ANİMASYONLU YÜKLEME ÇUBUĞU -->
-<div class="app-install-card">
-    <h4><i class="fas fa-mobile-alt"></i> Uygulama Olarak Yükle (PWA)</h4>
-    <p><strong>PC'de:</strong> Tarayıcı adres çubuğunun sağındaki <i class="fas fa-download" style="font-size:11px;"></i> (Yükle) simgesine tıklayın.</p>
-    <p><strong>Mobil'de:</strong> Tarayıcı seçeneklerinden (⋮) <em>"Ana Ekrana Ekle"</em> butonuna dokunarak gerçek bir app gibi kullanın.</p>
-    
-    <button id="pwaInstallBtn" onclick="installPWA()" class="btn-primary" style="display: none; margin-top: 15px; width: 100%;">
-        <i class="fas fa-download"></i> Cihaza Yükle
-    </button>
-
-    <!-- Kaliteli Dolan Yüklenme Çubuğu (Başlangıçta Gizli) -->
-    <div id="installProgressContainer" style="display: none; margin-top: 15px;">
-        <div style="display: flex; justify-content: space-between; font-size: 11px; color: var(--accent); margin-bottom: 5px; font-family: 'Cinzel', serif; font-weight: bold;">
-            <span>Tasvirmatik Hazırlanıyor...</span>
-            <span id="progressPercent">0%</span>
+        <!-- UYGULAMA OLARAK YÜKLEME KARTI -->
+        <div class="app-install-card">
+            <h4><i class="fas fa-mobile-alt"></i> Uygulama Olarak Yükle (PWA)</h4>
+            <p><strong>PC'de:</strong> Tarayıcı adres çubuğunun sağındaki <i class="fas fa-download" style="font-size:11px;"></i> (Yükle) simgesine tıklayın.</p>
+            <p><strong>Mobil'de:</strong> Tarayıcı seçeneklerinden (⋮) <em>"Ana Ekrana Ekle"</em> butonuna dokunarak gerçek bir app gibi kullanın.</p>
+            
+            <button id="pwaInstallBtn" onclick="installPWA()" class="btn-primary" style="display: none; margin-top: 15px; width: 100%;">
+                <i class="fas fa-download"></i> Cihaza Yükle
+            </button>
+        
+            <div id="installProgressContainer" style="display: none; margin-top: 15px;">
+                <div style="display: flex; justify-content: space-between; font-size: 11px; color: var(--accent); margin-bottom: 5px; font-family: 'Cinzel', serif; font-weight: bold;">
+                    <span>Tasvirmatik Hazırlanıyor...</span>
+                    <span id="progressPercent">0%</span>
+                </div>
+                <div style="width: 100%; height: 8px; background: #111; border-radius: 10px; overflow: hidden; border: 1px solid #333; box-shadow: inset 0 1px 3px rgba(0,0,0,0.8);">
+                    <div id="installProgressBar" style="width: 0%; height: 100%; background: linear-gradient(90deg, #8a6d3b, #c5a059, #ffeba8); border-radius: 10px; transition: width 0.1s ease; box-shadow: 0 0 10px rgba(197,160,89,0.6);"></div>
+                </div>
+            </div>
         </div>
-        <div style="width: 100%; height: 8px; background: #111; border-radius: 10px; overflow: hidden; border: 1px solid #333; box-shadow: inset 0 1px 3px rgba(0,0,0,0.8);">
-            <div id="installProgressBar" style="width: 0%; height: 100%; background: linear-gradient(90deg, #8a6d3b, #c5a059, #ffeba8); border-radius: 10px; transition: width 0.1s ease; box-shadow: 0 0 10px rgba(197,160,89,0.6);"></div>
-        </div>
-    </div>
-</div>
         
         <div class="sidebar-footer">
             Tasvirmatik 1.0 by @TalibTRB <br>
@@ -758,19 +777,133 @@
     <div class="workspace">
         <div class="workspace-title">TASVİRMATİK 1.0</div>
         <canvas id="canvas"></canvas>
+        <!-- MERKEZ ALT SABİT İPUCU ROZETİ (Yalnızca masaüstünde görünür) -->
+        <div class="drag-hint-pc"><i class="fas fa-hand-pointer"></i> Metinleri farenizle tutup sürükleyebilirsiniz</div>
     </div>
 
     <script>
-        const styles = {
+        let styles = {
             ar: { bold: true, italic: false, underline: false, strike: false, align: 'center' },
             tr: { bold: false, italic: false, underline: false, strike: false, align: 'center' },
             ex: { bold: false, italic: false, underline: false, strike: false, align: 'center' }
         };
 
+        let dragOffsets = {
+            ar: { x: 0, y: 0 },
+            tr: { x: 0, y: 0 },
+            ex: { x: 0, y: 0 },
+            author: { x: 0, y: 0 },
+            brand: { x: 0, y: 0 }
+        };
+
+        let hitBoxes = { ar: null, tr: null, ex: null, author: null, brand: null };
+
+        const STORAGE_KEY = 'tasvirmatik_autosave_v2';
+        let saveTimeout;
+        
+        function scheduleSaveAndDraw() {
+            drawAllCanvases();
+            clearTimeout(saveTimeout);
+            saveTimeout = setTimeout(saveStateToLocal, 1000);
+        }
+
+        function saveStateToLocal() {
+            const state = { inputs: {}, styles: styles, dragOffsets: dragOffsets };
+            document.querySelectorAll('input, select, textarea').forEach(el => {
+                if(el.id && el.type !== 'file' && el.type !== 'button') {
+                    state.inputs[el.id] = el.type === 'checkbox' ? el.checked : el.value;
+                }
+            });
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+        }
+
+        function loadStateFromLocal() {
+            try {
+                const data = localStorage.getItem(STORAGE_KEY);
+                if(!data) return;
+                const state = JSON.parse(data);
+                if(state.styles) styles = state.styles;
+                
+                if(state.dragOffsets) {
+                    dragOffsets = state.dragOffsets;
+                    if(dragOffsets.footer) {
+                        dragOffsets.author = { x: dragOffsets.footer.x, y: dragOffsets.footer.y };
+                        dragOffsets.brand = { x: dragOffsets.footer.x, y: dragOffsets.footer.y };
+                        delete dragOffsets.footer;
+                    }
+                    if(!dragOffsets.author) dragOffsets.author = { x: 0, y: 0 };
+                    if(!dragOffsets.brand) dragOffsets.brand = { x: 0, y: 0 };
+                }
+                
+                if(state.inputs) {
+                    for(const id in state.inputs) {
+                        const el = document.getElementById(id);
+                        if(el) {
+                            if(el.type === 'checkbox') el.checked = state.inputs[id];
+                            else el.value = state.inputs[id];
+                        }
+                    }
+                }
+                updateStyleButtonsUI();
+            } catch(e) { console.error("Kayıt yüklenemedi", e); }
+        }
+
+        function updateStyleButtonsUI() {
+            ['ar', 'tr', 'ex'].forEach(lang => {
+                document.getElementById(`${lang}-bold`).classList.toggle('active', styles[lang].bold);
+                document.getElementById(`${lang}-italic`).classList.toggle('active', styles[lang].italic);
+                document.getElementById(`${lang}-underline`).classList.toggle('active', styles[lang].underline);
+                document.getElementById(`${lang}-strike`).classList.toggle('active', styles[lang].strike);
+                
+                document.getElementById(`${lang}-align-left`).classList.remove('active');
+                document.getElementById(`${lang}-align-center`).classList.remove('active');
+                document.getElementById(`${lang}-align-right`).classList.remove('active');
+                document.getElementById(`${lang}-align-${styles[lang].align}`).classList.add('active');
+            });
+        }
+
+        let modalConfirmAction = null;
+        function openModal(title, text, confirmCallback) {
+            document.getElementById('modalTitle').innerText = title;
+            document.getElementById('modalText').innerText = text;
+            modalConfirmAction = confirmCallback;
+            document.getElementById('customModal').classList.add('active');
+        }
+        function closeModal() {
+            document.getElementById('customModal').classList.remove('active');
+            modalConfirmAction = null;
+        }
+        function confirmModal() {
+            if(modalConfirmAction) modalConfirmAction();
+            closeModal();
+        }
+
+        function askClearDragOffsets() {
+            openModal("Sürüklemeyi Sıfırla", "Metinlerin kendi etrafında bağımsız kaydırdığınız konumları sıfırlanarak orijinal merkeze geri alınacaktır. Onaylıyor musunuz?", () => {
+                dragOffsets = { ar: {x:0, y:0}, tr: {x:0, y:0}, ex: {x:0, y:0}, author: {x:0, y:0}, brand: {x:0, y:0} };
+                scheduleSaveAndDraw();
+                showToast("Sürükleme konumları sıfırlandı!");
+            });
+        }
+
+        function askClearAutoSave() {
+            openModal("Oto Kayıtları Temizle", "Tüm girdiğiniz metinler, renkler, seçtiğiniz fontlar ve sürüklemeler silinerek uygulama ilk açılış (fabrika) ayarlarına döndürülecektir. Emin misiniz?", () => {
+                localStorage.removeItem(STORAGE_KEY);
+                location.reload();
+            });
+        }
+
+        function showToast(msg = "Elhamdulillah...") {
+            const toast = document.getElementById('toast');
+            toast.innerText = msg;
+            toast.classList.add('show');
+            setTimeout(() => { toast.classList.remove('show'); }, 3000);
+        }
+
         function toggleStyle(lang, prop) {
             styles[lang][prop] = !styles[lang][prop];
             document.getElementById(`${lang}-${prop}`).classList.toggle('active', styles[lang][prop]);
-            drawAllCanvases();
+            scheduleSaveAndDraw();
         }
 
         function setAlignment(lang, align) {
@@ -779,7 +912,7 @@
             document.getElementById(`${lang}-align-center`).classList.remove('active');
             document.getElementById(`${lang}-align-right`).classList.remove('active');
             document.getElementById(`${lang}-align-${align}`).classList.add('active');
-            drawAllCanvases();
+            scheduleSaveAndDraw();
         }
         
         async function changeFontImmediate(selectId, textareaId) {
@@ -788,16 +921,7 @@
             if (document.fonts && document.fonts.load) {
                 try { await document.fonts.load(`400 24px "${fontName}"`); } catch (e) {}
             }
-            drawAllCanvases(); setTimeout(drawAllCanvases, 50);
-        }
-
-        document.fonts.ready.then(() => { drawAllCanvases(); });
-
-        function showToast(msg = "Elhamdulillah...") {
-            const toast = document.getElementById('toast');
-            toast.innerText = msg;
-            toast.classList.add('show');
-            setTimeout(() => { toast.classList.remove('show'); }, 3000);
+            scheduleSaveAndDraw(); setTimeout(scheduleSaveAndDraw, 50);
         }
 
         function hexToRgba(hex, opacity) {
@@ -920,13 +1044,11 @@
             }
         }
 
-        // YENİ: PROSEDÜREL IŞIK VE YILDIZ EFEKTİ ÇİZİM MOTORU
         function drawOverlayEffects(ctx, w, h, effectType) {
             if (effectType === 'none') return;
             ctx.save();
             ctx.shadowColor = 'transparent';
 
-            // Sabit ama estetik dağılım için pseudo-random (deterministic) koordinat üretici
             const seedRandom = (seed) => {
                 let x = Math.sin(seed++) * 10000;
                 return x - Math.floor(x);
@@ -943,7 +1065,6 @@
                     ctx.fillStyle = `rgba(255, 235, 168, ${alpha})`;
                     ctx.beginPath(); ctx.arc(x, y, r, 0, Math.PI * 2); ctx.fill();
                     
-                    // Nadiren 4 kollu parıltı ekle
                     if (i % 5 === 0) {
                         ctx.strokeStyle = `rgba(255, 255, 255, ${alpha * 0.8})`;
                         ctx.lineWidth = 1;
@@ -956,9 +1077,7 @@
             }
             else if (effectType === 'silverStars') {
                 for (let i = 0; i < 50; i++) {
-                    let x = seedRandom(i * 11) * w;
-                    let y = seedRandom(i * 19) * h;
-                    let r = seedRandom(i * 23) * 2 + 0.8;
+                    let x = seedRandom(i * 11) * w; let y = seedRandom(i * 19) * h; let r = seedRandom(i * 23) * 2 + 0.8;
                     ctx.fillStyle = `rgba(220, 230, 242, ${seedRandom(i) * 0.8 + 0.2})`;
                     ctx.beginPath(); ctx.arc(x, y, r, 0, Math.PI * 2); ctx.fill();
                 }
@@ -966,93 +1085,64 @@
             else if (effectType === 'bokehWarm' || effectType === 'bokehCool') {
                 const baseColor = effectType === 'bokehWarm' ? '255, 190, 100' : '100, 180, 255';
                 for (let i = 0; i < 18; i++) {
-                    let x = seedRandom(i * 31) * w;
-                    let y = seedRandom(i * 37) * h;
-                    let r = seedRandom(i * 41) * 45 + 15;
-                    let alpha = seedRandom(i * 43) * 0.18 + 0.05;
-
-                    ctx.fillStyle = `rgba(${baseColor}, ${alpha})`;
-                    ctx.beginPath(); ctx.arc(x, y, r, 0, Math.PI * 2); ctx.fill();
+                    let x = seedRandom(i * 31) * w; let y = seedRandom(i * 37) * h; let r = seedRandom(i * 41) * 45 + 15; let alpha = seedRandom(i * 43) * 0.18 + 0.05;
+                    ctx.fillStyle = `rgba(${baseColor}, ${alpha})`; ctx.beginPath(); ctx.arc(x, y, r, 0, Math.PI * 2); ctx.fill();
                 }
             }
             else if (effectType === 'lightLeakGold') {
                 let grd = ctx.createRadialGradient(w, 0, 0, w, 0, w * 0.8);
-                grd.addColorStop(0, 'rgba(255, 215, 0, 0.45)');
-                grd.addColorStop(0.5, 'rgba(255, 140, 0, 0.15)');
-                grd.addColorStop(1, 'transparent');
+                grd.addColorStop(0, 'rgba(255, 215, 0, 0.45)'); grd.addColorStop(0.5, 'rgba(255, 140, 0, 0.15)'); grd.addColorStop(1, 'transparent');
                 ctx.fillStyle = grd; ctx.fillRect(0, 0, w, h);
             }
             else if (effectType === 'lightLeakTop') {
                 let grd = ctx.createLinearGradient(0, 0, 0, h * 0.7);
-                grd.addColorStop(0, 'rgba(255, 245, 210, 0.35)');
-                grd.addColorStop(1, 'transparent');
+                grd.addColorStop(0, 'rgba(255, 245, 210, 0.35)'); grd.addColorStop(1, 'transparent');
                 ctx.fillStyle = grd; ctx.fillRect(0, 0, w, h);
             }
             else if (effectType === 'cosmicDust') {
                 for (let i = 0; i < 120; i++) {
-                    let x = seedRandom(i * 7) * w;
-                    let y = seedRandom(i * 11) * h;
-                    let r = seedRandom(i * 13) * 1.5;
+                    let x = seedRandom(i * 7) * w; let y = seedRandom(i * 11) * h; let r = seedRandom(i * 13) * 1.5;
                     ctx.fillStyle = `rgba(255, 255, 255, ${seedRandom(i * 17) * 0.5 + 0.1})`;
                     ctx.beginPath(); ctx.arc(x, y, r, 0, Math.PI * 2); ctx.fill();
                 }
             }
             else if (effectType === 'diamondGlitter') {
                 for (let i = 0; i < 30; i++) {
-                    let x = seedRandom(i * 29) * w;
-                    let y = seedRandom(i * 31) * h;
-                    let size = seedRandom(i * 37) * 12 + 6;
-                    
-                    ctx.strokeStyle = `rgba(255, 255, 255, ${seedRandom(i) * 0.7 + 0.3})`;
-                    ctx.lineWidth = 1.5;
-                    ctx.beginPath();
-                    ctx.moveTo(x - size, y); ctx.lineTo(x + size, y);
-                    ctx.moveTo(x, y - size); ctx.lineTo(x, y + size);
-                    ctx.stroke();
-
-                    ctx.fillStyle = '#ffeba8';
-                    ctx.beginPath(); ctx.arc(x, y, 2, 0, Math.PI * 2); ctx.fill();
+                    let x = seedRandom(i * 29) * w; let y = seedRandom(i * 31) * h; let size = seedRandom(i * 37) * 12 + 6;
+                    ctx.strokeStyle = `rgba(255, 255, 255, ${seedRandom(i) * 0.7 + 0.3})`; ctx.lineWidth = 1.5;
+                    ctx.beginPath(); ctx.moveTo(x - size, y); ctx.lineTo(x + size, y); ctx.moveTo(x, y - size); ctx.lineTo(x, y + size); ctx.stroke();
+                    ctx.fillStyle = '#ffeba8'; ctx.beginPath(); ctx.arc(x, y, 2, 0, Math.PI * 2); ctx.fill();
                 }
             }
             else if (effectType === 'roseGlow') {
                 let grd = ctx.createRadialGradient(w * 0.2, h * 0.8, 0, w * 0.2, h * 0.8, w * 0.7);
-                grd.addColorStop(0, 'rgba(244, 143, 177, 0.35)');
-                grd.addColorStop(1, 'transparent');
+                grd.addColorStop(0, 'rgba(244, 143, 177, 0.35)'); grd.addColorStop(1, 'transparent');
                 ctx.fillStyle = grd; ctx.fillRect(0, 0, w, h);
 
                 let grd2 = ctx.createRadialGradient(w * 0.8, h * 0.2, 0, w * 0.8, h * 0.2, w * 0.6);
-                grd2.addColorStop(0, 'rgba(233, 30, 99, 0.25)');
-                grd2.addColorStop(1, 'transparent');
+                grd2.addColorStop(0, 'rgba(233, 30, 99, 0.25)'); grd2.addColorStop(1, 'transparent');
                 ctx.fillStyle = grd2; ctx.fillRect(0, 0, w, h);
             }
             else if (effectType === 'emeraldDust') {
                 for (let i = 0; i < 45; i++) {
-                    let x = seedRandom(i * 5) * w;
-                    let y = seedRandom(i * 7) * h;
-                    let r = seedRandom(i * 9) * 2 + 1;
+                    let x = seedRandom(i * 5) * w; let y = seedRandom(i * 7) * h; let r = seedRandom(i * 9) * 2 + 1;
                     ctx.fillStyle = `rgba(168, 255, 208, ${seedRandom(i) * 0.7 + 0.2})`;
                     ctx.beginPath(); ctx.arc(x, y, r, 0, Math.PI * 2); ctx.fill();
                 }
             }
             else if (effectType === 'mysticLight') {
                 let grd = ctx.createRadialGradient(w * 0.5, h * 0.3, 0, w * 0.5, h * 0.3, w * 0.8);
-                grd.addColorStop(0, 'rgba(200, 220, 255, 0.3)');
-                grd.addColorStop(1, 'transparent');
+                grd.addColorStop(0, 'rgba(200, 220, 255, 0.3)'); grd.addColorStop(1, 'transparent');
                 ctx.fillStyle = grd; ctx.fillRect(0, 0, w, h);
             }
             else if (effectType === 'vintageFlare') {
                 let grd = ctx.createLinearGradient(0, 0, w, h);
-                grd.addColorStop(0, 'rgba(255, 180, 50, 0.25)');
-                grd.addColorStop(0.5, 'transparent');
-                grd.addColorStop(1, 'rgba(100, 50, 150, 0.2)');
+                grd.addColorStop(0, 'rgba(255, 180, 50, 0.25)'); grd.addColorStop(0.5, 'transparent'); grd.addColorStop(1, 'rgba(100, 50, 150, 0.2)');
                 ctx.fillStyle = grd; ctx.fillRect(0, 0, w, h);
             }
             else if (effectType === 'starryNight') {
                 for (let i = 0; i < 150; i++) {
-                    let x = seedRandom(i * 3) * w;
-                    let y = seedRandom(i * 5) * h;
-                    let r = seedRandom(i * 7) * 1.8;
-                    let alpha = seedRandom(i * 11) * 0.8 + 0.2;
+                    let x = seedRandom(i * 3) * w; let y = seedRandom(i * 5) * h; let r = seedRandom(i * 7) * 1.8; let alpha = seedRandom(i * 11) * 0.8 + 0.2;
                     ctx.fillStyle = i % 3 === 0 ? `rgba(255, 240, 200, ${alpha})` : `rgba(255, 255, 255, ${alpha})`;
                     ctx.beginPath(); ctx.arc(x, y, r, 0, Math.PI * 2); ctx.fill();
                 }
@@ -1092,7 +1182,6 @@
             ctx.shadowBlur = 28; ctx.shadowOffsetX = 0; ctx.shadowOffsetY = 4; 
         }
 
-        // TAKILMAYI (DONMAYI) ÖNLEYEN ÇİZİM FONKSİYONU 
         let isDrawing = false;
         function drawAllCanvases() {
             if (!isDrawing) {
@@ -1114,57 +1203,41 @@
             const theme = document.getElementById('bgTheme').value;
             const overlayEffect = document.getElementById('overlayEffect').value;
             const frameStyle = document.getElementById('frameStyle').value;
-            const yOffset = document.getElementById('yOffset') ? parseInt(document.getElementById('yOffset').value) : 0;
-            const xOffset = document.getElementById('xOffset') ? parseInt(document.getElementById('xOffset').value) : 0;
+            const globalYOffset = document.getElementById('yOffset') ? parseInt(document.getElementById('yOffset').value) : 0;
+            const globalXOffset = document.getElementById('xOffset') ? parseInt(document.getElementById('xOffset').value) : 0;
             
             const arSizeMultiplier = parseFloat(document.getElementById('arSizeMultiplier').value);
             const trSizeMultiplier = parseFloat(document.getElementById('trSizeMultiplier').value);
             const exSizeMultiplier = parseFloat(document.getElementById('exSizeMultiplier').value);
 
+            if(exportMultiplier === 1) hitBoxes = { ar: null, tr: null, ex: null, author: null, brand: null };
+
             const arProps = {
-                fillType: document.getElementById('arFillType').value,
-                effectType: document.getElementById('arEffectType').value,
-                depth3D: parseInt(document.getElementById('ar3DDepth').value),
-                fillColor: document.getElementById('arColor').value,
-                strokeColor: document.getElementById('arStrokeColor').value,
-                strokeWidth: parseFloat(document.getElementById('arStrokeWidth').value),
-                shadowColorHex: document.getElementById('arShadowColor').value,
-                shadowOpacity: parseFloat(document.getElementById('arShadowOpacity').value),
-                shadowBlur: parseInt(document.getElementById('arShadowBlur').value),
-                shadowOffset: 4, 
-                highlight: document.getElementById('arHighlight').checked,
-                highlightColor: document.getElementById('arHighlightColor').value
+                fillType: document.getElementById('arFillType').value, effectType: document.getElementById('arEffectType').value,
+                depth3D: parseInt(document.getElementById('ar3DDepth').value), fillColor: document.getElementById('arColor').value,
+                strokeColor: document.getElementById('arStrokeColor').value, strokeWidth: parseFloat(document.getElementById('arStrokeWidth').value),
+                shadowColorHex: document.getElementById('arShadowColor').value, shadowOpacity: parseFloat(document.getElementById('arShadowOpacity').value),
+                shadowBlur: parseInt(document.getElementById('arShadowBlur').value), shadowOffset: 4, 
+                highlight: document.getElementById('arHighlight').checked, highlightColor: document.getElementById('arHighlightColor').value
             };
 
             const trProps = {
-                fillType: document.getElementById('trFillType').value,
-                effectType: document.getElementById('trEffectType').value,
-                depth3D: parseInt(document.getElementById('tr3DDepth').value),
-                fillColor: document.getElementById('trColor').value,
-                strokeColor: document.getElementById('trStrokeColor').value,
-                strokeWidth: parseFloat(document.getElementById('trStrokeWidth').value),
-                shadowColorHex: document.getElementById('trShadowColor').value,
-                shadowOpacity: parseFloat(document.getElementById('trShadowOpacity').value),
-                shadowBlur: parseInt(document.getElementById('trShadowBlur').value),
-                shadowOffset: 4,
-                highlight: document.getElementById('trHighlight').checked,
-                highlightColor: document.getElementById('trHighlightColor').value,
+                fillType: document.getElementById('trFillType').value, effectType: document.getElementById('trEffectType').value,
+                depth3D: parseInt(document.getElementById('tr3DDepth').value), fillColor: document.getElementById('trColor').value,
+                strokeColor: document.getElementById('trStrokeColor').value, strokeWidth: parseFloat(document.getElementById('trStrokeWidth').value),
+                shadowColorHex: document.getElementById('trShadowColor').value, shadowOpacity: parseFloat(document.getElementById('trShadowOpacity').value),
+                shadowBlur: parseInt(document.getElementById('trShadowBlur').value), shadowOffset: 4,
+                highlight: document.getElementById('trHighlight').checked, highlightColor: document.getElementById('trHighlightColor').value,
                 letterSpacing: parseInt(document.getElementById('trLetterSpacing').value)
             };
 
             const exProps = {
-                fillType: document.getElementById('exFillType').value,
-                effectType: document.getElementById('exEffectType').value,
-                depth3D: parseInt(document.getElementById('ex3DDepth').value),
-                fillColor: document.getElementById('exColor').value,
-                strokeColor: document.getElementById('exStrokeColor').value,
-                strokeWidth: parseFloat(document.getElementById('exStrokeWidth').value),
-                shadowColorHex: document.getElementById('exShadowColor').value,
-                shadowOpacity: parseFloat(document.getElementById('exShadowOpacity').value),
-                shadowBlur: parseInt(document.getElementById('exShadowBlur').value),
-                shadowOffset: 4,
-                highlight: document.getElementById('exHighlight').checked,
-                highlightColor: document.getElementById('exHighlightColor').value,
+                fillType: document.getElementById('exFillType').value, effectType: document.getElementById('exEffectType').value,
+                depth3D: parseInt(document.getElementById('ex3DDepth').value), fillColor: document.getElementById('exColor').value,
+                strokeColor: document.getElementById('exStrokeColor').value, strokeWidth: parseFloat(document.getElementById('exStrokeWidth').value),
+                shadowColorHex: document.getElementById('exShadowColor').value, shadowOpacity: parseFloat(document.getElementById('exShadowOpacity').value),
+                shadowBlur: parseInt(document.getElementById('exShadowBlur').value), shadowOffset: 4,
+                highlight: document.getElementById('exHighlight').checked, highlightColor: document.getElementById('exHighlightColor').value,
                 letterSpacing: parseInt(document.getElementById('exLetterSpacing').value)
             };
 
@@ -1191,10 +1264,7 @@
             ctx.imageSmoothingQuality = 'high';
             ctx.textRendering = "optimizeLegibility";
 
-            // 1. Arka Planı Çiz
             drawBackground(ctx, baseW, baseH, theme, exportMultiplier);
-
-            // 2. Efekt Katmanını Çiz (Yıldızlar ve Işık Hüzmeleri - Çerçevenin ve Yazının Altında Atmosfer Oluşturur)
             drawOverlayEffects(ctx, baseW, baseH, overlayEffect);
 
             const isLightTheme = (theme === 'solidLight' || theme === 'oldPaper' || theme === 'parchment' || theme === 'sandStorm' || theme === 'lightPink');
@@ -1213,7 +1283,7 @@
             const maxWidth = baseW - 240;
             
             let arFontSize = 65 * arSizeMultiplier, trFontSize = 45 * trSizeMultiplier, exFontSize = 45 * exSizeMultiplier;
-            let arLineHeight = 90 * arSizeMultiplier, trLineHeight = 65 * arSizeMultiplier, exLineHeight = 65 * arSizeMultiplier;
+            let arLineHeight = 90 * arSizeMultiplier, trLineHeight = 65 * trSizeMultiplier, exLineHeight = 65 * trSizeMultiplier;
             
             let arLayout = { lines: [], maxLineWidth: 0 };
             let trLayout = { lines: [], maxLineWidth: 0 };
@@ -1229,24 +1299,21 @@
                 arTotalHeight = 0;
                 if (arText.trim() !== '') {
                     if ('letterSpacing' in ctx) ctx.letterSpacing = '0px'; 
-                    ctx.font = currentArFont;
-                    arLayout = getWrappedLines(ctx, arText, maxWidth);
+                    ctx.font = currentArFont; arLayout = getWrappedLines(ctx, arText, maxWidth);
                     arLayout.lines.forEach(l => { arTotalHeight += l.isSpacer ? (arLineHeight * scale * 0.5) : (arLineHeight * scale); });
                 }
                 
                 trTotalHeight = 0;
                 if (trText.trim() !== '') {
                     if ('letterSpacing' in ctx) ctx.letterSpacing = (trProps.letterSpacing * scale) + 'px'; 
-                    ctx.font = currentTrFont;
-                    trLayout = getWrappedLines(ctx, trText, maxWidth);
+                    ctx.font = currentTrFont; trLayout = getWrappedLines(ctx, trText, maxWidth);
                     trLayout.lines.forEach(l => { trTotalHeight += l.isSpacer ? (trLineHeight * scale * 0.5) : (trLineHeight * scale); });
                 }
 
                 exTotalHeight = 0;
                 if (exText.trim() !== '') {
                     if ('letterSpacing' in ctx) ctx.letterSpacing = (exProps.letterSpacing * scale) + 'px'; 
-                    ctx.font = currentExFont;
-                    exLayout = getWrappedLines(ctx, exText, maxWidth);
+                    ctx.font = currentExFont; exLayout = getWrappedLines(ctx, exText, maxWidth);
                     exLayout.lines.forEach(l => { exTotalHeight += l.isSpacer ? (exLineHeight * scale * 0.5) : (exLineHeight * scale); });
                 }
                 
@@ -1262,86 +1329,97 @@
             }
 
             const contentAreaTop = 130;
-            let currentY = contentAreaTop + (maxContentHeight - totalHeight) / 2 + yOffset; 
+            let currentBaseY = contentAreaTop + (maxContentHeight - totalHeight) / 2 + globalYOffset; 
 
-            // 1. Arapça Çizim
             if (arText.trim() !== '') {
+                let drawY = currentBaseY + dragOffsets.ar.y;
+                let drawX = globalXOffset + dragOffsets.ar.x;
+                let blockStartY = drawY;
+
                 if ('letterSpacing' in ctx) ctx.letterSpacing = '0px';
                 ctx.font = `${styles.ar.italic ? 'italic ' : ''}${styles.ar.bold ? 'bold ' : ''}${arFontSize * scale}px '${document.getElementById('arFont').value}'`;
                 
                 arLayout.lines.forEach(l => {
-                    if (l.isSpacer) { currentY += (arLineHeight * scale * 0.5); } 
+                    if (l.isSpacer) { drawY += (arLineHeight * scale * 0.5); } 
                     else {
-                        drawAdvancedTextLine(ctx, l.text, baseW, currentY, arLineHeight * scale, styles.ar, xOffset, arProps, scale, document.getElementById('arColor').value);
-                        currentY += arLineHeight * scale;
+                        drawAdvancedTextLine(ctx, l.text, baseW, drawY, arLineHeight * scale, styles.ar, drawX, arProps, scale, document.getElementById('arColor').value);
+                        drawY += arLineHeight * scale;
                     }
                 });
+                if (exportMultiplier === 1) hitBoxes.ar = { x: baseW * 0.05, y: blockStartY, w: baseW * 0.9, h: drawY - blockStartY };
+                
+                currentBaseY += arTotalHeight;
+                if (trText.trim() !== '' || exText.trim() !== '') {
+                    currentBaseY += 30 * scale; 
+                    let sepY = currentBaseY + dragOffsets.ar.y; 
+                    ctx.shadowColor = 'transparent'; ctx.beginPath();
+                    ctx.moveTo(baseW/2 - (80 * scale) + drawX, sepY); ctx.lineTo(baseW/2 + (80 * scale) + drawX, sepY);
+                    ctx.strokeStyle = footerColor; ctx.globalAlpha = 0.4; ctx.lineWidth = 2; ctx.stroke(); ctx.globalAlpha = 1.0;
+                    currentBaseY += 60 * scale; 
+                }
             }
 
-            // Arapça Sonrası Ayraç Çizgisi
-            if (arText.trim() !== '' && (trText.trim() !== '' || exText.trim() !== '')) {
-                currentY += 30 * scale; 
-                ctx.shadowColor = 'transparent';
-                ctx.beginPath();
-                ctx.moveTo(baseW/2 - (80 * scale) + xOffset, currentY);
-                ctx.lineTo(baseW/2 + (80 * scale) + xOffset, currentY);
-                ctx.strokeStyle = footerColor; ctx.globalAlpha = 0.4; ctx.lineWidth = 2; ctx.stroke(); ctx.globalAlpha = 1.0;
-                currentY += 60 * scale; 
-            }
-
-            // 2. Türkçe Çizim
             if (trText.trim() !== '') {
+                let drawY = currentBaseY + dragOffsets.tr.y;
+                let drawX = globalXOffset + dragOffsets.tr.x;
+                let blockStartY = drawY;
+
                 if ('letterSpacing' in ctx) ctx.letterSpacing = (trProps.letterSpacing * scale) + 'px';
                 ctx.font = `${styles.tr.italic ? 'italic ' : ''}${styles.tr.bold ? 'bold ' : ''}${trFontSize * scale}px '${document.getElementById('trFont').value}'`;
                 
                 trLayout.lines.forEach(l => {
-                    if (l.isSpacer) { currentY += (trLineHeight * scale * 0.5); } 
+                    if (l.isSpacer) { drawY += (trLineHeight * scale * 0.5); } 
                     else {
-                        drawAdvancedTextLine(ctx, l.text, baseW, currentY, trLineHeight * scale, styles.tr, xOffset, trProps, scale, document.getElementById('trColor').value);
-                        currentY += trLineHeight * scale;
+                        drawAdvancedTextLine(ctx, l.text, baseW, drawY, trLineHeight * scale, styles.tr, drawX, trProps, scale, document.getElementById('trColor').value);
+                        drawY += trLineHeight * scale;
                     }
                 });
+                if (exportMultiplier === 1) hitBoxes.tr = { x: baseW * 0.05, y: blockStartY, w: baseW * 0.9, h: drawY - blockStartY };
+
+                currentBaseY += trTotalHeight;
+                if (exText.trim() !== '') {
+                    currentBaseY += 30 * scale; 
+                    let sepY = currentBaseY + dragOffsets.tr.y; 
+                    ctx.shadowColor = 'transparent'; ctx.beginPath();
+                    ctx.moveTo(baseW/2 - (80 * scale) + drawX, sepY); ctx.lineTo(baseW/2 + (80 * scale) + drawX, sepY);
+                    ctx.strokeStyle = footerColor; ctx.globalAlpha = 0.4; ctx.lineWidth = 2; ctx.stroke(); ctx.globalAlpha = 1.0;
+                    currentBaseY += 60 * scale; 
+                }
             }
 
-            // Türkçe Sonrası Ayraç Çizgisi
-            if (trText.trim() !== '' && exText.trim() !== '') {
-                currentY += 30 * scale; 
-                ctx.shadowColor = 'transparent';
-                ctx.beginPath();
-                ctx.moveTo(baseW/2 - (80 * scale) + xOffset, currentY);
-                ctx.lineTo(baseW/2 + (80 * scale) + xOffset, currentY);
-                ctx.strokeStyle = footerColor; ctx.globalAlpha = 0.4; ctx.lineWidth = 2; ctx.stroke(); ctx.globalAlpha = 1.0;
-                currentY += 60 * scale; 
-            }
-
-            // 3. Serbest Metin / Alt Başlık Çizimi
             if (exText.trim() !== '') {
+                let drawY = currentBaseY + dragOffsets.ex.y;
+                let drawX = globalXOffset + dragOffsets.ex.x;
+                let blockStartY = drawY;
+
                 if ('letterSpacing' in ctx) ctx.letterSpacing = (exProps.letterSpacing * scale) + 'px';
                 ctx.font = `${styles.ex.italic ? 'italic ' : ''}${styles.ex.bold ? 'bold ' : ''}${exFontSize * scale}px '${document.getElementById('exFont').value}'`;
                 
                 exLayout.lines.forEach(l => {
-                    if (l.isSpacer) { currentY += (exLineHeight * scale * 0.5); } 
+                    if (l.isSpacer) { drawY += (exLineHeight * scale * 0.5); } 
                     else {
-                        drawAdvancedTextLine(ctx, l.text, baseW, currentY, exLineHeight * scale, styles.ex, xOffset, exProps, scale, document.getElementById('exColor').value);
-                        currentY += exLineHeight * scale;
+                        drawAdvancedTextLine(ctx, l.text, baseW, drawY, exLineHeight * scale, styles.ex, drawX, exProps, scale, document.getElementById('exColor').value);
+                        drawY += exLineHeight * scale;
                     }
                 });
+                if (exportMultiplier === 1) hitBoxes.ex = { x: baseW * 0.05, y: blockStartY, w: baseW * 0.9, h: drawY - blockStartY };
             }
 
             if ('letterSpacing' in ctx) ctx.letterSpacing = '0px'; 
 
-            // Alt Bilgi ve İmza
-            let bottomY = baseH - 200 + yOffset; 
+            let bottomBaseY = baseH - 200 + globalYOffset; 
+            let authorDrawY = bottomBaseY + dragOffsets.author.y;
+            let authorDrawX = globalXOffset + dragOffsets.author.x;
             
             if (author.trim() !== '') {
                 ctx.save();
                 ctx.font = "bold 38px 'Lora', serif"; 
                 ctx.textAlign = 'center';
                 setSoftShadow(ctx, theme);
-                let authGrad = ctx.createLinearGradient(0, bottomY - 30, 0, bottomY + 10);
+                let authGrad = ctx.createLinearGradient(0, authorDrawY - 30, 0, authorDrawY + 10);
                 authGrad.addColorStop(0, '#ffeba8'); authGrad.addColorStop(0.5, footerColor); authGrad.addColorStop(1, '#8a6d3b');
                 ctx.fillStyle = authGrad;
-                ctx.fillText(author, baseW / 2 + xOffset, bottomY);
+                ctx.fillText(author, baseW / 2 + authorDrawX, authorDrawY);
                 ctx.restore();
             }
             if (source.trim() !== '') {
@@ -1351,18 +1429,32 @@
                 setSoftShadow(ctx, theme);
                 ctx.fillStyle = footerColor; 
                 ctx.globalAlpha = 0.85; 
-                ctx.fillText(source, baseW / 2 + xOffset, bottomY + 55); 
+                ctx.fillText(source, baseW / 2 + authorDrawX, authorDrawY + 55); 
+                ctx.restore();
+            }
+            
+            let brandDrawY = baseH - 100 + globalYOffset + dragOffsets.brand.y;
+            let brandDrawX = globalXOffset + dragOffsets.brand.x;
+
+            if (brandText.trim() !== '') {
+                ctx.save();
+                ctx.shadowColor = 'transparent'; 
+                ctx.fillStyle = footerColor; 
+                ctx.font = "24px 'Lora', serif"; 
+                ctx.textAlign = 'left'; 
+                ctx.globalAlpha = 0.8;
+                ctx.fillText(brandText, 90 + brandDrawX, brandDrawY);
                 ctx.restore();
             }
 
-            ctx.save();
-            ctx.shadowColor = 'transparent'; 
-            ctx.fillStyle = footerColor; 
-            ctx.font = "24px 'Lora', serif"; 
-            ctx.textAlign = 'left'; 
-            ctx.globalAlpha = 0.8;
-            ctx.fillText(brandText, 90, baseH - 100);
-            ctx.restore();
+            if (exportMultiplier === 1) {
+                if (author.trim() || source.trim()) {
+                    hitBoxes.author = { x: baseW * 0.25, y: authorDrawY - 40, w: baseW * 0.5, h: 120 };
+                }
+                if (brandText.trim()) {
+                    hitBoxes.brand = { x: 50 + brandDrawX, y: brandDrawY - 30, w: 300, h: 60 };
+                }
+            }
         }
 
         function drawAdvancedTextLine(ctx, text, canvasWidth, y, scaledLineHeight, styleObj, xOffset, props, scale, baseColorHex) {
@@ -1520,7 +1612,74 @@
             }
         }
 
-        // ÇÖZÜNÜRLÜK SEÇİMLİ İNDİRME FONKSİYONU (FHD / 4K / 8K)
+        let activeDragTarget = null;
+        let dragStartX = 0, dragStartY = 0;
+        let initialDragOffset = { x: 0, y: 0 };
+
+        function getEventPos(canvas, e) {
+            const rect = canvas.getBoundingClientRect();
+            const scaleX = canvas.width / rect.width;
+            const scaleY = canvas.height / rect.height;
+            let clientX = e.clientX; let clientY = e.clientY;
+            if (e.touches && e.touches.length > 0) {
+                clientX = e.touches[0].clientX; clientY = e.touches[0].clientY;
+            }
+            return { x: (clientX - rect.left) * scaleX, y: (clientY - rect.top) * scaleY };
+        }
+
+        function handleDragStart(canvas, e) {
+            const pos = getEventPos(canvas, e);
+            activeDragTarget = null;
+            
+            const targets = ['brand', 'author', 'ex', 'tr', 'ar'];
+            for (let target of targets) {
+                let box = hitBoxes[target];
+                if (box && pos.x >= box.x && pos.x <= box.x + box.w && pos.y >= box.y && pos.y <= box.y + box.h) {
+                    activeDragTarget = target;
+                    dragStartX = pos.x; dragStartY = pos.y;
+                    initialDragOffset = { x: dragOffsets[target].x, y: dragOffsets[target].y };
+                    if(e.type === 'touchstart' && e.cancelable) e.preventDefault();
+                    break;
+                }
+            }
+        }
+
+        function handleDragMove(canvas, e) {
+            if (!activeDragTarget) return;
+            if (e.type === 'touchmove' && e.cancelable) e.preventDefault();
+            
+            const pos = getEventPos(canvas, e);
+            const dx = pos.x - dragStartX;
+            const dy = pos.y - dragStartY;
+            
+            dragOffsets[activeDragTarget].x = initialDragOffset.x + dx;
+            dragOffsets[activeDragTarget].y = initialDragOffset.y + dy;
+            
+            scheduleSaveAndDraw();
+        }
+
+        function handleDragEnd() { activeDragTarget = null; }
+
+        function attachDragListeners(canvasId) {
+            const canvas = document.getElementById(canvasId);
+            if(!canvas) return;
+            
+            canvas.addEventListener('mousedown', (e) => handleDragStart(canvas, e));
+            canvas.addEventListener('mousemove', (e) => handleDragMove(canvas, e));
+            window.addEventListener('mouseup', handleDragEnd);
+            
+            canvas.addEventListener('touchstart', (e) => handleDragStart(canvas, e), {passive: false});
+            canvas.addEventListener('touchmove', (e) => handleDragMove(canvas, e), {passive: false});
+            window.addEventListener('touchend', handleDragEnd);
+        }
+
+        document.fonts.ready.then(() => { 
+            loadStateFromLocal();
+            attachDragListeners('canvas');
+            attachDragListeners('mobileCanvas');
+            drawAllCanvases();
+        });
+
         function downloadImage() {
             const resVal = parseInt(document.getElementById('downloadRes').value) || 1;
             const resText = resVal === 1 ? "Standart (FHD)" : (resVal === 2 ? "4K (Ultra HD)" : "8K (Master)");
@@ -1553,8 +1712,10 @@
         async function fallbackCopyToClipboard(blob) {
             try {
                 await navigator.clipboard.write([ new ClipboardItem({ 'image/png': blob }) ]);
-                alert("✅ Sisteminiz doğrudan paylaşım ekranını desteklemiyor ancak görsel hafızaya kopyalandı!\n\nPaylaşım yapmak istediğiniz yeri (X, WhatsApp, Telegram vb.) açıp 'Yapıştır' (Ctrl+V) diyerek resmi ekleyebilirsiniz.");
-            } catch (err) { alert("Tarayıcınız paylaşımı desteklemiyor. Lütfen resmi 'İndir' butonuyla cihaza kaydedip öyle paylaşın."); }
+                openModal("Başarılı", "Sisteminiz doğrudan paylaşım ekranını desteklemiyor ancak görsel panoya başarıyla kopyalandı!\n\nPaylaşım yapmak istediğiniz yeri (X, WhatsApp, Telegram vb.) açıp 'Yapıştır' (Ctrl+V) diyerek resmi ekleyebilirsiniz.", null);
+            } catch (err) { 
+                openModal("Hata", "Tarayıcınız paylaşımı desteklemiyor. Lütfen resmi 'İNDİR' butonuyla cihaza kaydedip öyle paylaşın.", null);
+            }
         }
     </script>
     <script>
@@ -1568,6 +1729,10 @@
             installBtn.style.display = 'inline-flex';
         }
     });
+    
+    function showInstallSuccessPopup() {
+        showToast("Uygulama başarıyla yüklendi! Ana ekrandan girebilirsiniz.");
+    }
 
     async function installPWA() {
         if (deferredPrompt) {
@@ -1608,12 +1773,11 @@
             }
             deferredPrompt = null;
         } else {
-            alert("Uygulama zaten cihazınızda yüklü veya tarayıcınız otomatik yükleme istemini henüz hazır etmedi.\n\nTarayıcı menüsünden (⋮) 'Ana Ekrana Ekle' seçeneğini kullanabilirsiniz.");
+            openModal("Bilgi", "Uygulama zaten cihazınızda yüklü veya tarayıcınız bu isteği henüz hazır etmedi.\n\nTarayıcı menüsünden (⋮) 'Ana Ekrana Ekle' seçeneğini kullanabilirsiniz.", null);
         }
     }
 </script>
 
-        <!-- SERVICE WORKER KAYIT (Çevrimdışı Çalışma Motoru) -->
     <script>
       if ('serviceWorker' in navigator) {
         window.addEventListener('load', () => {
