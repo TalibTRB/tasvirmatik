@@ -1008,30 +1008,48 @@
             loadCustomBackground(e.target.value, true);
         });
 
-// Cihazdan Yerel Görsel Yükleme Dinleyicisi (PREMIUM)
+// Cihazdan Yerel Görsel Yükleme Dinleyicisi (Akıllı Sıkıştırma & Kotalı Koruma)
 document.getElementById('localBgUpload').addEventListener('change', function(e) {
     const file = e.target.files[0];
-    if (!file) return; // Kullanıcı iptale basarsa işlem yapma
+    if (!file) return;
 
     const reader = new FileReader();
     reader.onload = function(event) {
         const img = new Image();
         img.onload = function() {
-            customBgImage = img; // Görseli tuval motoruna aktar
+            // LocalStorage (5MB) çökmesini engellemek için resmi arka planda optimize et (Max 1920px)
+            const maxDim = 1920;
+            let w = img.width;
+            let h = img.height;
             
-            // Çakışmayı önlemek için diğer arka plan seçimlerini sıfırla
-            document.getElementById('bgImageSelect').value = ''; 
-            document.getElementById('bgTheme').value = 'solidDark';
+            if (w > maxDim || h > maxDim) {
+                const ratio = Math.min(maxDim / w, maxDim / h);
+                w = Math.round(w * ratio);
+                h = Math.round(h * ratio);
+            }
+
+            const tempCanvas = document.createElement('canvas');
+            tempCanvas.width = w;
+            tempCanvas.height = h;
+            const tCtx = tempCanvas.getContext('2d');
+            tCtx.drawImage(img, 0, 0, w, h);
             
-            scheduleSaveAndDraw(); // Tuvali hemen güncelle
-            showToast("📸 Özel görseliniz başarıyla yüklendi!"); // Kullanıcıya zarif bir bildirim ver
+            // Resmi %85 kalite JPEG'e dönüştürerek boyutunu dramatik şekilde düşür
+            const compressedDataUrl = tempCanvas.toDataURL('image/jpeg', 0.85);
+
+            const finalImg = new Image();
+            finalImg.onload = function() {
+                customBgImage = finalImg; 
+                document.getElementById('bgImageSelect').value = ''; 
+                document.getElementById('bgTheme').value = 'solidDark';
+                scheduleSaveAndDraw();
+                showToast("📸 Özel görseliniz başarıyla eklendi!"); 
+            };
+            finalImg.src = compressedDataUrl;
         };
         img.src = event.target.result;
     };
-    // Dosyayı sunucuya göndermeden, doğrudan cihaz rami üzerinden yüksek hızda oku
     reader.readAsDataURL(file);
-    
-    // Aynı dosyayı üst üste seçebilmek için input'u sıfırla
     this.value = ''; 
 });
                                  
