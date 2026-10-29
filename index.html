@@ -1475,8 +1475,18 @@ document.getElementById('localBgUpload').addEventListener('change', function(e) 
             const author = document.getElementById('author').value;
             const source = document.getElementById('source').value;
             
-            const baseW = format === '169' ? 1920 : 1080;
-            const baseH = 1080;
+            let baseW = format === '169' ? 1920 : 1080;
+            let baseH = 1080;
+            
+            // YENİ: Eğer "Orijinal" seçildiyse tuvali resmin ebadına genişlet/daralt
+            if (format === 'custom') {
+                if (customBgImage) {
+                    baseW = customBgImage.width;
+                    baseH = customBgImage.height;
+                } else {
+                    baseW = 1080; baseH = 1920; // Resim yoksa dikey portre varsay
+                }
+            }
 
             canvas.width = baseW * exportMultiplier;
             canvas.height = baseH * exportMultiplier;
