@@ -1918,15 +1918,28 @@ document.getElementById('localBgUpload').addEventListener('change', function(e) 
             activeDragTarget = null;
             
             const targets = ['brand', 'author', 'ex', 'tr', 'ar'];
+            let hitText = false;
+
             for (let target of targets) {
                 let box = hitBoxes[target];
                 if (box && pos.x >= box.x && pos.x <= box.x + box.w && pos.y >= box.y && pos.y <= box.y + box.h) {
                     activeDragTarget = target;
                     dragStartX = pos.x; dragStartY = pos.y;
                     initialDragOffset = { x: dragOffsets[target].x, y: dragOffsets[target].y };
+                    hitText = true;
                     if(e.type === 'touchstart' && e.cancelable) e.preventDefault();
                     break;
                 }
+            }
+
+            // YENİ: Eğer metinlere tıklanmadıysa farenin Arka Planı tutmasını sağla (Pan Modu)
+            if (!hitText) {
+                activeDragTarget = 'bg';
+                dragStartX = pos.x; 
+                dragStartY = pos.y;
+                if (!dragOffsets.bg) dragOffsets.bg = { x: 0, y: 0 };
+                initialDragOffset = { x: dragOffsets.bg.x, y: dragOffsets.bg.y };
+                if(e.type === 'touchstart' && e.cancelable) e.preventDefault();
             }
         }
 
