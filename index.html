@@ -645,6 +645,7 @@
                             <option value="normal">Normal (Standart Gölge)</option>
                             <option value="engrave">Kazıma (İç Gölge / Pres)</option>
                             <option value="neon">Neon (Katmanlı Işıldama)</option>
+                            <option value="hdrMetallic">✨ HDR Metalik (Parıltı)</option>
                         </select>
                     </div>
                     <hr style="border: 0; border-top: 1px solid #333; margin: 5px 0;">
@@ -747,6 +748,7 @@
                             <option value="normal">Normal (Standart Gölge)</option>
                             <option value="engrave">Kazıma (İç Gölge / Pres)</option>
                             <option value="neon">Neon (Katmanlı Işıldama)</option>
+                            <option value="hdrMetallic">✨ HDR Metalik (Parıltı)</option>
                         </select>
                     </div>
                     <hr style="border: 0; border-top: 1px solid #333; margin: 5px 0;">
@@ -774,7 +776,7 @@
                     <hr style="border: 0; border-top: 1px solid #333; margin: 5px 0;">
                     <div class="effect-row">
                         <label style="display:flex; align-items:center; gap:5px; cursor:pointer; color:#e0e0e0;">
-                            <input type="checkbox" id="trHighlight" onchange="scheduleSaveAndDraw()"> Satır Vurgu (Arka Plan Kutusu)
+                            <input type="checkbox" id="trHighlight" onchange="scheduleSaveAndDraw()" checked> Satır Vurgu (Arka Plan Kutusu)
                         </label>
                         <input type="color" id="trHighlightColor" value="#c5a059" oninput="scheduleSaveAndDraw()">
                     </div>
@@ -849,6 +851,7 @@
                             <option value="normal">Normal (Standart Gölge)</option>
                             <option value="engrave">Kazıma (İç Gölge / Pres)</option>
                             <option value="neon">Neon (Katmanlı Işıldama)</option>
+                            <option value="hdrMetallic">✨ HDR Metalik (Parıltı)</option>
                         </select>
                     </div>
                     <hr style="border: 0; border-top: 1px solid #333; margin: 5px 0;">
@@ -951,6 +954,7 @@
                             <option value="normal">Normal (Standart Gölge)</option>
                             <option value="engrave">Kazıma (İç Gölge / Pres)</option>
                             <option value="neon">Neon (Katmanlı Işıldama)</option>
+                            <option value="hdrMetallic">✨ HDR Metalik (Parıltı)</option>
                         </select>
                     </div>
                     <hr style="border: 0; border-top: 1px solid #333; margin: 5px 0;">
@@ -1059,6 +1063,7 @@
                             <option value="normal">Normal (Standart Gölge)</option>
                             <option value="engrave">Kazıma (İç Gölge / Pres)</option>
                             <option value="neon">Neon (Katmanlı Işıldama)</option>
+                            <option value="hdrMetallic">✨ HDR Metalik (Parıltı)</option>
                         </select>
                     </div>
                     <hr style="border: 0; border-top: 1px solid #333; margin: 5px 0;">
@@ -2081,7 +2086,7 @@
                 fillStyle = grad;
             }
 
-            if (props.depth3D > 0 && props.effectType === 'normal') {
+            if (props.depth3D > 0 && (props.effectType === 'normal' || props.effectType === 'hdrMetallic')) {
                 ctx.save();
                 ctx.fillStyle = (props.fillType === 'solid') ? hexToRgba(props.fillColor, 0.3) : '#1a1a1a';
                 ctx.shadowColor = 'transparent';
@@ -2092,7 +2097,39 @@
             }
 
             ctx.save();
-            if (props.effectType === 'neon') {
+            if (props.effectType === 'hdrMetallic') {
+                // 1. Düz renk yerine metalik yansıma gradyanı (Metallic Gradient)
+                let grad = ctx.createLinearGradient(0, y, 0, y + scaledLineHeight);
+                grad.addColorStop(0.1, '#ffffff'); // Üst parlak
+                grad.addColorStop(0.5, props.fillColor !== '#ffffff' ? props.fillColor : '#cccccc'); // Orta gövde rengi
+                grad.addColorStop(0.9, '#ffffff'); // Alt parlak
+                
+                // 2. "Dark Glow" - Yoğun karanlık HDR gölgesi
+                ctx.shadowColor = '#000000'; // Simsiyah HDR bulutu
+                
+                // Geniş dış bulut
+                ctx.shadowBlur = 45 * scale;
+                ctx.shadowOffsetX = 0;
+                ctx.shadowOffsetY = 0;
+                ctx.fillStyle = grad;
+                ctx.fillText(text.trim(), x, y);
+
+                // Dar iç keskin gölge
+                ctx.shadowBlur = 15 * scale;
+                ctx.fillText(text.trim(), x, y);
+                
+                // 3. İnce, jilet gibi kontür (Hacim ve keskinlik için)
+                ctx.restore(); // Gölgeleri sıfırla
+                ctx.save();
+                ctx.lineWidth = 1.5 * scale;
+                ctx.strokeStyle = 'rgba(0,0,0,0.7)'; // Yarı saydam siyah dış hat
+                ctx.strokeText(text.trim(), x, y);
+                
+                // Üzerine tekrar gradyan dolguyu bas ki kontür altında kalmasın, temiz görünsün
+                ctx.fillStyle = grad;
+                ctx.fillText(text.trim(), x, y);
+
+            } else if (props.effectType === 'neon') {
                 ctx.shadowColor = hexToRgba(props.shadowColorHex, props.shadowOpacity);
                 ctx.fillStyle = '#ffffff'; 
                 [35, 20, 10, 5].forEach(b => {
