@@ -930,6 +930,29 @@
             localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
         }
 
+                function saveStateToLocal() {
+            const state = { inputs: {}, styles: styles, dragOffsets: dragOffsets };
+            document.querySelectorAll('input, select, textarea').forEach(el => {
+                if(el.id && el.type !== 'file' && el.type !== 'button') {
+                    state.inputs[el.id] = el.type === 'checkbox' ? el.checked : el.value;
+                }
+            });
+            
+            // ÖZEL GÖRSELİ HAFIZAYA EKLE (Link veya Base64)
+            if (customBgImage && customBgImage.src) {
+                state.savedBgSrc = customBgImage.src;
+            }
+            
+            try {
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+            } catch (e) {
+                // Eğer cihazdan yüklenen resim tarayıcı kotasını (5MB) aşarsa çökmeyi önle, resimsiz kaydet
+                console.warn("Hafıza kotası aşıldı, resim harici veriler kaydedildi.");
+                delete state.savedBgSrc;
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+            }
+        }
+
         function loadStateFromLocal() {
             try {
                 const data = localStorage.getItem(STORAGE_KEY);
@@ -939,11 +962,6 @@
                 
                 if(state.dragOffsets) {
                     dragOffsets = state.dragOffsets;
-                    if(dragOffsets.footer) {
-                        dragOffsets.author = { x: dragOffsets.footer.x, y: dragOffsets.footer.y };
-                        dragOffsets.brand = { x: dragOffsets.footer.x, y: dragOffsets.footer.y };
-                        delete dragOffsets.footer;
-                    }
                     if(!dragOffsets.author) dragOffsets.author = { x: 0, y: 0 };
                     if(!dragOffsets.brand) dragOffsets.brand = { x: 0, y: 0 };
                 }
@@ -958,10 +976,12 @@
                     }
                 }
                 
-                // Kayıttan yükleme sonrası seçili arka plan görseli varsa onu da yükle
-                const bgSelectVal = document.getElementById('bgImageSelect').value;
-                if (bgSelectVal) {
-                    loadCustomBackground(bgSelectVal, false);
+                // ÖZEL GÖRSELİ HAFIZADAN GERİ YÜKLE
+                if (state.savedBgSrc) {
+                    loadCustomBackground(state.savedBgSrc, false);
+                } else {
+                    const bgSelectVal = document.getElementById('bgImageSelect').value;
+                    if (bgSelectVal) loadCustomBackground(bgSelectVal, false);
                 }
 
                 updateStyleButtonsUI();
