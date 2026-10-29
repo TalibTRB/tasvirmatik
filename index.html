@@ -1158,19 +1158,28 @@ document.getElementById('localBgUpload').addEventListener('change', function(e) 
 
                         // Eğer kullanıcı kendi görselini seçtiyse orantılı kapla (Sıkışmayı Önler)
             if (customBgImage) {
-                // "Object-fit: cover" Mantığı - Resmi bozmadan tuvali tam kaplayacak şekilde ölçekler
                 const scale = Math.max(w / customBgImage.width, h / customBgImage.height);
                 const newWidth = customBgImage.width * scale;
                 const newHeight = customBgImage.height * scale;
                 
-                // Resmi tam ortaya (merkeze) hizalamak için ofset hesapla
-                const offsetX = (w - newWidth) / 2;
-                const offsetY = (h - newHeight) / 2;
+                // Resmi tam ortaya hizalamak için varsayılan ofset hesapla
+                let offsetX = (w - newWidth) / 2;
+                let offsetY = (h - newHeight) / 2;
+
+                // YENİ: Kullanıcının fare/parmakla kaydırdığı değeri (Pan) ekle
+                if (typeof dragOffsets !== 'undefined' && dragOffsets.bg) {
+                    offsetX += dragOffsets.bg.x;
+                    offsetY += dragOffsets.bg.y;
+                }
+
+                // YENİ: Resmin dışına çıkıldığında siyah/boş alan görünmemesi için sınırlandırıcı (Clamp Motoru)
+                // Not: "Orijinal Boyut" seçildiyse bu sistem resmi otomatik kilitler (kaymasını engeller).
+                offsetX = Math.min(0, Math.max(offsetX, w - newWidth));
+                offsetY = Math.min(0, Math.max(offsetY, h - newHeight));
                 
                 ctx.drawImage(customBgImage, offsetX, offsetY, newWidth, newHeight);
                 return;
             }
-
 
             if (theme === 'solidDark') { ctx.fillStyle = '#0a0a0c'; ctx.fillRect(0, 0, w, h); } 
             else if (theme === 'solidLight') { ctx.fillStyle = '#f5f5f0'; ctx.fillRect(0, 0, w, h); } 
