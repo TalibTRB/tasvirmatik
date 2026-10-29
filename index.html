@@ -2042,13 +2042,22 @@
             if (styleObj.align === 'center') lineX = x - width / 2;
             else if (styleObj.align === 'right') lineX = x - width;
 
-            if (props.highlight) {
-                ctx.save();
-                ctx.shadowColor = 'transparent';
-                ctx.fillStyle = hexToRgba(props.highlightColor, 0.25);
-                ctx.fillRect(lineX - 15*scale, y + scaledLineHeight * 0.1, width + 30*scale, scaledLineHeight * 0.9);
-                ctx.restore();
-            }
+                    if (props.highlight) {
+            ctx.save();
+            // 1. Katman: Geniş ve yüksek bulanıklığa sahip dış duman (Feathered Edge)
+            ctx.shadowColor = props.highlightColor;
+            ctx.shadowBlur = 50 * scale;
+            ctx.shadowOffsetX = 0;
+            ctx.shadowOffsetY = 0;
+            ctx.fillStyle = hexToRgba(props.highlightColor, 0.15); // Çok hafif iç renk
+            ctx.fillRect(lineX - 25 * scale, y + scaledLineHeight * 0.05, width + 50 * scale, scaledLineHeight * 1.1);
+            
+            // 2. Katman: Odaklayıcı, daha dar ve belirgin iç çekirdek dumanı
+            ctx.shadowBlur = 20 * scale;
+            ctx.fillStyle = hexToRgba(props.highlightColor, 0.35); // Daha yoğun merkez
+            ctx.fillRect(lineX - 5 * scale, y + scaledLineHeight * 0.15, width + 10 * scale, scaledLineHeight * 0.8);
+            ctx.restore();
+        }
 
             let fillStyle = props.fillColor;
             if (props.fillType === 'gold') {
