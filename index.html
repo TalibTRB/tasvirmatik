@@ -1088,7 +1088,7 @@ document.getElementById('localBgUpload').addEventListener('change', function(e) 
 
         function askClearDragOffsets() {
             openModal("Sürüklemeyi Sıfırla", "Metinlerin kendi etrafında bağımsız kaydırdığınız konumları sıfırlanarak orijinal merkeze geri alınacaktır. Onaylıyor musunuz?", () => {
-                dragOffsets = { ar: {x:0, y:0}, tr: {x:0, y:0}, ex: {x:0, y:0}, author: {x:0, y:0}, brand: {x:0, y:0} };
+                dragOffsets = { ar: {x:0, y:0}, tr: {x:0, y:0}, ex: {x:0, y:0}, author: {x:0, y:0}, brand: {x:0, y:0}, bg: {x:0, y:0} };
                 scheduleSaveAndDraw();
                 showToast("Sürükleme konumları sıfırlandı!");
             });
