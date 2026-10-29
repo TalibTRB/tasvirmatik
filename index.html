@@ -1002,7 +1002,7 @@
         </div>
 
         <!-- 6. İMZA / MARKA AYARLARI -->
-        <div class="section" id="sec-brand" style="border-bottom: none;">
+        <div class="section" id="sec-brand">
             <div class="section-title">İmza & Marka Ayarları</div>
             
             <!-- İmza Stil Araç Çubuğu -->
@@ -1104,6 +1104,34 @@
             </div>
         </div>
 
+        <!-- 7. EK GÖRSEL / LOGO AYARLARI (YENİ UÇAN RESİM PANELİ) -->
+        <div class="section" id="sec-floating" style="border-bottom: none;">
+            <div class="section-title">Ek Görsel / Logo (Uçan Resim)</div>
+            
+            <div style="margin-bottom: 10px; display:flex; gap:10px;">
+                <input type="file" id="floatingUpload" accept="image/png, image/jpeg, image/webp" style="display: none;">
+                <label for="floatingUpload" class="btn-tool-action" style="margin-top: 0; background: #1a1a1d; border: 1px dashed #c5a059; color: #e0e0e0; flex: 1;">
+                    <i class="fas fa-image" style="color: #c5a059;"></i> Mühür/Logo Seç
+                </label>
+                <button class="btn-tool-action" style="margin-top: 0; flex: 0.3; color:#ff6b6b; border-color:#4a2020;" onclick="clearFloatingImage()" title="Görseli Kaldır">
+                    <i class="fas fa-trash-alt"></i>
+                </button>
+            </div>
+
+            <div class="slider-label"><span>Görsel Boyutu</span></div>
+            <input type="range" id="floatSizeMultiplier" min="0.1" max="3.0" step="0.05" value="1.0" oninput="scheduleSaveAndDraw()" style="margin-bottom:10px;">
+
+            <details class="effect-panel">
+                <summary><i class="fas fa-layer-group"></i> ✨ 3D Gölge Ayarları</summary>
+                <div class="effect-content">
+                    <div class="slider-label"><span>Gölge Şeffaflığı</span></div>
+                    <input type="range" id="floatShadowOpacity" min="0" max="1" step="0.1" value="0.6" oninput="scheduleSaveAndDraw()">
+                    <div class="slider-label"><span>Gölge Bulanıklığı (Derinlik)</span></div>
+                    <input type="range" id="floatShadowBlur" min="0" max="100" step="1" value="35" oninput="scheduleSaveAndDraw()">
+                </div>
+            </details>
+        </div>
+
         <div class="action-buttons" style="margin-top: 5px;">
             <button class="btn-primary btn-share" onclick="shareImage()"><i class="fas fa-share-alt"></i> Paylaş</button>
             <div style="display:flex; flex: 2.5; flex-direction:column; gap:5px;">
@@ -1168,11 +1196,14 @@
             ex: { x: 0, y: 0 },
             author: { x: 0, y: 0 },
             brand: { x: 0, y: 0 },
-            bg: { x: 0, y: 0 }
+            bg: { x: 0, y: 0 },
+            floating: { x: 0, y: 0 }
         };
 
-        let hitBoxes = { ar: null, tr: null, ex: null, author: null, brand: null };
+        let hitBoxes = { ar: null, tr: null, ex: null, author: null, brand: null, floating: null };
         let customBgImage = null;
+        let customFloatingImage = null;
+        
         const STORAGE_KEY = 'tasvirmatik_autosave_v2';
         let saveTimeout;
         
@@ -1185,6 +1216,30 @@
                 showToast("🗑️ Metin temizlendi!");
             }
         }
+
+        // UÇAN RESİM SİLME / YÜKLEME FONKSİYONU
+        function clearFloatingImage() {
+            customFloatingImage = null;
+            scheduleSaveAndDraw();
+            showToast("🗑️ Ek görsel kaldırıldı!");
+        }
+        
+        document.getElementById('floatingUpload').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                const img = new Image();
+                img.onload = function() {
+                    customFloatingImage = img;
+                    scheduleSaveAndDraw();
+                    showToast("📸 Ek görsel başarıyla eklendi!");
+                };
+                img.src = event.target.result;
+            };
+            reader.readAsDataURL(file);
+            this.value = ''; 
+        });
 
         function scheduleSaveAndDraw() {
             drawAllCanvases();
@@ -1203,6 +1258,9 @@
             if (customBgImage && customBgImage.src) {
                 state.savedBgSrc = customBgImage.src;
             }
+            if (customFloatingImage && customFloatingImage.src) {
+                state.savedFloatingSrc = customFloatingImage.src;
+            }
             
             try {
                 localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
@@ -1210,6 +1268,7 @@
             } catch (e) {
                 console.warn("Hafıza kotası aşıldı, resim harici veriler kaydedildi.");
                 delete state.savedBgSrc;
+                delete state.savedFloatingSrc;
                 localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
                 if(typeof pushToHistory === "function") pushToHistory();
             }
@@ -1226,6 +1285,7 @@
                     dragOffsets = state.dragOffsets;
                     if(!dragOffsets.author) dragOffsets.author = { x: 0, y: 0 };
                     if(!dragOffsets.brand) dragOffsets.brand = { x: 0, y: 0 };
+                    if(!dragOffsets.floating) dragOffsets.floating = { x: 0, y: 0 };
                 }
                 
                 if(state.inputs) {
@@ -1243,6 +1303,12 @@
                 } else {
                     const bgSelectVal = document.getElementById('bgImageSelect').value;
                     if (bgSelectVal) loadCustomBackground(bgSelectVal, false);
+                }
+                
+                if (state.savedFloatingSrc) {
+                    const fImg = new Image();
+                    fImg.onload = () => { customFloatingImage = fImg; scheduleSaveAndDraw(); };
+                    fImg.src = state.savedFloatingSrc;
                 }
 
                 updateStyleButtonsUI();
@@ -1357,7 +1423,7 @@
 
         function askClearDragOffsets() {
             openModal("Sürüklemeyi Sıfırla", "Metinlerin kendi etrafında bağımsız kaydırdığınız konumları sıfırlanarak orijinal merkeze geri alınacaktır. Onaylıyor musunuz?", () => {
-                dragOffsets = { ar: {x:0, y:0}, tr: {x:0, y:0}, ex: {x:0, y:0}, author: {x:0, y:0}, brand: {x:0, y:0}, bg: {x:0, y:0} };
+                dragOffsets = { ar: {x:0, y:0}, tr: {x:0, y:0}, ex: {x:0, y:0}, author: {x:0, y:0}, brand: {x:0, y:0}, bg: {x:0, y:0}, floating: {x:0, y:0} };
                 scheduleSaveAndDraw();
                 showToast("Sürükleme konumları sıfırlandı!");
             });
@@ -1719,7 +1785,7 @@
             const trSizeMultiplier = parseFloat(document.getElementById('trSizeMultiplier').value);
             const exSizeMultiplier = parseFloat(document.getElementById('exSizeMultiplier').value);
 
-            if(exportMultiplier === 1) hitBoxes = { ar: null, tr: null, ex: null, author: null, brand: null };
+            if(exportMultiplier === 1) hitBoxes = { ar: null, tr: null, ex: null, author: null, brand: null, floating: null };
 
             const arProps = {
                 fillType: document.getElementById('arFillType').value, effectType: document.getElementById('arEffectType').value,
@@ -2032,6 +2098,37 @@
                     hitBoxes.brand = { x: baseW * 0.05 + brandDrawX, y: brandDrawY - 15, w: baseW * 0.9, h: 50 };
                 }
             }
+            
+            // --- YENİ EKLENEN UÇAN RESİM ÇİZİMİ ---
+            if (customFloatingImage) {
+                ctx.save();
+                const floatScale = (document.getElementById('floatSizeMultiplier') ? parseFloat(document.getElementById('floatSizeMultiplier').value) : 1.0) * scale;
+                const fWidth = customFloatingImage.width * floatScale;
+                const fHeight = customFloatingImage.height * floatScale;
+                
+                // Varsayılan pozisyon (Üst merkez)
+                let defaultFX = (baseW - fWidth) / 2;
+                let defaultFY = 80 * scale; 
+                
+                let fDrawX = defaultFX + dragOffsets.floating.x + globalXOffset;
+                let fDrawY = defaultFY + dragOffsets.floating.y + globalYOffset;
+                
+                // 3D Gölge
+                const fShadowOp = document.getElementById('floatShadowOpacity') ? parseFloat(document.getElementById('floatShadowOpacity').value) : 0.6;
+                const fShadowBlur = document.getElementById('floatShadowBlur') ? parseInt(document.getElementById('floatShadowBlur').value) : 35;
+                
+                ctx.shadowColor = `rgba(0, 0, 0, ${fShadowOp})`;
+                ctx.shadowBlur = fShadowBlur * scale;
+                ctx.shadowOffsetX = 0;
+                ctx.shadowOffsetY = 12 * scale;
+                
+                ctx.drawImage(customFloatingImage, fDrawX, fDrawY, fWidth, fHeight);
+                ctx.restore();
+                
+                if (exportMultiplier === 1) {
+                    hitBoxes.floating = { x: fDrawX, y: fDrawY, w: fWidth, h: fHeight };
+                }
+            }
         }
 
         function drawAdvancedTextLine(ctx, text, canvasWidth, y, scaledLineHeight, styleObj, xOffset, props, scale, baseColorHex) {
@@ -2263,7 +2360,7 @@ function getEventPos(canvas, e) {
 
 function handleDoubleClick(canvas, e) {
     const pos = getEventPos(canvas, e);
-    const targets = ['brand', 'author', 'ex', 'tr', 'ar'];
+    const targets = ['floating', 'brand', 'author', 'ex', 'tr', 'ar'];
     
     const targetElementMap = {
         'ar': 'arabicText',
@@ -2274,6 +2371,8 @@ function handleDoubleClick(canvas, e) {
     };
 
     for (let target of targets) {
+        if (target === 'floating') continue; // Uçan resim için çift tıkla metne gitme yok
+        
         let box = hitBoxes[target];
         if (box && pos.x >= box.x && pos.x <= box.x + box.w && pos.y >= box.y && pos.y <= box.y + box.h) {
             const elemId = targetElementMap[target];
@@ -2319,7 +2418,8 @@ function handleDragStart(canvas, e) {
     }
 
     activeDragTarget = null;
-    const targets = ['brand', 'author', 'ex', 'tr', 'ar'];
+    // Öncelik 'floating' (uçan resim) katmanında, böylece metinle çakışırsa resim tutulur
+    const targets = ['floating', 'brand', 'author', 'ex', 'tr', 'ar'];
     let hitText = false;
 
     for (let target of targets) {
@@ -2434,7 +2534,8 @@ function attachDragListeners(canvasId) {
                 inputs: {}, 
                 styles: JSON.parse(JSON.stringify(styles)), 
                 dragOffsets: JSON.parse(JSON.stringify(dragOffsets)), 
-                bgImage: customBgImage ? customBgImage.src : null 
+                bgImage: customBgImage ? customBgImage.src : null,
+                floatingImage: customFloatingImage ? customFloatingImage.src : null
             };
             document.querySelectorAll('input, select, textarea').forEach(el => {
                 if(el.id && el.type !== 'file' && el.type !== 'button') {
@@ -2486,8 +2587,16 @@ function attachDragListeners(canvasId) {
             if (state.bgImage) { loadCustomBackground(state.bgImage, false); } 
             else { customBgImage = null; }
 
+            if (state.floatingImage) {
+                const fImg = new Image();
+                fImg.onload = () => { customFloatingImage = fImg; drawAllCanvases(); };
+                fImg.src = state.floatingImage;
+            } else {
+                customFloatingImage = null;
+            }
+
             updateStyleButtonsUI();
-            drawAllCanvases();
+            if (!state.floatingImage) drawAllCanvases();
             
             localStorage.setItem(STORAGE_KEY, stateStr);
             setTimeout(() => { isUndoRedoAction = false; }, 200);
