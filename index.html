@@ -19,7 +19,7 @@
       "@type": "WebApplication",
       "name": "Tasvirmatik",
       "url": "https://tasvirmatik.vercel.app/",
-      "description": "Arapça and Türkçe metinleri 3D efektlerle görselleştiren ücretsiz web tabanlı tasarım aracı.",
+      "description": "Arapça ve Türkçe metinleri 3D efektlerle görselleştiren ücretsiz web tabanlı tasarım aracı.",
       "applicationCategory": "DesignApplication",
       "operatingSystem": "All",
       "author": {
@@ -34,10 +34,10 @@
       }
     }
     </script>
-<title>Tasvirmatik 1.0 | 3D Yazı and Görsel Oluşturucu | @TalibTRB</title>
+<title>Tasvirmatik 1.0 | 3D Yazı ve Görsel Oluşturucu | @TalibTRB</title>
 
 <!-- TEMEL SEO AYARLARI -->
-    <meta name="description" content="Arapça and Türkçe metinleri, hadis ve ayetleri 3D efektler, özel fontlar and çerçevelerle ücretsiz tasvir edebileceğiniz reklamsız grafik tasarım aracı.">
+    <meta name="description" content="Arapça ve Türkçe metinleri, hadis ve ayetleri 3D efektler, özel fontlar ve çerçevelerle ücretsiz tasvir edebileceğiniz reklamsız grafik tasarım aracı.">
     <meta name="keywords" content="tasvirmatik, arapça yazılı görsel, ayet tasviri, hadis tasviri, 3d metin, hat sanatı, dini grafik, alıntı kartı, islami tasarım, talib turab, ücretsiz, reklamsız">
     <meta name="author" content="Tâlib Turâb">
     <link rel="canonical" href="https://tasvirmatik.vercel.app/">
@@ -46,7 +46,7 @@
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://tasvirmatik.vercel.app/">
     <meta property="og:title" content="Tasvirmatik | 3D İslami Grafik & Tasvir Stüdyosu">
-    <meta property="og:description" content="Metinlerinizi muazzam 3D efektler, özel arka planlar and hat fontlarıyla saniyeler içinde görselleştirin. Ücretsiz and reklamsız.">
+    <meta property="og:description" content="Metinlerinizi muazzam 3D efektler, özel arka planlar ve hat fontlarıyla saniyeler içinde görselleştirin. Ücretsiz ve reklamsız.">
     <meta property="og:image" content="https://tasvirmatik.vercel.app/icon.png">
 
     <!-- TWITTER CARDS (X Paylaşım Önizlemeleri) -->
@@ -54,7 +54,7 @@
     <meta name="twitter:site" content="@TalibTRB">
     <meta name="twitter:creator" content="@TalibTRB">
     <meta name="twitter:title" content="Tasvirmatik | 3D Tasvir Stüdyosu">
-    <meta name="twitter:description" content="Arapça and Türkçe metinleriniz için ücretsiz, reklamsız and kurulumsuz 3D grafik oluşturucu.">
+    <meta name="twitter:description" content="Arapça ve Türkçe metinleriniz için ücretsiz, reklamsız ve kurulumsuz 3D grafik oluşturucu.">
     <meta name="twitter:image" content="https://tasvirmatik.vercel.app/icon.png">
     
 <!-- PWA Mobil Tam Ekran (Standalone) Meta Etiketleri -->
@@ -238,7 +238,7 @@
             border-radius: 0 !important; box-shadow: none !important; display: block; margin: 0 auto;
         }
         
-        /* PC İÇİN ALT MERKEZ YÜZEN İPUCU ROZETİ (Yalnızca masaüstünde görünür) */
+        /* PC İÇİN ALT MERKEZ YÜZEN İPUCU ROZETİ */
         .drag-hint-pc {
             position: absolute;
             bottom: 30px;
@@ -266,6 +266,46 @@
         textarea { resize: vertical; min-height: 70px; }
         .arabic-input { font-size: 22px; direction: rtl; font-family: 'Amiri', sans-serif; }
         
+        /* METİN SİLME (ÇÖP KUTUSU) SARICISI VE BUTONU */
+        .input-clear-wrapper {
+            position: relative;
+            width: 100%;
+            margin-bottom: 10px;
+        }
+        .input-clear-wrapper textarea,
+        .input-clear-wrapper input[type="text"] {
+            margin-bottom: 0 !important;
+            padding-right: 38px;
+        }
+        .btn-clear-input {
+            position: absolute;
+            right: 8px;
+            top: 8px;
+            background: rgba(255, 107, 107, 0.12);
+            color: #ff6b6b;
+            border: 1px solid rgba(255, 107, 107, 0.3);
+            border-radius: 6px;
+            width: 26px;
+            height: 26px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 11px;
+            z-index: 5;
+        }
+        .btn-clear-input:hover {
+            background: #ff6b6b;
+            color: #000;
+            border-color: #ff6b6b;
+            box-shadow: 0 0 10px rgba(255, 107, 107, 0.5);
+        }
+        .input-clear-wrapper input[type="text"] + .btn-clear-input {
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
         .toolbar { display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 10px; background: #121214; padding: 5px; border-radius: 6px; border: 1px solid #333; }
         .tool-btn { background: transparent; color: #aaa; border: none; padding: 6px 10px; cursor: pointer; border-radius: 4px; transition: 0.2s; font-size: 14px; user-select: none; flex: 1; text-align: center; }
         .tool-btn:hover { background: #333; color: #fff; }
@@ -312,7 +352,8 @@
             .mobile-sticky-preview { display: flex !important; }
             .drag-hint-pc { display: none !important; }
         }
-                /* YENİ: ULTRA MEGA HIGH GERİ/İLERİ BUTONLARI */
+        
+        /* GERİ/İLERİ BUTONLARI */
         .history-controls { display: flex; gap: 10px; padding: 0 20px 15px 20px; border-bottom: 1px solid var(--border); }
         .btn-history {
             flex: 1; background: #121214; color: #666; border: 1px solid #333; padding: 12px;
@@ -357,7 +398,7 @@
     <!-- 4K / 8K İndirmeler için Gizli Arka Plan Tuvali -->
     <canvas id="exportCanvas" style="display:none;"></canvas>
 
-    <div class="sidebar">
+    <div class="sidebar" id="sidebarPanel">
         
         <!-- YUKARIDA BULUNAN OTO-KAYIT SIFIRLAMA BÖLÜMÜ -->
         <div class="section" style="padding-bottom: 10px; padding-top: 20px; border-bottom: none;">
@@ -385,6 +426,16 @@
         <!-- 1. TUVAL VE GÖRSEL AYARLARI -->
         <div class="section">
             <div class="section-title">Tuval & Görsel Ayarları</div>
+            <!-- Hazır Stil Reçeteleri -->
+            <div style="margin-bottom: 12px;">
+                <select id="stylePreset" onchange="applyStylePreset(this.value)" style="border-color: var(--accent); color: var(--accent); font-weight: bold;">
+                    <option value="">⚡ Hazır Stil Şablonu Seçin...</option>
+                    <option value="goldClassic">👑 Altın Varak & Koyu Duman</option>
+                    <option value="minimalDark">🖤 Koyu Minimalist (Sade Beyaz)</option>
+                    <option value="parchmentVintage">📜 Klasik Parşömen & Yazma</option>
+                    <option value="neonGlow">✨ Koyu Gece & Neon Işıltı</option>
+                </select>
+            </div>
             <select id="format" onchange="scheduleSaveAndDraw()">
                 <option value="169">X Manzara (1920x1080)</option>
                 <option value="11">X Kare (1080x1080)</option>
@@ -410,78 +461,78 @@
                 <option value="dustyRose">16. Gül Kurusu (Vintage)</option>
             </select>
 
-<!-- Arka Plan Görsel Seçim Alanı -->
-<div class="setting-group" style="margin-bottom: 15px;">
-    <label for="bgImageSelect" style="display: block; font-size: 12px; margin-bottom: 5px; color: #c9d1d9;">Arka Plan Görseli (Geniş Seçenekler)</label>
-    <select id="bgImageSelect" style="width: 100%; padding: 8px; background: #161b22; color: #c9d1d9; border: 1px solid #30363d; border-radius: 6px; font-size: 13px;">
-        <option value="">-- Düz Renk / Varsayılan --</option>
-        
-        <!-- Doğa ve Manzara -->
-        <optgroup label="Doğa & Manzara">
-            <option value="https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=1920&q=80">1. Alp Dağları ve Vadi</option>
-            <option value="https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?w=1920&q=80">2. Sisli Günbatımı</option>
-            <option value="https://images.unsplash.com/photo-1447752875215-b2761acb3c5d?w=1920&q=80">3. Çam Ağaçları Arasındaki Yol</option>
-            <option value="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=1920&q=80">4. Karlı Zirveler</option>
-            <option value="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=1920&q=80">5. Tropikal Sahil ve Turkuaz</option>
-            <option value="https://images.unsplash.com/photo-1519681393784-d120267933ba?w=1920&q=80">6. Yıldızlı Gece ve Dağlar</option>
-            <option value="https://images.unsplash.com/photo-1454496522488-7a8e488e8606?w=1920&q=80">7. Dağ Sırtları ve Bulutlar</option>
-            <option value="https://images.unsplash.com/photo-1509316975850-ff9c5deb0cd9?w=1920&q=80">8. Çam Ormanı Sonbahar</option>
-            <option value="https://images.unsplash.com/photo-1523712999610-f77fbcfc3843?w=1920&q=80">9. Orman Günbatımı</option>
-            <option value="https://images.unsplash.com/photo-1465146344425-f00d5f5c8f07?w=1920&q=80">10. Çiçekli Vadi</option>
-        </optgroup>
+            <!-- Arka Plan Görsel Seçim Alanı -->
+            <div class="setting-group" style="margin-bottom: 15px;">
+                <label for="bgImageSelect" style="display: block; font-size: 12px; margin-bottom: 5px; color: #c9d1d9;">Arka Plan Görseli (Geniş Seçenekler)</label>
+                <select id="bgImageSelect" style="width: 100%; padding: 8px; background: #161b22; color: #c9d1d9; border: 1px solid #30363d; border-radius: 6px; font-size: 13px;">
+                    <option value="">-- Düz Renk / Varsayılan --</option>
+                    
+                    <!-- Doğa ve Manzara -->
+                    <optgroup label="Doğa & Manzara">
+                        <option value="https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=1920&q=80">1. Alp Dağları ve Vadi</option>
+                        <option value="https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?w=1920&q=80">2. Sisli Günbatımı</option>
+                        <option value="https://images.unsplash.com/photo-1447752875215-b2761acb3c5d?w=1920&q=80">3. Çam Ağaçları Arasındaki Yol</option>
+                        <option value="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=1920&q=80">4. Karlı Zirveler</option>
+                        <option value="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=1920&q=80">5. Tropikal Sahil ve Turkuaz</option>
+                        <option value="https://images.unsplash.com/photo-1519681393784-d120267933ba?w=1920&q=80">6. Yıldızlı Gece ve Dağlar</option>
+                        <option value="https://images.unsplash.com/photo-1454496522488-7a8e488e8606?w=1920&q=80">7. Dağ Sırtları ve Bulutlar</option>
+                        <option value="https://images.unsplash.com/photo-1509316975850-ff9c5deb0cd9?w=1920&q=80">8. Çam Ormanı Sonbahar</option>
+                        <option value="https://images.unsplash.com/photo-1523712999610-f77fbcfc3843?w=1920&q=80">9. Orman Günbatımı</option>
+                        <option value="https://images.unsplash.com/photo-1465146344425-f00d5f5c8f07?w=1920&q=80">10. Çiçekli Vadi</option>
+                    </optgroup>
 
-        <!-- Gökyüzü, Uzay ve Atmosfer -->
-        <optgroup label="Gökyüzü & Atmosfer">
-            <option value="https://images.unsplash.com/photo-1534447677768-be436bb09401?w=1920&q=80">11. Gemi ve Yıldızlar</option>
-            <option value="https://images.unsplash.com/photo-1502134249126-9f3755a50d78?w=1920&q=80">12. Kuzey Işıkları</option>
-            <option value="https://images.unsplash.com/photo-1513002749550-c59d786b8e6c?w=1920&q=80">13. Gökyüzü ve Bulut Katmanları</option>
-            <option value="https://images.unsplash.com/photo-1505533321630-975218a5f66f?w=1920&q=80">14. Bulut Üstü Gün Batımı</option>
-            <option value="https://images.unsplash.com/photo-1517483000871-1dbf64a6e1c6?w=1920&q=80">15. Fırtına Bulutları</option>
-            <option value="https://images.unsplash.com/photo-1444703686981-a3abbc4d4fe3?w=1920&q=80">16. Semaya Bakan</option>
-            <option value="https://images.unsplash.com/photo-1508739773434-c26b3d09e071?w=1920&q=80">17. Gündoğumu ve Dağlar</option>
-            <option value="https://images.unsplash.com/photo-1504608524841-42fe6f032b4b?w=1920&q=80">18. Güneş Işınları ve Bulut</option>
-        </optgroup>
+                    <!-- Gökyüzü, Uzay ve Atmosfer -->
+                    <optgroup label="Gökyüzü & Atmosfer">
+                        <option value="https://images.unsplash.com/photo-1534447677768-be436bb09401?w=1920&q=80">11. Gemi ve Yıldızlar</option>
+                        <option value="https://images.unsplash.com/photo-1502134249126-9f3755a50d78?w=1920&q=80">12. Kuzey Işıkları</option>
+                        <option value="https://images.unsplash.com/photo-1513002749550-c59d786b8e6c?w=1920&q=80">13. Gökyüzü ve Bulut Katmanları</option>
+                        <option value="https://images.unsplash.com/photo-1505533321630-975218a5f66f?w=1920&q=80">14. Bulut Üstü Gün Batımı</option>
+                        <option value="https://images.unsplash.com/photo-1517483000871-1dbf64a6e1c6?w=1920&q=80">15. Fırtına Bulutları</option>
+                        <option value="https://images.unsplash.com/photo-1444703686981-a3abbc4d4fe3?w=1920&q=80">16. Semaya Bakan</option>
+                        <option value="https://images.unsplash.com/photo-1508739773434-c26b3d09e071?w=1920&q=80">17. Gündoğumu ve Dağlar</option>
+                        <option value="https://images.unsplash.com/photo-1504608524841-42fe6f032b4b?w=1920&q=80">18. Güneş Işınları ve Bulut</option>
+                    </optgroup>
 
-        <!-- Mimari ve Soyut Doku -->
-        <optgroup label="Mimari & Soyut Dokular">
-            <option value="https://images.unsplash.com/photo-1579546929518-9e396f3cc809?w=1920&q=80">19. Soyut Renk Geçişi (Gradient)</option>
-            <option value="https://images.unsplash.com/photo-1550684848-fac1c5b4e853?w=1920&q=80">20. Renkli Taşlar</option>
-            <option value="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=1920&q=80">21. 3D Dalga Doku</option>
-            <option value="https://images.unsplash.com/photo-1541701494587-cb58502866ab?w=1920&q=80">22. Renkli Boya Dokusu</option>
-            <option value="https://images.unsplash.com/photo-1557683316-973673baf926?w=1920&q=80">23. Soyut Mor Geçiş</option>
-            <option value="https://images.unsplash.com/photo-1513694203232-719a280e022f?w=1920&q=80">24. Sade İç Mekan Soyut</option>
-            <option value="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1920&q=80">25. Gökdelen Mimari Geometri</option>
-            <option value="https://images.unsplash.com/photo-1558470598-a5dda9640f68?w=1920&q=80">26. Renk Patlaması</option>
-            <option value="https://images.unsplash.com/photo-1518837695005-2083093ee35b?w=1920&q=80">27. Su Damlası Yüzey Dokusu</option>
-        </optgroup>
-    </select>
-</div>
+                    <!-- Mimari ve Soyut Doku -->
+                    <optgroup label="Mimari & Soyut Dokular">
+                        <option value="https://images.unsplash.com/photo-1579546929518-9e396f3cc809?w=1920&q=80">19. Soyut Renk Geçişi (Gradient)</option>
+                        <option value="https://images.unsplash.com/photo-1550684848-fac1c5b4e853?w=1920&q=80">20. Renkli Taşlar</option>
+                        <option value="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=1920&q=80">21. 3D Dalga Doku</option>
+                        <option value="https://images.unsplash.com/photo-1541701494587-cb58502866ab?w=1920&q=80">22. Renkli Boya Dokusu</option>
+                        <option value="https://images.unsplash.com/photo-1557683316-973673baf926?w=1920&q=80">23. Soyut Mor Geçiş</option>
+                        <option value="https://images.unsplash.com/photo-1513694203232-719a280e022f?w=1920&q=80">24. Sade İç Mekan Soyut</option>
+                        <option value="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1920&q=80">25. Gökdelen Mimari Geometri</option>
+                        <option value="https://images.unsplash.com/photo-1558470598-a5dda9640f68?w=1920&q=80">26. Renk Patlaması</option>
+                        <option value="https://images.unsplash.com/photo-1518837695005-2083093ee35b?w=1920&q=80">27. Su Damlası Yüzey Dokusu</option>
+                    </optgroup>
+                </select>
+            </div>
             
-<!-- Cihazdan Görsel Yükleme (Hizalama Düzeltildi) -->
-<div style="margin-bottom: 15px; width: 100%; box-sizing: border-box;">
-    <input type="file" id="localBgUpload" accept="image/png, image/jpeg, image/webp, image/jpg" style="display: none;">
-    <label for="localBgUpload" class="btn-tool-action" style="margin-top: 0; background: #1a1a1d; border: 1px dashed #c5a059; color: #e0e0e0; padding: 12px; transition: all 0.3s; display: flex; justify-content: center; box-shadow: inset 0 0 15px rgba(0,0,0,0.5); width: 100%; box-sizing: border-box;">
-        <i class="fas fa-cloud-upload-alt" style="color: #c5a059; font-size: 16px;"></i> Cihazdan Kendi Görselini Yükle
-    </label>
-</div>
+            <!-- Cihazdan Görsel Yükleme -->
+            <div style="margin-bottom: 15px; width: 100%; box-sizing: border-box;">
+                <input type="file" id="localBgUpload" accept="image/png, image/jpeg, image/webp, image/jpg" style="display: none;">
+                <label for="localBgUpload" class="btn-tool-action" style="margin-top: 0; background: #1a1a1d; border: 1px dashed #c5a059; color: #e0e0e0; padding: 12px; transition: all 0.3s; display: flex; justify-content: center; box-shadow: inset 0 0 15px rgba(0,0,0,0.5); width: 100%; box-sizing: border-box;">
+                    <i class="fas fa-cloud-upload-alt" style="color: #c5a059; font-size: 16px;"></i> Cihazdan Kendi Görselini Yükle
+                </label>
+            </div>
 
-<!-- Arka Plan Filtreleri & İnce Ayarlar -->
-<details class="effect-panel" style="margin-bottom: 15px;">
-    <summary><i class="fas fa-sliders-h"></i> 🖼️ Arka Plan İnce Ayarları</summary>
-    <div class="effect-content">
-        <div class="slider-label"><span>Bulanıklık (Blur)</span></div>
-        <input type="range" id="bgBlur" min="0" max="40" value="0" oninput="scheduleSaveAndDraw()">
-        
-        <div class="slider-label"><span>Karartma (Koyu Katman)</span></div>
-        <input type="range" id="bgDarken" min="0" max="1" step="0.05" value="0" oninput="scheduleSaveAndDraw()">
-        
-        <div class="slider-label"><span>Ultra Parlak Yumuşatma</span></div>
-        <input type="range" id="bgBrighten" min="0" max="1" step="0.05" value="0" oninput="scheduleSaveAndDraw()">
+            <!-- Arka Plan Filtreleri & İnce Ayarlar -->
+            <details class="effect-panel" style="margin-bottom: 15px;">
+                <summary><i class="fas fa-sliders-h"></i> 🖼️ Arka Plan İnce Ayarları</summary>
+                <div class="effect-content">
+                    <div class="slider-label"><span>Bulanıklık (Blur)</span></div>
+                    <input type="range" id="bgBlur" min="0" max="40" value="0" oninput="scheduleSaveAndDraw()">
+                    
+                    <div class="slider-label"><span>Karartma (Koyu Katman)</span></div>
+                    <input type="range" id="bgDarken" min="0" max="1" step="0.05" value="0" oninput="scheduleSaveAndDraw()">
+                    
+                    <div class="slider-label"><span>Ultra Parlak Yumuşatma</span></div>
+                    <input type="range" id="bgBrighten" min="0" max="1" step="0.05" value="0" oninput="scheduleSaveAndDraw()">
 
-        <div class="slider-label"><span>Vinyet (Kenar Karartma)</span></div>
-        <input type="range" id="bgVignette" min="0" max="1" step="0.05" value="0" oninput="scheduleSaveAndDraw()">
-    </div>
-</details>
+                    <div class="slider-label"><span>Vinyet (Kenar Karartma)</span></div>
+                    <input type="range" id="bgVignette" min="0" max="1" step="0.05" value="0" oninput="scheduleSaveAndDraw()">
+                </div>
+            </details>
             
             <select id="overlayEffect" onchange="scheduleSaveAndDraw()">
                 <option value="none">✨ Efekt Katmanı Yok (Sade)</option>
@@ -500,6 +551,12 @@
                 <option value="vintageFlare">📜 Nostaljik Işık Sızıntısı</option>
                 <option value="starryNight">✨ Yıldız Kümesi</option>
             </select>
+
+            <!-- Çerçeve Rengi Seçim Paleti -->
+            <div class="color-picker-wrap" style="margin-top: 8px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; background: #121214; padding: 8px 12px; border-radius: 6px; border: 1px solid #333;">
+                <span style="font-size: 12px; color: #ccc;"><i class="fas fa-border-style" style="color:var(--accent);"></i> Çerçeve Rengi:</span>
+                <input type="color" id="frameColor" value="#c5a059" oninput="scheduleSaveAndDraw()" title="Çerçeve Rengini Seçin">
+            </div>
 
             <select id="frameStyle" onchange="scheduleSaveAndDraw()">
                 <option value="classic">1. Çerçeve: Klasik Tek Çizgi</option>
@@ -530,7 +587,7 @@
         </div>
 
         <!-- 2. ARAPÇA METİN -->
-        <div class="section">
+        <div class="section" id="sec-arabic">
             <div class="section-title">Arapça Metin (Orijinal)</div>
             <div class="toolbar" id="ar-tools">
                 <button class="tool-btn active" id="ar-bold" onclick="toggleStyle('ar', 'bold')"><i class="fas fa-bold"></i></button>
@@ -570,7 +627,7 @@
             <input type="range" id="arSizeMultiplier" min="0.5" max="2.0" step="0.05" value="1.0" oninput="scheduleSaveAndDraw()" style="margin-bottom:10px;">
 
             <details class="effect-panel">
-                <summary><i class="fas fa-layer-group"></i> ✨ Gelişmiş Efektler and 3D</summary>
+                <summary><i class="fas fa-layer-group"></i> ✨ Gelişmiş Efektler ve 3D</summary>
                 <div class="effect-content">
                     <div class="effect-row">
                         <span>Dolgu (Renk/Doku):</span>
@@ -622,11 +679,14 @@
                 </div>
             </details>
 
-            <textarea id="arabicText" class="arabic-input" oninput="scheduleSaveAndDraw()" style="font-family: 'Amiri';">أَلَا لِلَّهِ الدِّينُ الْخَالِصُ</textarea>
+            <div class="input-clear-wrapper">
+                <textarea id="arabicText" class="arabic-input" oninput="scheduleSaveAndDraw()" style="font-family: 'Amiri';">أَلَا لِلَّهِ الدِّينُ الْخَالِصُ</textarea>
+                <button class="btn-clear-input" onclick="clearTextInput('arabicText')" title="Tüm Arapça Metni Sil"><i class="fas fa-trash-alt"></i></button>
+            </div>
         </div>
 
         <!-- 3. TÜRKÇE METİN -->
-        <div class="section">
+        <div class="section" id="sec-turkish">
             <div class="section-title">Türkçe Tercüme / Açıklama</div>
             <div class="toolbar" id="tr-tools">
                 <button class="tool-btn" id="tr-bold" onclick="toggleStyle('tr', 'bold')"><i class="fas fa-bold"></i></button>
@@ -666,7 +726,7 @@
             <input type="range" id="trSizeMultiplier" min="0.5" max="2.0" step="0.05" value="1.0" oninput="scheduleSaveAndDraw()" style="margin-bottom:10px;">
 
             <details class="effect-panel">
-                <summary><i class="fas fa-layer-group"></i> ✨ Gelişmiş Efektler and 3D</summary>
+                <summary><i class="fas fa-layer-group"></i> ✨ Gelişmiş Efektler ve 3D</summary>
                 <div class="effect-content">
                     <div class="slider-label"><span style="color:var(--accent);">Harf Aralığı (Kerning - Sadece Latin)</span></div>
                     <input type="range" id="trLetterSpacing" min="-5" max="30" step="1" value="0" oninput="scheduleSaveAndDraw()">
@@ -721,11 +781,14 @@
                 </div>
             </details>
 
-            <textarea id="turkishText" oninput="scheduleSaveAndDraw()" style="font-family: 'Lora';">"İyi bilin ki, halis din yalnız Allah'ındır."</textarea>
+            <div class="input-clear-wrapper">
+                <textarea id="turkishText" oninput="scheduleSaveAndDraw()" style="font-family: 'Lora';">"İyi bilin ki, halis din yalnız Allah'ındır."</textarea>
+                <button class="btn-clear-input" onclick="clearTextInput('turkishText')" title="Tüm Türkçe Metni Sil"><i class="fas fa-trash-alt"></i></button>
+            </div>
         </div>
 
         <!-- 4. SERBEST METİN / ALT BAŞLIK (İSTEĞE BAĞLI) -->
-        <div class="section">
+        <div class="section" id="sec-extra">
             <div class="section-title" style="background: linear-gradient(180deg, #b0b0b0 0%, #ffffff 40%, #a0a0a0 60%, #e0e0e0 100%); -webkit-background-clip: text;">Serbest Metin / Alt Başlık</div>
             <div class="toolbar" id="ex-tools">
                 <button class="tool-btn" id="ex-bold" onclick="toggleStyle('ex', 'bold')"><i class="fas fa-bold"></i></button>
@@ -762,11 +825,10 @@
             </div>
 
             <div class="slider-label"><span>Ek Metin Boyutu</span></div>
-            <!-- Varsayılan boyutu Türkçe metinden küçük (0.7) yaptık -->
             <input type="range" id="exSizeMultiplier" min="0.5" max="2.0" step="0.05" value="0.70" oninput="scheduleSaveAndDraw()" style="margin-bottom:10px;">
 
             <details class="effect-panel">
-                <summary><i class="fas fa-layer-group"></i> ✨ Gelişmiş Efektler and 3D</summary>
+                <summary><i class="fas fa-layer-group"></i> ✨ Gelişmiş Efektler ve 3D</summary>
                 <div class="effect-content">
                     <div class="slider-label"><span style="color:var(--accent);">Harf Aralığı (Kerning)</span></div>
                     <input type="range" id="exLetterSpacing" min="-5" max="30" step="1" value="0" oninput="scheduleSaveAndDraw()">
@@ -821,38 +883,232 @@
                 </div>
             </details>
 
-            <textarea id="extraText" oninput="scheduleSaveAndDraw()" style="font-family: 'Lora';" placeholder="(İsteğe bağlı) Ek açıklama, 3. dil veya alt başlık buraya...">Taberî, tefsîrinde şöyle demiştir: "Allah Teâlâ şöyle buyurmaktadır: Dikkat edin; ibadet ve itaat, hiç bir ortak koşmaksızın, başkası ortak edilmeksizin, katıksız olarak sadece Allah'a mahsustur. Bu (ibadet ve itaat), O'ndan başkasına asla yaraşmaz. Çünkü O'nun dışındaki her şey O'nun mülküdür. Kölenin/mülk olanın yapması gereken ise, hiçbir şeye malik (sahip) olmayana değil, ancak kendi malikine itaat (ve ibadet) etmektir."</textarea>
+            <div class="input-clear-wrapper">
+                <textarea id="extraText" oninput="scheduleSaveAndDraw()" style="font-family: 'Lora';" placeholder="(İsteğe bağlı) Ek açıklama, 3. dil veya alt başlık buraya...">Taberî, tefsîrinde şöyle demiştir: "Allah Teâlâ şöyle buyurmaktadır: Dikkat edin; ibadet ve itaat, hiç bir ortak koşmaksızın, başkası ortak edilmeksizin, katıksız olarak sadece Allah'a mahsustur. Bu (ibadet ve itaat), O'ndan başkasına asla yaraşmaz. Çünkü O'nun dışındaki her şey O'nun mülküdür. Kölenin/mülk olanın yapması gereken ise, hiçbir şeye malik (sahip) olmayana değil, ancak kendi malikine itaat (ve ibadet) etmektir."</textarea>
+                <button class="btn-clear-input" onclick="clearTextInput('extraText')" title="Tüm Ek Metni Sil"><i class="fas fa-trash-alt"></i></button>
+            </div>
         </div>
 
-        <!-- 5. ALT BİLGİ VE İMZA -->
-        <div class="section" style="border-bottom: none;">
-            <div class="section-title">Müellif, Kaynak & İmza</div>
-            <input type="text" id="author" placeholder="Alim veya Eser Sahibi" value="Zümer Suresi, 3" oninput="scheduleSaveAndDraw()">
-            <input type="text" id="source" placeholder="Cilt, Sayfa veya Referans" value="Kur'an-ı Kerim" oninput="scheduleSaveAndDraw()">
-            <input type="text" id="brandText" placeholder="Özel İmzanız" value="Tasvirmatik" oninput="scheduleSaveAndDraw()" style="border-color: var(--accent); color: var(--accent); font-weight:bold;">
+        <!-- 5. ALT BİLGİ, KAYNAK VE MÜELLİF AYARLARI -->
+        <div class="section" id="sec-source">
+            <div class="section-title">Müellif & Kaynak Ayarları</div>
             
-            <div class="color-picker-wrap" style="margin-top:5px;">
-                <span>Alt Bilgi and Çizgi Rengi: </span>
-                <input type="color" id="footerColor" value="#a38847" oninput="scheduleSaveAndDraw()">
+            <!-- Müellif/Kaynak Stil Araç Çubuğu -->
+            <div class="toolbar" id="src-tools">
+                <button class="tool-btn" id="src-bold" onclick="toggleStyle('src', 'bold')"><i class="fas fa-bold"></i></button>
+                <button class="tool-btn active" id="src-italic" onclick="toggleStyle('src', 'italic')"><i class="fas fa-italic"></i></button>
+                <button class="tool-btn" id="src-underline" onclick="toggleStyle('src', 'underline')"><i class="fas fa-underline"></i></button>
+                <button class="tool-btn" id="src-strike" onclick="toggleStyle('src', 'strike')"><i class="fas fa-strikethrough"></i></button>
+                <span style="border-left: 1px solid #444; margin: 0 2px;"></span>
+                <button class="tool-btn" id="src-align-left" onclick="setAlignment('src', 'left')"><i class="fas fa-align-left"></i></button>
+                <button class="tool-btn active" id="src-align-center" onclick="setAlignment('src', 'center')"><i class="fas fa-align-center"></i></button>
+                <button class="tool-btn" id="src-align-right" onclick="setAlignment('src', 'right')"><i class="fas fa-align-right"></i></button>
+            </div>
+            
+            <!-- Font ve Renk Seçimi -->
+            <div style="display:flex; gap:10px; margin-bottom:10px;">
+                <select id="srcFont" onchange="scheduleSaveAndDraw()" style="margin:0;">
+                    <option value="Lora" selected>1. Lora (Klasik Tırnaklı)</option>
+                    <option value="Cinzel">2. Cinzel (Tarihi / Kitabe)</option>
+                    <option value="Segoe UI">3. Segoe UI (Sistem Modern)</option>
+                    <option value="Roboto">4. Roboto (Google Standart)</option>
+                    <option value="Montserrat">5. Montserrat (Modern Yuvarlak)</option>
+                    <option value="Playfair Display">6. Playfair (Zarif Başlık)</option>
+                    <option value="Merriweather">7. Merriweather (Okunaklı Kitap)</option>
+                    <option value="Oswald">8. Oswald (Dar ve Uzun)</option>
+                    <option value="Raleway">9. Raleway (İnce Zarif)</option>
+                    <option value="Noto Serif">10. Noto Serif (Akademik)</option>
+                    <option value="Cormorant Garamond">11. Garamond (Eski Basım)</option>
+                </select>
+                <div class="color-picker-wrap">
+                    <input type="color" id="srcColor" value="#a38847" title="Kaynak Yazı Rengi" oninput="scheduleSaveAndDraw()">
+                </div>
+            </div>
+
+            <div class="slider-label"><span>Kaynak/Müellif Metin Boyutu</span></div>
+            <input type="range" id="srcSizeMultiplier" min="0.5" max="2.0" step="0.05" value="1.0" oninput="scheduleSaveAndDraw()" style="margin-bottom:10px;">
+
+            <!-- Gelişmiş Efektler & 3D Paneli -->
+            <details class="effect-panel">
+                <summary><i class="fas fa-layer-group"></i> ✨ Kaynak Gelişmiş Efektleri ve 3D</summary>
+                <div class="effect-content">
+                    <div class="slider-label"><span style="color:var(--accent);">Harf Aralığı (Kerning)</span></div>
+                    <input type="range" id="srcLetterSpacing" min="-5" max="30" step="1" value="0" oninput="scheduleSaveAndDraw()">
+                    <hr style="border: 0; border-top: 1px solid #333; margin: 5px 0;">
+                    <div class="effect-row">
+                        <span>Dolgu (Renk/Doku):</span>
+                        <select id="srcFillType" onchange="scheduleSaveAndDraw()" style="width:140px; margin:0; padding:5px;">
+                            <option value="solid" selected>Düz Renk</option>
+                            <option value="gold">Altın Varak (Gold)</option>
+                            <option value="silver">Gümüş (Silver)</option>
+                            <option value="bronze">Bronz (Bronze)</option>
+                            <option value="superGlowDynamic">✨ Ultra Yumuşak & Parlak</option>
+                        </select>
+                    </div>
+                    <div class="effect-row">
+                        <span>Efekt Motoru:</span>
+                        <select id="srcEffectType" onchange="scheduleSaveAndDraw()" style="width:140px; margin:0; padding:5px;">
+                            <option value="normal">Normal (Standart Gölge)</option>
+                            <option value="engrave">Kazıma (İç Gölge / Pres)</option>
+                            <option value="neon">Neon (Katmanlı Işıldama)</option>
+                        </select>
+                    </div>
+                    <hr style="border: 0; border-top: 1px solid #333; margin: 5px 0;">
+                    <div class="slider-label"><span>3D Hacim (Derinlik)</span></div>
+                    <input type="range" id="src3DDepth" min="0" max="20" step="1" value="0" oninput="scheduleSaveAndDraw()">
+                    <div class="effect-row" style="margin-top:5px;">
+                        <span>Kenarlık Rengi & Kalınlığı:</span>
+                        <input type="color" id="srcStrokeColor" value="#000000" oninput="scheduleSaveAndDraw()">
+                    </div>
+                    <input type="range" id="srcStrokeWidth" min="0" max="15" step="0.5" value="0" oninput="scheduleSaveAndDraw()">
+                    <div class="effect-row" style="margin-top:5px;">
+                        <span>Gölge (Shadow/Glow) Rengi:</span>
+                        <input type="color" id="srcShadowColor" value="#000000" oninput="scheduleSaveAndDraw()">
+                    </div>
+                    <div class="multi-col">
+                        <div>
+                            <div class="slider-label"><span>Şeffaflık</span></div>
+                            <input type="range" id="srcShadowOpacity" min="0" max="1" step="0.1" value="0.8" oninput="scheduleSaveAndDraw()">
+                        </div>
+                        <div>
+                            <div class="slider-label"><span>Bulanıklık</span></div>
+                            <input type="range" id="srcShadowBlur" min="0" max="60" value="28" oninput="scheduleSaveAndDraw()">
+                        </div>
+                    </div>
+                    <hr style="border: 0; border-top: 1px solid #333; margin: 5px 0;">
+                    <div class="effect-row">
+                        <label style="display:flex; align-items:center; gap:5px; cursor:pointer; color:#e0e0e0;">
+                            <input type="checkbox" id="srcHighlight" onchange="scheduleSaveAndDraw()"> Satır Vurgu (Arka Plan Kutusu)
+                        </label>
+                        <input type="color" id="srcHighlightColor" value="#c5a059" oninput="scheduleSaveAndDraw()">
+                    </div>
+                </div>
+            </details>
+
+            <!-- Metin Kutuları ve Çöp Kutusu Butonları -->
+            <div class="input-clear-wrapper">
+                <input type="text" id="author" placeholder="Alim veya Eser Sahibi" value="Zümer Suresi, 3" oninput="scheduleSaveAndDraw()">
+                <button class="btn-clear-input" onclick="clearTextInput('author')" title="Müellif Metnini Sil"><i class="fas fa-trash-alt"></i></button>
+            </div>
+            
+            <div class="input-clear-wrapper">
+                <input type="text" id="source" placeholder="Cilt, Sayfa veya Referans" value="Kur'an-ı Kerim" oninput="scheduleSaveAndDraw()">
+                <button class="btn-clear-input" onclick="clearTextInput('source')" title="Kaynak Metnini Sil"><i class="fas fa-trash-alt"></i></button>
             </div>
         </div>
 
-        <!-- ÇÖZÜNÜRLÜK SEÇİMLİ İNDİR VE PAYLAŞ BUTONLARI -->
-        <div class="action-buttons">
-            <div style="display: flex; flex: 3; align-items: stretch; border-radius: 8px; overflow: hidden; background: #2a2a2a;">
-                <div style="position: relative; display: flex; align-items: center; width: 72px; flex-shrink: 0; border-right: 1px solid #111;">
-                    <select id="downloadRes" style="width: 100%; height: 100%; background: transparent; color: #fff; border: none; outline: none; font-size: 13px; font-family: 'Cinzel', serif; font-weight: bold; appearance: none; -webkit-appearance: none; padding: 0 14px 0 10px; margin: 0; cursor: pointer;" title="İndirme Çözünürlüğü">
-                        <option value="1" style="background: #161618;">FHD</option>
-                        <option value="2" style="background: #161618;">4K</option>
-                        <option value="4" style="background: #161618;">8K</option>
-                    </select>
-                    <i class="fas fa-chevron-down" style="position: absolute; right: 6px; color: #c5a059; font-size: 9px; pointer-events: none;"></i>
-                </div>
-                <button class="btn-primary" onclick="downloadImage()" style="flex: 1; margin: 0; border-radius: 0; border: none; padding: 15px 5px; white-space: nowrap;">
-                    <i class="fas fa-download"></i> İNDİR
-                </button>
+        <!-- 6. İMZA / MARKA AYARLARI -->
+        <div class="section" id="sec-brand" style="border-bottom: none;">
+            <div class="section-title">İmza & Marka Ayarları</div>
+            
+            <!-- İmza Stil Araç Çubuğu -->
+            <div class="toolbar" id="br-tools">
+                <button class="tool-btn" id="br-bold" onclick="toggleStyle('br', 'bold')"><i class="fas fa-bold"></i></button>
+                <button class="tool-btn" id="br-italic" onclick="toggleStyle('br', 'italic')"><i class="fas fa-italic"></i></button>
+                <button class="tool-btn" id="br-underline" onclick="toggleStyle('br', 'underline')"><i class="fas fa-underline"></i></button>
+                <button class="tool-btn" id="br-strike" onclick="toggleStyle('br', 'strike')"><i class="fas fa-strikethrough"></i></button>
+                <span style="border-left: 1px solid #444; margin: 0 2px;"></span>
+                <button class="tool-btn active" id="br-align-left" onclick="setAlignment('br', 'left')"><i class="fas fa-align-left"></i></button>
+                <button class="tool-btn" id="br-align-center" onclick="setAlignment('br', 'center')"><i class="fas fa-align-center"></i></button>
+                <button class="tool-btn" id="br-align-right" onclick="setAlignment('br', 'right')"><i class="fas fa-align-right"></i></button>
             </div>
-            <button class="btn-primary btn-share" onclick="shareImage()" style="flex: 2; white-space: nowrap;"><i class="fas fa-share-alt"></i> PAYLAŞ</button>
+
+            <!-- Font ve Renk Seçimi -->
+            <div style="display:flex; gap:10px; margin-bottom:10px;">
+                <select id="brFont" onchange="scheduleSaveAndDraw()" style="margin:0;">
+                    <option value="Lora" selected>1. Lora (Klasik Tırnaklı)</option>
+                    <option value="Cinzel">2. Cinzel (Tarihi / Kitabe)</option>
+                    <option value="Segoe UI">3. Segoe UI (Sistem Modern)</option>
+                    <option value="Roboto">4. Roboto (Google Standart)</option>
+                    <option value="Montserrat">5. Montserrat (Modern Yuvarlak)</option>
+                    <option value="Playfair Display">6. Playfair (Zarif Başlık)</option>
+                    <option value="Merriweather">7. Merriweather (Okunaklı Kitap)</option>
+                    <option value="Oswald">8. Oswald (Dar ve Uzun)</option>
+                    <option value="Raleway">9. Raleway (İnce Zarif)</option>
+                    <option value="Noto Serif">10. Noto Serif (Akademik)</option>
+                    <option value="Cormorant Garamond">11. Garamond (Eski Basım)</option>
+                </select>
+                <div class="color-picker-wrap">
+                    <input type="color" id="brColor" value="#c5a059" title="İmza Rengi" oninput="scheduleSaveAndDraw()">
+                </div>
+            </div>
+
+            <div class="slider-label"><span>İmza Metin Boyutu</span></div>
+            <input type="range" id="brSizeMultiplier" min="0.5" max="2.0" step="0.05" value="1.0" oninput="scheduleSaveAndDraw()" style="margin-bottom:10px;">
+
+            <!-- Gelişmiş Efektler & 3D Paneli -->
+            <details class="effect-panel">
+                <summary><i class="fas fa-layer-group"></i> ✨ İmza Gelişmiş Efektleri ve 3D</summary>
+                <div class="effect-content">
+                    <div class="slider-label"><span style="color:var(--accent);">Harf Aralığı (Kerning)</span></div>
+                    <input type="range" id="brLetterSpacing" min="-5" max="30" step="1" value="0" oninput="scheduleSaveAndDraw()">
+                    <hr style="border: 0; border-top: 1px solid #333; margin: 5px 0;">
+                    <div class="effect-row">
+                        <span>Dolgu (Renk/Doku):</span>
+                        <select id="brFillType" onchange="scheduleSaveAndDraw()" style="width:140px; margin:0; padding:5px;">
+                            <option value="solid" selected>Düz Renk</option>
+                            <option value="gold">Altın Varak (Gold)</option>
+                            <option value="silver">Gümüş (Silver)</option>
+                            <option value="bronze">Bronz (Bronze)</option>
+                            <option value="superGlowDynamic">✨ Ultra Yumuşak & Parlak</option>
+                        </select>
+                    </div>
+                    <div class="effect-row">
+                        <span>Efekt Motoru:</span>
+                        <select id="brEffectType" onchange="scheduleSaveAndDraw()" style="width:140px; margin:0; padding:5px;">
+                            <option value="normal">Normal (Standart Gölge)</option>
+                            <option value="engrave">Kazıma (İç Gölge / Pres)</option>
+                            <option value="neon">Neon (Katmanlı Işıldama)</option>
+                        </select>
+                    </div>
+                    <hr style="border: 0; border-top: 1px solid #333; margin: 5px 0;">
+                    <div class="slider-label"><span>3D Hacim (Derinlik)</span></div>
+                    <input type="range" id="br3DDepth" min="0" max="20" step="1" value="0" oninput="scheduleSaveAndDraw()">
+                    <div class="effect-row" style="margin-top:5px;">
+                        <span>Kenarlık Rengi & Kalınlığı:</span>
+                        <input type="color" id="brStrokeColor" value="#000000" oninput="scheduleSaveAndDraw()">
+                    </div>
+                    <input type="range" id="brStrokeWidth" min="0" max="15" step="0.5" value="0" oninput="scheduleSaveAndDraw()">
+                    <div class="effect-row" style="margin-top:5px;">
+                        <span>Gölge (Shadow/Glow) Rengi:</span>
+                        <input type="color" id="brShadowColor" value="#000000" oninput="scheduleSaveAndDraw()">
+                    </div>
+                    <div class="multi-col">
+                        <div>
+                            <div class="slider-label"><span>Şeffaflık</span></div>
+                            <input type="range" id="brShadowOpacity" min="0" max="1" step="0.1" value="0.8" oninput="scheduleSaveAndDraw()">
+                        </div>
+                        <div>
+                            <div class="slider-label"><span>Bulanıklık</span></div>
+                            <input type="range" id="brShadowBlur" min="0" max="60" value="28" oninput="scheduleSaveAndDraw()">
+                        </div>
+                    </div>
+                    <hr style="border: 0; border-top: 1px solid #333; margin: 5px 0;">
+                    <div class="effect-row">
+                        <label style="display:flex; align-items:center; gap:5px; cursor:pointer; color:#e0e0e0;">
+                            <input type="checkbox" id="brHighlight" onchange="scheduleSaveAndDraw()"> Satır Vurgu (Arka Plan Kutusu)
+                        </label>
+                        <input type="color" id="brHighlightColor" value="#c5a059" oninput="scheduleSaveAndDraw()">
+                    </div>
+                </div>
+            </details>
+
+            <div class="input-clear-wrapper">
+                <input type="text" id="brandText" placeholder="Özel İmzanız" value="Tasvirmatik" oninput="scheduleSaveAndDraw()" style="border-color: var(--accent); color: var(--accent); font-weight:bold;">
+                <button class="btn-clear-input" onclick="clearTextInput('brandText')" title="İmza Metnini Sil"><i class="fas fa-trash-alt"></i></button>
+            </div>
+        </div>
+
+        <div class="action-buttons" style="margin-top: 5px;">
+            <button class="btn-primary btn-share" onclick="shareImage()"><i class="fas fa-share-alt"></i> Paylaş</button>
+            <div style="display:flex; flex: 2.5; flex-direction:column; gap:5px;">
+                <button class="btn-primary" onclick="downloadImage()"><i class="fas fa-download"></i> İNDİR</button>
+                <select id="downloadRes" style="margin:0; padding:6px; font-size:12px; border-color:var(--accent);">
+                    <option value="1">Standart İndir (FHD)</option>
+                    <option value="2" selected>4K İndir (Ultra HD)</option>
+                    <option value="3">8K İndir (Master)</option>
+                </select>
+            </div>
         </div>
 
         <!-- UYGULAMA OLARAK YÜKLEME KARTI -->
@@ -877,7 +1133,6 @@
         </div>
         
         <div class="sidebar-footer">
-
             Tasvirmatik 1.0 by @TalibTRB <br>
             X: <a href="https://x.com/TalibTRB" target="_blank"><i class="fab fa-x-twitter"></i> x.com/TalibTRB</a> <br>
             Tamamen ücretsiz ve reklamsızdır. <br>
@@ -889,15 +1144,17 @@
     <div class="workspace">
         <div class="workspace-title">TASVİRMATİK 1.0</div>
         <canvas id="canvas"></canvas>
-        <!-- MERKEZ ALT SABİT İPUCU ROZETİ (Yalnızca masaüstünde görünür) -->
-        <div class="drag-hint-pc"><i class="fas fa-hand-pointer"></i> Metinleri farenizle tutup sürükleyebilirsiniz</div>
+        <!-- MERKEZ ALT SABİT İPUCU ROZETİ -->
+        <div class="drag-hint-pc"><i class="fas fa-hand-pointer"></i> Metinleri sürükleyabilir, ilgili alana gitmek için **çift tıklayabilirsiniz**</div>
     </div>
 
     <script>
         let styles = {
             ar: { bold: true, italic: false, underline: false, strike: false, align: 'center' },
             tr: { bold: false, italic: false, underline: false, strike: false, align: 'center' },
-            ex: { bold: false, italic: false, underline: false, strike: false, align: 'center' }
+            ex: { bold: false, italic: false, underline: false, strike: false, align: 'center' },
+            src: { bold: false, italic: true, underline: false, strike: false, align: 'center' },
+            br: { bold: false, italic: false, underline: false, strike: false, align: 'left' }
         };
 
         let dragOffsets = {
@@ -906,17 +1163,24 @@
             ex: { x: 0, y: 0 },
             author: { x: 0, y: 0 },
             brand: { x: 0, y: 0 },
-            bg: { x: 0, y: 0 } // YENİ: Arkaplan kaydırma hafızası
+            bg: { x: 0, y: 0 }
         };
 
         let hitBoxes = { ar: null, tr: null, ex: null, author: null, brand: null };
-
-        // Arka plan görseli önbellek nesnesi
         let customBgImage = null;
-
         const STORAGE_KEY = 'tasvirmatik_autosave_v2';
         let saveTimeout;
         
+        // METİN KUTUSU SİLME FONKSİYONU
+        function clearTextInput(elementId) {
+            const el = document.getElementById(elementId);
+            if (el) {
+                el.value = '';
+                scheduleSaveAndDraw();
+                showToast("🗑️ Metin temizlendi!");
+            }
+        }
+
         function scheduleSaveAndDraw() {
             drawAllCanvases();
             clearTimeout(saveTimeout);
@@ -930,29 +1194,19 @@
                     state.inputs[el.id] = el.type === 'checkbox' ? el.checked : el.value;
                 }
             });
-            localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
-        }
-
-                function saveStateToLocal() {
-            const state = { inputs: {}, styles: styles, dragOffsets: dragOffsets };
-            document.querySelectorAll('input, select, textarea').forEach(el => {
-                if(el.id && el.type !== 'file' && el.type !== 'button') {
-                    state.inputs[el.id] = el.type === 'checkbox' ? el.checked : el.value;
-                }
-            });
             
-            // ÖZEL GÖRSELİ HAFIZAYA EKLE (Link veya Base64)
             if (customBgImage && customBgImage.src) {
                 state.savedBgSrc = customBgImage.src;
             }
             
             try {
                 localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+                if(typeof pushToHistory === "function") pushToHistory();
             } catch (e) {
-                // Eğer cihazdan yüklenen resim tarayıcı kotasını (5MB) aşarsa çökmeyi önle, resimsiz kaydet
                 console.warn("Hafıza kotası aşıldı, resim harici veriler kaydedildi.");
                 delete state.savedBgSrc;
                 localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+                if(typeof pushToHistory === "function") pushToHistory();
             }
         }
 
@@ -979,7 +1233,6 @@
                     }
                 }
                 
-                // ÖZEL GÖRSELİ HAFIZADAN GERİ YÜKLE
                 if (state.savedBgSrc) {
                     loadCustomBackground(state.savedBgSrc, false);
                 } else {
@@ -989,6 +1242,8 @@
 
                 updateStyleButtonsUI();
             } catch(e) { console.error("Kayıt yüklenemedi", e); }
+            
+            setTimeout(() => { if(typeof pushToHistory === "function") pushToHistory(); }, 800);
         }
 
         function loadCustomBackground(url, redraw = true) {
@@ -1006,68 +1261,76 @@
             img.src = url;
         }
 
-        // Görsel seçim dinleyicisi
         document.getElementById('bgImageSelect').addEventListener('change', function(e) {
             loadCustomBackground(e.target.value, true);
         });
 
-// Cihazdan Yerel Görsel Yükleme Dinleyicisi (Akıllı Sıkıştırma & Kotalı Koruma)
-document.getElementById('localBgUpload').addEventListener('change', function(e) {
-    const file = e.target.files[0];
-    if (!file) return;
+        document.getElementById('localBgUpload').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (!file) return;
 
-    const reader = new FileReader();
-    reader.onload = function(event) {
-        const img = new Image();
-        img.onload = function() {
-            // LocalStorage (5MB) çökmesini engellemek için resmi arka planda optimize et (Max 1920px)
-            const maxDim = 1920;
-            let w = img.width;
-            let h = img.height;
-            
-            if (w > maxDim || h > maxDim) {
-                const ratio = Math.min(maxDim / w, maxDim / h);
-                w = Math.round(w * ratio);
-                h = Math.round(h * ratio);
-            }
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                const img = new Image();
+                img.onload = function() {
+                    const maxDim = 1920;
+                    let w = img.width;
+                    let h = img.height;
+                    
+                    if (w > maxDim || h > maxDim) {
+                        const ratio = Math.min(maxDim / w, maxDim / h);
+                        w = Math.round(w * ratio);
+                        h = Math.round(h * ratio);
+                    }
 
-            const tempCanvas = document.createElement('canvas');
-            tempCanvas.width = w;
-            tempCanvas.height = h;
-            const tCtx = tempCanvas.getContext('2d');
-            tCtx.drawImage(img, 0, 0, w, h);
-            
-            // Resmi %85 kalite JPEG'e dönüştürerek boyutunu dramatik şekilde düşür
-            const compressedDataUrl = tempCanvas.toDataURL('image/jpeg', 0.85);
+                    const tempCanvas = document.createElement('canvas');
+                    tempCanvas.width = w;
+                    tempCanvas.height = h;
+                    const tCtx = tempCanvas.getContext('2d');
+                    tCtx.drawImage(img, 0, 0, w, h);
+                    
+                    const compressedDataUrl = tempCanvas.toDataURL('image/jpeg', 0.85);
 
-            const finalImg = new Image();
-            finalImg.onload = function() {
-                customBgImage = finalImg; 
-                document.getElementById('bgImageSelect').value = ''; 
-                document.getElementById('bgTheme').value = 'solidDark';
-                scheduleSaveAndDraw();
-                showToast("📸 Özel görseliniz başarıyla eklendi!"); 
+                    const finalImg = new Image();
+                    finalImg.onload = function() {
+                        customBgImage = finalImg; 
+                        document.getElementById('bgImageSelect').value = ''; 
+                        document.getElementById('bgTheme').value = 'solidDark';
+                        document.getElementById('format').value = 'custom'; 
+                        scheduleSaveAndDraw();
+                        showToast("📸 Özel görseliniz başarıyla eklendi!"); 
+                    };
+                    finalImg.src = compressedDataUrl;
+                };
+                img.src = event.target.result;
             };
-            finalImg.src = compressedDataUrl;
-        };
-        img.src = event.target.result;
-    };
-    reader.readAsDataURL(file);
-    this.value = ''; 
-});
+            reader.readAsDataURL(file);
+            this.value = ''; 
+        });
                                  
-        
         function updateStyleButtonsUI() {
-            ['ar', 'tr', 'ex'].forEach(lang => {
-                document.getElementById(`${lang}-bold`).classList.toggle('active', styles[lang].bold);
-                document.getElementById(`${lang}-italic`).classList.toggle('active', styles[lang].italic);
-                document.getElementById(`${lang}-underline`).classList.toggle('active', styles[lang].underline);
-                document.getElementById(`${lang}-strike`).classList.toggle('active', styles[lang].strike);
+            ['ar', 'tr', 'ex', 'src', 'br'].forEach(lang => {
+                const bBtn = document.getElementById(`${lang}-bold`);
+                if(bBtn) bBtn.classList.toggle('active', styles[lang].bold);
                 
-                document.getElementById(`${lang}-align-left`).classList.remove('active');
-                document.getElementById(`${lang}-align-center`).classList.remove('active');
-                document.getElementById(`${lang}-align-right`).classList.remove('active');
-                document.getElementById(`${lang}-align-${styles[lang].align}`).classList.add('active');
+                const iBtn = document.getElementById(`${lang}-italic`);
+                if(iBtn) iBtn.classList.toggle('active', styles[lang].italic);
+                
+                const uBtn = document.getElementById(`${lang}-underline`);
+                if(uBtn) uBtn.classList.toggle('active', styles[lang].underline);
+                
+                const sBtn = document.getElementById(`${lang}-strike`);
+                if(sBtn) sBtn.classList.toggle('active', styles[lang].strike);
+                
+                const alBtn = document.getElementById(`${lang}-align-left`);
+                const acBtn = document.getElementById(`${lang}-align-center`);
+                const arBtn = document.getElementById(`${lang}-align-right`);
+                if(alBtn) alBtn.classList.remove('active');
+                if(acBtn) acBtn.classList.remove('active');
+                if(arBtn) arBtn.classList.remove('active');
+                
+                const targetAlign = document.getElementById(`${lang}-align-${styles[lang].align}`);
+                if(targetAlign) targetAlign.classList.add('active');
             });
         }
 
@@ -1096,7 +1359,7 @@ document.getElementById('localBgUpload').addEventListener('change', function(e) 
         }
 
         function askClearAutoSave() {
-            openModal("Oto Kayıtları Temizle", "Tüm girdiğiniz metinler, renkler, seçtiğiniz fontlar and sürüklemeler silinerek uygulama ilk açılış (fabrika) ayarlarına döndürülecektir. Emin misiniz?", () => {
+            openModal("Oto Kayıtları Temizle", "Tüm girdiğiniz metinler, renkler, seçtiğiniz fontlar ve sürüklemeler silinerek uygulama ilk açılış (fabrika) ayarlarına döndürülecektir. Emin misiniz?", () => {
                 localStorage.removeItem(STORAGE_KEY);
                 location.reload();
             });
@@ -1111,16 +1374,22 @@ document.getElementById('localBgUpload').addEventListener('change', function(e) 
 
         function toggleStyle(lang, prop) {
             styles[lang][prop] = !styles[lang][prop];
-            document.getElementById(`${lang}-${prop}`).classList.toggle('active', styles[lang][prop]);
+            const btn = document.getElementById(`${lang}-${prop}`);
+            if(btn) btn.classList.toggle('active', styles[lang][prop]);
             scheduleSaveAndDraw();
         }
 
         function setAlignment(lang, align) {
             styles[lang].align = align;
-            document.getElementById(`${lang}-align-left`).classList.remove('active');
-            document.getElementById(`${lang}-align-center`).classList.remove('active');
-            document.getElementById(`${lang}-align-right`).classList.remove('active');
-            document.getElementById(`${lang}-align-${align}`).classList.add('active');
+            const alBtn = document.getElementById(`${lang}-align-left`);
+            const acBtn = document.getElementById(`${lang}-align-center`);
+            const arBtn = document.getElementById(`${lang}-align-right`);
+            if(alBtn) alBtn.classList.remove('active');
+            if(acBtn) acBtn.classList.remove('active');
+            if(arBtn) arBtn.classList.remove('active');
+            
+            const targetBtn = document.getElementById(`${lang}-align-${align}`);
+            if(targetBtn) targetBtn.classList.add('active');
             scheduleSaveAndDraw();
         }
         
@@ -1157,24 +1426,19 @@ document.getElementById('localBgUpload').addEventListener('change', function(e) 
         function drawBackground(ctx, w, h, theme, exportMultiplier = 1) {
             ctx.shadowColor = 'transparent'; 
 
-                        // Eğer kullanıcı kendi görselini seçtiyse orantılı kapla (Sıkışmayı Önler)
             if (customBgImage) {
                 const scale = Math.max(w / customBgImage.width, h / customBgImage.height);
                 const newWidth = customBgImage.width * scale;
                 const newHeight = customBgImage.height * scale;
                 
-                // Resmi tam ortaya hizalamak için varsayılan ofset hesapla
                 let offsetX = (w - newWidth) / 2;
                 let offsetY = (h - newHeight) / 2;
 
-                // YENİ: Kullanıcının fare/parmakla kaydırdığı değeri (Pan) ekle
                 if (typeof dragOffsets !== 'undefined' && dragOffsets.bg) {
                     offsetX += dragOffsets.bg.x;
                     offsetY += dragOffsets.bg.y;
                 }
 
-                // YENİ: Resmin dışına çıkıldığında siyah/boş alan görünmemesi için sınırlandırıcı (Clamp Motoru)
-                // Not: "Orijinal Boyut" seçildiyse bu sistem resmi otomatik kilitler (kaymasını engeller).
                 offsetX = Math.min(0, Math.max(offsetX, w - newWidth));
                 offsetY = Math.min(0, Math.max(offsetY, h - newHeight));
                 
@@ -1422,9 +1686,14 @@ document.getElementById('localBgUpload').addEventListener('change', function(e) 
             if (!isDrawing) {
                 isDrawing = true;
                 requestAnimationFrame(() => {
-                    renderCanvasToTarget('canvas', 1);
-                    renderCanvasToTarget('mobileCanvas', 1);
-                    isDrawing = false;
+                    try {
+                        renderCanvasToTarget('canvas', 1);
+                        renderCanvasToTarget('mobileCanvas', 1);
+                    } catch (error) {
+                        console.error("Tuval çiziminde hata oluştu:", error);
+                    } finally {
+                        isDrawing = false;
+                    }
                 });
             }
         }
@@ -1476,25 +1745,56 @@ document.getElementById('localBgUpload').addEventListener('change', function(e) 
                 letterSpacing: parseInt(document.getElementById('exLetterSpacing').value)
             };
 
-            const brandText = document.getElementById('brandText').value;
-            const footerColor = document.getElementById('footerColor').value;
+            const srcProps = {
+                fillType: document.getElementById('srcFillType') ? document.getElementById('srcFillType').value : 'solid',
+                effectType: document.getElementById('srcEffectType') ? document.getElementById('srcEffectType').value : 'normal',
+                depth3D: document.getElementById('src3DDepth') ? parseInt(document.getElementById('src3DDepth').value) : 0,
+                fillColor: document.getElementById('srcColor') ? document.getElementById('srcColor').value : '#a38847',
+                strokeColor: document.getElementById('srcStrokeColor') ? document.getElementById('srcStrokeColor').value : '#000000',
+                strokeWidth: document.getElementById('srcStrokeWidth') ? parseFloat(document.getElementById('srcStrokeWidth').value) : 0,
+                shadowColorHex: document.getElementById('srcShadowColor') ? document.getElementById('srcShadowColor').value : '#000000',
+                shadowOpacity: document.getElementById('srcShadowOpacity') ? parseFloat(document.getElementById('srcShadowOpacity').value) : 0.8,
+                shadowBlur: document.getElementById('srcShadowBlur') ? parseInt(document.getElementById('srcShadowBlur').value) : 28,
+                shadowOffset: 4,
+                highlight: document.getElementById('srcHighlight') ? document.getElementById('srcHighlight').checked : false,
+                highlightColor: document.getElementById('srcHighlightColor') ? document.getElementById('srcHighlightColor').value : '#c5a059',
+                letterSpacing: document.getElementById('srcLetterSpacing') ? parseInt(document.getElementById('srcLetterSpacing').value) : 0
+            };
+
+            const brProps = {
+                fillType: document.getElementById('brFillType') ? document.getElementById('brFillType').value : 'solid',
+                effectType: document.getElementById('brEffectType') ? document.getElementById('brEffectType').value : 'normal',
+                depth3D: document.getElementById('br3DDepth') ? parseInt(document.getElementById('br3DDepth').value) : 0,
+                fillColor: document.getElementById('brColor') ? document.getElementById('brColor').value : '#c5a059',
+                strokeColor: document.getElementById('brStrokeColor') ? document.getElementById('brStrokeColor').value : '#000000',
+                strokeWidth: document.getElementById('brStrokeWidth') ? parseFloat(document.getElementById('brStrokeWidth').value) : 0,
+                shadowColorHex: document.getElementById('brShadowColor') ? document.getElementById('brShadowColor').value : '#000000',
+                shadowOpacity: document.getElementById('brShadowOpacity') ? parseFloat(document.getElementById('brShadowOpacity').value) : 0.8,
+                shadowBlur: document.getElementById('brShadowBlur') ? parseInt(document.getElementById('brShadowBlur').value) : 28,
+                shadowOffset: 4,
+                highlight: document.getElementById('brHighlight') ? document.getElementById('brHighlight').checked : false,
+                highlightColor: document.getElementById('brHighlightColor') ? document.getElementById('brHighlightColor').value : '#c5a059',
+                letterSpacing: document.getElementById('brLetterSpacing') ? parseInt(document.getElementById('brLetterSpacing').value) : 0
+            };
+
+            const brandText = document.getElementById('brandText') ? document.getElementById('brandText').value : '';
+            const author = document.getElementById('author') ? document.getElementById('author').value : '';
+            const source = document.getElementById('source') ? document.getElementById('source').value : '';
+            const footerColor = document.getElementById('srcColor') ? document.getElementById('srcColor').value : '#a38847';
             
             const arText = document.getElementById('arabicText').value;
             const trText = document.getElementById('turkishText').value;
             const exText = document.getElementById('extraText').value;
-            const author = document.getElementById('author').value;
-            const source = document.getElementById('source').value;
             
             let baseW = format === '169' ? 1920 : 1080;
             let baseH = 1080;
             
-            // YENİ: Eğer "Orijinal" seçildiyse tuvali resmin ebadına genişlet/daralt
             if (format === 'custom') {
                 if (customBgImage) {
                     baseW = customBgImage.width;
                     baseH = customBgImage.height;
                 } else {
-                    baseW = 1080; baseH = 1920; // Resim yoksa dikey portre varsay
+                    baseW = 1080; baseH = 1080; 
                 }
             }
 
@@ -1509,39 +1809,31 @@ document.getElementById('localBgUpload').addEventListener('change', function(e) 
             ctx.imageSmoothingQuality = 'high';
             ctx.textRendering = "optimizeLegibility";
 
-                        // YENİ: Arka plan filtre değerlerini HTML'den al
             const bgBlurVal = document.getElementById('bgBlur') ? parseInt(document.getElementById('bgBlur').value) : 0;
             const bgDarkenVal = document.getElementById('bgDarken') ? parseFloat(document.getElementById('bgDarken').value) : 0;
             const bgBrightenVal = document.getElementById('bgBrighten') ? parseFloat(document.getElementById('bgBrighten').value) : 0;
             const bgVignetteVal = document.getElementById('bgVignette') ? parseFloat(document.getElementById('bgVignette').value) : 0;
 
-            // 1. Bulanıklık (Blur) Filtresini Uygula
             if (bgBlurVal > 0) {
-                // 4K/8K dışa aktarımlarda blur değerini orantılı olarak büyütüyoruz
                 ctx.filter = `blur(${bgBlurVal * exportMultiplier}px)`;
             }
 
-            // Ana arkaplanı çiz
             drawBackground(ctx, baseW, baseH, theme, exportMultiplier);
             
-            // Blur filtresini KAPAT ki yazılar bulanıklaşmasın
             ctx.filter = 'none';
 
-            // 2. Karartma Katmanı
             if (bgDarkenVal > 0) {
                 ctx.fillStyle = `rgba(0, 0, 0, ${bgDarkenVal})`;
                 ctx.fillRect(0, 0, baseW, baseH);
             }
 
-            // 3. Ultra Parlak Yumuşatma Katmanı
             if (bgBrightenVal > 0) {
                 ctx.fillStyle = `rgba(255, 255, 255, ${bgBrightenVal})`;
-                ctx.globalCompositeOperation = 'overlay'; // Renkleri canlandırarak parlatır
+                ctx.globalCompositeOperation = 'overlay';
                 ctx.fillRect(0, 0, baseW, baseH);
-                ctx.globalCompositeOperation = 'source-over'; // Çizim modunu normale döndür
+                ctx.globalCompositeOperation = 'source-over';
             }
 
-            // 4. Vinyet (Kenar Gölgelendirme) Katmanı
             if (bgVignetteVal > 0) {
                 const vignetteGrad = ctx.createRadialGradient(baseW/2, baseH/2, baseH/2.5, baseW/2, baseH/2, baseW*0.65);
                 vignetteGrad.addColorStop(0, 'rgba(0,0,0,0)');
@@ -1550,13 +1842,10 @@ document.getElementById('localBgUpload').addEventListener('change', function(e) 
                 ctx.fillRect(0, 0, baseW, baseH);
             }
 
-            // Üst efektleri (yıldız, toz vb.) çizmeye devam et
             drawOverlayEffects(ctx, baseW, baseH, overlayEffect);
 
-
             const isLightTheme = !customBgImage && (theme === 'solidLight' || theme === 'oldPaper' || theme === 'parchment' || theme === 'sandStorm' || theme === 'lightPink');
-            const frameColor = isLightTheme ? '#333333' : footerColor;
-            
+            const frameColor = document.getElementById('frameColor') ? document.getElementById('frameColor').value : (isLightTheme ? '#333333' : footerColor);            
             ctx.strokeStyle = frameColor;
             ctx.shadowColor = 'transparent';
             ctx.setLineDash([]); 
@@ -1633,7 +1922,7 @@ document.getElementById('localBgUpload').addEventListener('change', function(e) 
                         drawY += arLineHeight * scale;
                     }
                 });
-                if (exportMultiplier === 1) hitBoxes.ar = { x: baseW * 0.05, y: blockStartY, w: baseW * 0.9, h: drawY - blockStartY };
+                if (exportMultiplier === 1) hitBoxes.ar = { x: baseW * 0.05, y: blockStartY, w: baseW * 0.9, h: Math.max(drawY - blockStartY, 40) };
                 
                 currentBaseY += arTotalHeight;
                 if (trText.trim() !== '' || exText.trim() !== '') {
@@ -1661,7 +1950,7 @@ document.getElementById('localBgUpload').addEventListener('change', function(e) 
                         drawY += trLineHeight * scale * trSizeMultiplier;
                     }
                 });
-                if (exportMultiplier === 1) hitBoxes.tr = { x: baseW * 0.05, y: blockStartY, w: baseW * 0.9, h: drawY - blockStartY };
+                if (exportMultiplier === 1) hitBoxes.tr = { x: baseW * 0.05, y: blockStartY, w: baseW * 0.9, h: Math.max(drawY - blockStartY, 40) };
 
                 currentBaseY += trTotalHeight;
                 if (exText.trim() !== '') {
@@ -1689,7 +1978,7 @@ document.getElementById('localBgUpload').addEventListener('change', function(e) 
                         drawY += exLineHeight * scale * exSizeMultiplier;
                     }
                 });
-                if (exportMultiplier === 1) hitBoxes.ex = { x: baseW * 0.05, y: blockStartY, w: baseW * 0.9, h: drawY - blockStartY };
+                if (exportMultiplier === 1) hitBoxes.ex = { x: baseW * 0.05, y: blockStartY, w: baseW * 0.9, h: Math.max(drawY - blockStartY, 40) };
             }
 
             if ('letterSpacing' in ctx) ctx.letterSpacing = '0px'; 
@@ -1697,49 +1986,45 @@ document.getElementById('localBgUpload').addEventListener('change', function(e) 
             let bottomBaseY = baseH - 200 + globalYOffset; 
             let authorDrawY = bottomBaseY + dragOffsets.author.y;
             let authorDrawX = globalXOffset + dragOffsets.author.x;
-            
+
+            const srcFont = document.getElementById('srcFont') ? document.getElementById('srcFont').value : 'Lora';
+            const srcSizeMultiplier = document.getElementById('srcSizeMultiplier') ? parseFloat(document.getElementById('srcSizeMultiplier').value) : 1.0;
+
+            if ('letterSpacing' in ctx) ctx.letterSpacing = (srcProps.letterSpacing * scale) + 'px';
+
             if (author.trim() !== '') {
-                ctx.save();
-                ctx.font = "bold 38px 'Lora', serif"; 
-                ctx.textAlign = 'center';
-                setSoftShadow(ctx, theme);
-                let authGrad = ctx.createLinearGradient(0, authorDrawY - 30, 0, authorDrawY + 10);
-                authGrad.addColorStop(0, '#ffeba8'); authGrad.addColorStop(0.5, footerColor); authGrad.addColorStop(1, '#8a6d3b');
-                ctx.fillStyle = authGrad;
-                ctx.fillText(author, baseW / 2 + authorDrawX, authorDrawY);
-                ctx.restore();
+                ctx.font = `${styles.src.italic ? 'italic ' : ''}${styles.src.bold ? 'bold ' : ''}${38 * scale * srcSizeMultiplier}px '${srcFont}'`;
+                drawAdvancedTextLine(ctx, author, baseW, authorDrawY, 45 * scale * srcSizeMultiplier, styles.src, authorDrawX, srcProps, scale, srcProps.fillColor);
             }
+
             if (source.trim() !== '') {
-                ctx.save();
-                ctx.font = "italic 30px 'Lora', serif"; 
-                ctx.textAlign = 'center';
-                setSoftShadow(ctx, theme);
-                ctx.fillStyle = footerColor; 
-                ctx.globalAlpha = 0.85; 
-                ctx.fillText(source, baseW / 2 + authorDrawX, authorDrawY + 55); 
-                ctx.restore();
+                let sourceY = author.trim() !== '' ? authorDrawY + (50 * scale * srcSizeMultiplier) : authorDrawY;
+                ctx.font = `${styles.src.italic ? 'italic ' : ''}${styles.src.bold ? 'bold ' : ''}${30 * scale * srcSizeMultiplier}px '${srcFont}'`;
+                
+                drawAdvancedTextLine(ctx, source, baseW, sourceY, 38 * scale * srcSizeMultiplier, styles.src, authorDrawX, srcProps, scale, srcProps.fillColor);
             }
-            
+
             let brandDrawY = baseH - 100 + globalYOffset + dragOffsets.brand.y;
             let brandDrawX = globalXOffset + dragOffsets.brand.x;
 
             if (brandText.trim() !== '') {
-                ctx.save();
-                ctx.shadowColor = 'transparent'; 
-                ctx.fillStyle = footerColor; 
-                ctx.font = "24px 'Lora', serif"; 
-                ctx.textAlign = 'left'; 
-                ctx.globalAlpha = 0.8;
-                ctx.fillText(brandText, 90 + brandDrawX, brandDrawY);
-                ctx.restore();
+                const brFont = document.getElementById('brFont') ? document.getElementById('brFont').value : 'Lora';
+                const brSizeMultiplier = document.getElementById('brSizeMultiplier') ? parseFloat(document.getElementById('brSizeMultiplier').value) : 1.0;
+
+                if ('letterSpacing' in ctx) ctx.letterSpacing = (brProps.letterSpacing * scale) + 'px';
+                ctx.font = `${styles.br.italic ? 'italic ' : ''}${styles.br.bold ? 'bold ' : ''}${24 * scale * brSizeMultiplier}px '${brFont}'`;
+                
+                drawAdvancedTextLine(ctx, brandText, baseW, brandDrawY, 30 * scale * brSizeMultiplier, styles.br, brandDrawX, brProps, scale, brProps.fillColor);
             }
+
+            if ('letterSpacing' in ctx) ctx.letterSpacing = '0px';
 
             if (exportMultiplier === 1) {
                 if (author.trim() || source.trim()) {
-                    hitBoxes.author = { x: baseW * 0.25, y: authorDrawY - 40, w: baseW * 0.5, h: 120 };
+                    hitBoxes.author = { x: baseW * 0.15, y: authorDrawY - 30, w: baseW * 0.7, h: 100 };
                 }
                 if (brandText.trim()) {
-                    hitBoxes.brand = { x: 50 + brandDrawX, y: brandDrawY - 30, w: 300, h: 60 };
+                    hitBoxes.brand = { x: baseW * 0.05 + brandDrawX, y: brandDrawY - 15, w: baseW * 0.9, h: 50 };
                 }
             }
         }
@@ -1899,79 +2184,151 @@ document.getElementById('localBgUpload').addEventListener('change', function(e) 
             }
         }
 
-        let activeDragTarget = null;
-        let dragStartX = 0, dragStartY = 0;
-        let initialDragOffset = { x: 0, y: 0 };
+        // ========================================================
+// SÜRÜKLEME VE ÇİFT TIKLAMA / DOKUNMA MOTORU (EKSİKSİZ BÜTÜN)
+// ========================================================
+let activeDragTarget = null;
+let dragStartX = 0, dragStartY = 0;
+let initialDragOffset = { x: 0, y: 0 };
+let lastTapTime = 0; 
 
-        function getEventPos(canvas, e) {
-            const rect = canvas.getBoundingClientRect();
-            const scaleX = canvas.width / rect.width;
-            const scaleY = canvas.height / rect.height;
-            let clientX = e.clientX; let clientY = e.clientY;
-            if (e.touches && e.touches.length > 0) {
-                clientX = e.touches[0].clientX; clientY = e.touches[0].clientY;
+function getEventPos(canvas, e) {
+    const rect = canvas.getBoundingClientRect();
+    const scaleX = canvas.width / rect.width;
+    const scaleY = canvas.height / rect.height;
+    let clientX = 0, clientY = 0;
+
+    if (e.touches && e.touches.length > 0) {
+        clientX = e.touches[0].clientX;
+        clientY = e.touches[0].clientY;
+    } else if (e.changedTouches && e.changedTouches.length > 0) {
+        clientX = e.changedTouches[0].clientX;
+        clientY = e.changedTouches[0].clientY;
+    } else {
+        clientX = e.clientX || 0;
+        clientY = e.clientY || 0;
+    }
+
+    return {
+        x: (clientX - rect.left) * scaleX,
+        y: (clientY - rect.top) * scaleY
+    };
+}
+
+function handleDoubleClick(canvas, e) {
+    const pos = getEventPos(canvas, e);
+    const targets = ['brand', 'author', 'ex', 'tr', 'ar'];
+    
+    const targetElementMap = {
+        'ar': 'arabicText',
+        'tr': 'turkishText',
+        'ex': 'extraText',
+        'author': 'author',
+        'brand': 'brandText'
+    };
+
+    for (let target of targets) {
+        let box = hitBoxes[target];
+        if (box && pos.x >= box.x && pos.x <= box.x + box.w && pos.y >= box.y && pos.y <= box.y + box.h) {
+            const elemId = targetElementMap[target];
+            const elem = document.getElementById(elemId);
+            if (elem) {
+                elem.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                elem.focus();
+                
+                const parentSec = elem.closest('.section') || elem;
+                const originalBg = parentSec.style.backgroundColor;
+                parentSec.style.transition = 'background-color 0.3s, box-shadow 0.3s';
+                parentSec.style.backgroundColor = 'rgba(197, 160, 89, 0.15)';
+                parentSec.style.boxShadow = 'inset 0 0 15px rgba(197, 160, 89, 0.4)';
+                
+                setTimeout(() => {
+                    parentSec.style.backgroundColor = originalBg;
+                    parentSec.style.boxShadow = 'none';
+                }, 1200);
+
+                showToast("🎯 Metni Düzenle!");
             }
-            return { x: (clientX - rect.left) * scaleX, y: (clientY - rect.top) * scaleY };
+            break;
         }
+    }
+}
 
-        function handleDragStart(canvas, e) {
-            const pos = getEventPos(canvas, e);
+function handleDragStart(canvas, e) {
+    const pos = getEventPos(canvas, e);
+
+    // MOBİL ÇİFT DOKUNMA (DOUBLE TAP)
+    if (e.type === 'touchstart') {
+        const currentTime = new Date().getTime();
+        const tapGap = currentTime - lastTapTime;
+
+        if (tapGap < 350 && tapGap > 0) {
+            if (e.cancelable) e.preventDefault();
+            handleDoubleClick(canvas, e);
+            lastTapTime = 0;
             activeDragTarget = null;
-            
-            const targets = ['brand', 'author', 'ex', 'tr', 'ar'];
-            let hitText = false;
-
-            for (let target of targets) {
-                let box = hitBoxes[target];
-                if (box && pos.x >= box.x && pos.x <= box.x + box.w && pos.y >= box.y && pos.y <= box.y + box.h) {
-                    activeDragTarget = target;
-                    dragStartX = pos.x; dragStartY = pos.y;
-                    initialDragOffset = { x: dragOffsets[target].x, y: dragOffsets[target].y };
-                    hitText = true;
-                    if(e.type === 'touchstart' && e.cancelable) e.preventDefault();
-                    break;
-                }
-            }
-
-            // YENİ: Eğer metinlere tıklanmadıysa farenin Arka Planı tutmasını sağla (Pan Modu)
-            if (!hitText) {
-                activeDragTarget = 'bg';
-                dragStartX = pos.x; 
-                dragStartY = pos.y;
-                if (!dragOffsets.bg) dragOffsets.bg = { x: 0, y: 0 };
-                initialDragOffset = { x: dragOffsets.bg.x, y: dragOffsets.bg.y };
-                if(e.type === 'touchstart' && e.cancelable) e.preventDefault();
-            }
+            return;
         }
+        lastTapTime = currentTime;
+    }
 
-        function handleDragMove(canvas, e) {
-            if (!activeDragTarget) return;
-            if (e.type === 'touchmove' && e.cancelable) e.preventDefault();
-            
-            const pos = getEventPos(canvas, e);
-            const dx = pos.x - dragStartX;
-            const dy = pos.y - dragStartY;
-            
-            dragOffsets[activeDragTarget].x = initialDragOffset.x + dx;
-            dragOffsets[activeDragTarget].y = initialDragOffset.y + dy;
-            
-            scheduleSaveAndDraw();
+    activeDragTarget = null;
+    const targets = ['brand', 'author', 'ex', 'tr', 'ar'];
+    let hitText = false;
+
+    for (let target of targets) {
+        let box = hitBoxes[target];
+        if (box && pos.x >= box.x && pos.x <= box.x + box.w && pos.y >= box.y && pos.y <= box.y + box.h) {
+            activeDragTarget = target;
+            dragStartX = pos.x; 
+            dragStartY = pos.y;
+            initialDragOffset = { x: dragOffsets[target].x, y: dragOffsets[target].y };
+            hitText = true;
+            if (e.type === 'touchstart' && e.cancelable) e.preventDefault();
+            break;
         }
+    }
 
-        function handleDragEnd() { activeDragTarget = null; }
+    if (!hitText) {
+        activeDragTarget = 'bg';
+        dragStartX = pos.x; 
+        dragStartY = pos.y;
+        if (!dragOffsets.bg) dragOffsets.bg = { x: 0, y: 0 };
+        initialDragOffset = { x: dragOffsets.bg.x, y: dragOffsets.bg.y };
+        if (e.type === 'touchstart' && e.cancelable) e.preventDefault();
+    }
+}
 
-        function attachDragListeners(canvasId) {
-            const canvas = document.getElementById(canvasId);
-            if(!canvas) return;
-            
-            canvas.addEventListener('mousedown', (e) => handleDragStart(canvas, e));
-            canvas.addEventListener('mousemove', (e) => handleDragMove(canvas, e));
-            window.addEventListener('mouseup', handleDragEnd);
-            
-            canvas.addEventListener('touchstart', (e) => handleDragStart(canvas, e), {passive: false});
-            canvas.addEventListener('touchmove', (e) => handleDragMove(canvas, e), {passive: false});
-            window.addEventListener('touchend', handleDragEnd);
-        }
+function handleDragMove(canvas, e) {
+    if (!activeDragTarget) return;
+    if (e.type === 'touchmove' && e.cancelable) e.preventDefault();
+    
+    const pos = getEventPos(canvas, e);
+    const dx = pos.x - dragStartX;
+    const dy = pos.y - dragStartY;
+    
+    dragOffsets[activeDragTarget].x = initialDragOffset.x + dx;
+    dragOffsets[activeDragTarget].y = initialDragOffset.y + dy;
+    
+    scheduleSaveAndDraw();
+}
+
+function handleDragEnd() { activeDragTarget = null; }
+
+function attachDragListeners(canvasId) {
+    const canvas = document.getElementById(canvasId);
+    if(!canvas) return;
+    
+    canvas.addEventListener('mousedown', (e) => handleDragStart(canvas, e));
+    canvas.addEventListener('mousemove', (e) => handleDragMove(canvas, e));
+    window.addEventListener('mouseup', handleDragEnd);
+    
+    canvas.addEventListener('dblclick', (e) => handleDoubleClick(canvas, e));
+    
+    canvas.addEventListener('touchstart', (e) => handleDragStart(canvas, e), {passive: false});
+    canvas.addEventListener('touchmove', (e) => handleDragMove(canvas, e), {passive: false});
+    window.addEventListener('touchend', handleDragEnd);
+}
 
         document.fonts.ready.then(() => { 
             loadStateFromLocal();
@@ -2019,9 +2376,9 @@ document.getElementById('localBgUpload').addEventListener('change', function(e) 
         }
 
         // ==========================================
-        // YENİ: GERİ AL / İLERİ AL (HISTORY) MOTORU
+        // GERİ AL / İLERİ AL (HISTORY) MOTORU
         // ==========================================
-        const MAX_HISTORY = 40; // Son 40 adımı hafızada tutar
+        const MAX_HISTORY = 40; 
         let stateHistory = [];
         let historyIndex = -1;
         let isUndoRedoAction = false; 
@@ -2042,12 +2399,11 @@ document.getElementById('localBgUpload').addEventListener('change', function(e) 
         }
 
         function pushToHistory() {
-            if (isUndoRedoAction) return; // Kullanıcı butona basarken yeni kayıt alma
+            if (isUndoRedoAction) return; 
             const currentState = captureStateForHistory();
             
-            if (historyIndex >= 0 && stateHistory[historyIndex] === currentState) return; // Değişiklik yoksa kaydetme
+            if (historyIndex >= 0 && stateHistory[historyIndex] === currentState) return; 
 
-            // Geçmişe dönülüp yeni bir şey yapıldıysa, ileri (redo) hafızasını sil
             if (historyIndex < stateHistory.length - 1) {
                 stateHistory = stateHistory.slice(0, historyIndex + 1);
             }
@@ -2067,7 +2423,7 @@ document.getElementById('localBgUpload').addEventListener('change', function(e) 
         }
 
         function applyHistoryState(stateStr) {
-            isUndoRedoAction = true; // Döngüye girmemesi için kilit
+            isUndoRedoAction = true; 
             const state = JSON.parse(stateStr);
             
             styles = state.styles;
@@ -2087,9 +2443,7 @@ document.getElementById('localBgUpload').addEventListener('change', function(e) 
             updateStyleButtonsUI();
             drawAllCanvases();
             
-            // LocalStorage'ı da güncelle ki sayfa yenilendiğinde güncel kalsın
             localStorage.setItem(STORAGE_KEY, stateStr);
-            
             setTimeout(() => { isUndoRedoAction = false; }, 200);
         }
 
@@ -2111,21 +2465,53 @@ document.getElementById('localBgUpload').addEventListener('change', function(e) 
             }
         }
 
-        // Mevcut Tasvirmatik sistemine zarar vermeden kenetlenme (Monkey Patching)
-        const originalSaveState = saveStateToLocal;
-        saveStateToLocal = function() {
-            originalSaveState();
-            pushToHistory(); // Her oto-kayıtta tarihçeye de yedekle
-        };
+        function applyStylePreset(presetKey) {
+            if (!presetKey) return;
 
-        const originalLoadState = loadStateFromLocal;
-        loadStateFromLocal = function() {
-            originalLoadState();
-            // Sayfa ilk yüklendiğinde mevcut durumu 1. adım olarak kaydet
-            setTimeout(() => { pushToHistory(); }, 800); 
-        };
-                
-                    
+            if (presetKey === 'goldClassic') {
+                document.getElementById('bgTheme').value = 'darkSmoke';
+                document.getElementById('arFillType').value = 'gold';
+                document.getElementById('trFillType').value = 'gold';
+                document.getElementById('arColor').value = '#c5a059';
+                document.getElementById('trColor').value = '#ffeba8';
+                document.getElementById('overlayEffect').value = 'goldStarsFew';
+                document.getElementById('frameStyle').value = 'corner';
+            } 
+            else if (presetKey === 'minimalDark') {
+                document.getElementById('bgTheme').value = 'solidDark';
+                document.getElementById('arFillType').value = 'solid';
+                document.getElementById('trFillType').value = 'solid';
+                document.getElementById('arColor').value = '#ffffff';
+                document.getElementById('trColor').value = '#d4d4d4';
+                document.getElementById('overlayEffect').value = 'none';
+                document.getElementById('frameStyle').value = 'classic';
+            } 
+            else if (presetKey === 'parchmentVintage') {
+                document.getElementById('bgTheme').value = 'parchment';
+                document.getElementById('arFillType').value = 'solid';
+                document.getElementById('trFillType').value = 'solid';
+                document.getElementById('arColor').value = '#2a1a08';
+                document.getElementById('trColor').value = '#3d260f';
+                document.getElementById('srcColor').value = '#5d3a17';
+                document.getElementById('overlayEffect').value = 'vintageFlare';
+                document.getElementById('frameStyle').value = 'doubleCorner';
+            }
+            else if (presetKey === 'neonGlow') {
+                document.getElementById('bgTheme').value = 'deepBlue';
+                document.getElementById('arFillType').value = 'superGlowDynamic';
+                document.getElementById('trFillType').value = 'superGlowDynamic';
+                document.getElementById('arColor').value = '#00d2ff';
+                document.getElementById('trColor').value = '#ffffff';
+                document.getElementById('overlayEffect').value = 'bokehCool';
+                document.getElementById('frameStyle').value = 'double';
+            }
+
+            document.getElementById('stylePreset').value = '';
+            customBgImage = null;
+            document.getElementById('bgImageSelect').value = '';
+            scheduleSaveAndDraw();
+            showToast("✨ Stil Şablonu Uygulandı!");
+        }         
     </script>
     <script>
     let deferredPrompt;
