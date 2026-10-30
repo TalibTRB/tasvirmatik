@@ -382,14 +382,15 @@
            ------------------------------------------------------------- */
         .floating-menu-container {
             position: fixed;
-            bottom: 15px; /* Aşağıya biraz daha yaklaştırıldı */
-            left: 50%; /* Tam ortaya (merkeze) alındı */
-            transform: translateX(-50%); /* Merkezleme hizalaması */
+            bottom: 20px; 
+            right: 20px; /* Tekrar sağ alt köşeye alındı */
+            left: auto; /* Önceki merkezleme iptal edildi */
+            transform: none; /* Önceki merkezleme iptal edildi */
             z-index: 99999;
             display: flex;
             flex-direction: column-reverse;
-            align-items: center; /* Ortalanmış yapıya uyum için flex-end yerine center yapıldı */
-            gap: 10px; /* Butonlar arası boşluk daraltıldı (eski: 12px) */
+            align-items: flex-end; /* Butonların sağa hizalı durması için */
+            gap: 10px;
             pointer-events: none; 
         }
         .floating-menu-container * {
