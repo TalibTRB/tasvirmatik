@@ -377,22 +377,23 @@
             100% { filter: drop-shadow(0 0 10px rgba(255,235,168,1)); transform: scale(1.2); }
         }
 
-        /* -------------------------------------------------------------
+                /* -------------------------------------------------------------
            UÇAN 3D AÇILIR SEKMELİ MENÜ SİSTEMİ (ÖZELLİK 2)
            ------------------------------------------------------------- */
         .floating-menu-container {
             position: fixed;
-            bottom: 25px;
-            right: 25px;
+            bottom: 15px; /* Aşağıya biraz daha yaklaştırıldı */
+            left: 50%; /* Tam ortaya (merkeze) alındı */
+            transform: translateX(-50%); /* Merkezleme hizalaması */
             z-index: 99999;
             display: flex;
             flex-direction: column-reverse;
-            align-items: flex-end;
-            gap: 12px;
-            pointer-events: none; /* Dışarı tıklama engellemesi */
+            align-items: center; /* Ortalanmış yapıya uyum için flex-end yerine center yapıldı */
+            gap: 10px; /* Butonlar arası boşluk daraltıldı (eski: 12px) */
+            pointer-events: none; 
         }
         .floating-menu-container * {
-            pointer-events: auto; /* İç elementlerin tıklanabilirliği */
+            pointer-events: auto; 
         }
 
         /* YENİ: Uçan Aksiyon Grubu ve Mini FAB (Geri/İleri) */
@@ -400,22 +401,22 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 14px;
+            gap: 8px; /* Geri/ileri butonlarının ana butona mesafesi daraltıldı (eski: 14px) */
         }
 
         /* Uçan Ana Tetikleyici Buton */
         .floating-fab {
             background: linear-gradient(135deg, #ffeba8 0%, #c5a059 50%, #8a6d3b 100%);
             color: #0a0a0c;
-            width: 60px;
-            height: 60px;
+            width: 48px; /* Eski: 60px */
+            height: 48px; /* Eski: 60px */
             border-radius: 50%;
             border: 2px solid rgba(255,255,255,0.4);
             box-shadow: 0 10px 25px rgba(0,0,0,0.7), 0 0 20px rgba(197,160,89,0.5);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 24px;
+            font-size: 20px; /* Eski: 24px */
             cursor: pointer;
             transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.3s;
             position: relative;
@@ -435,13 +436,13 @@
             background: linear-gradient(145deg, #1e1e22, #121214);
             border: 1px solid rgba(197, 160, 89, 0.4);
             color: var(--accent);
-            width: 42px;
-            height: 42px;
+            width: 36px; /* Eski: 42px */
+            height: 36px; /* Eski: 42px */
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 16px;
+            font-size: 14px; /* Eski: 16px */
             cursor: pointer;
             transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             box-shadow: 0 8px 20px rgba(0,0,0,0.7), inset 0 2px 4px rgba(255,255,255,0.05);
