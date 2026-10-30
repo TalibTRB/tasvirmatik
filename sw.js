@@ -1,4 +1,4 @@
-const CACHE_NAME = 'tasvirmatik-offline-v27';
+const CACHE_NAME = 'tasvirmatik-offline-v28';
 const ASSETS_TO_CACHE = [
   './',
   './index.html',
