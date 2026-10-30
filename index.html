@@ -231,7 +231,7 @@
         .mobile-sticky-preview {
             display: none; background: #000; position: sticky; top: 0; z-index: 1000;
             box-shadow: 0 8px 25px rgba(0,0,0,0.9); line-height: 0;
-            display: none; justify-content: center; align-items: center; width: 100%;
+            justify-content: center; align-items: center; width: 100%;
         }
         .mobile-sticky-preview canvas {
             width: 100% !important; height: auto !important; max-height: none !important;
@@ -377,6 +377,133 @@
             100% { filter: drop-shadow(0 0 10px rgba(255,235,168,1)); transform: scale(1.2); }
         }
 
+        /* -------------------------------------------------------------
+           UÇAN 3D AÇILIR SEKMELİ MENÜ SİSTEMİ (ÖZELLİK 2)
+           ------------------------------------------------------------- */
+        .floating-menu-container {
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            z-index: 99999;
+            display: flex;
+            flex-direction: column-reverse;
+            align-items: flex-end;
+            gap: 12px;
+            pointer-events: none; /* Dışarı tıklama engellemesi */
+        }
+        .floating-menu-container * {
+            pointer-events: auto; /* İç elementlerin tıklanabilirliği */
+        }
+
+        /* YENİ: Uçan Aksiyon Grubu ve Mini FAB (Geri/İleri) */
+        .floating-action-group {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 14px;
+        }
+
+        /* Uçan Ana Tetikleyici Buton */
+        .floating-fab {
+            background: linear-gradient(135deg, #ffeba8 0%, #c5a059 50%, #8a6d3b 100%);
+            color: #0a0a0c;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            border: 2px solid rgba(255,255,255,0.4);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.7), 0 0 20px rgba(197,160,89,0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            cursor: pointer;
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.3s;
+            position: relative;
+        }
+        .floating-fab:hover {
+            transform: scale(1.1) rotate(90deg);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.9), 0 0 30px rgba(255,235,168,0.8);
+        }
+        .floating-fab.active {
+            transform: rotate(135deg);
+            background: linear-gradient(135deg, #ff6b6b 0%, #c92a2a 100%);
+            color: #fff;
+        }
+
+        /* Uçan Premium Mini Butonlar (Geri / İleri) */
+        .floating-mini-fab {
+            background: linear-gradient(145deg, #1e1e22, #121214);
+            border: 1px solid rgba(197, 160, 89, 0.4);
+            color: var(--accent);
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.7), inset 0 2px 4px rgba(255,255,255,0.05);
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .floating-mini-fab:hover:not(.disabled) {
+            transform: scale(1.15);
+            background: linear-gradient(145deg, #2a2a30, #1a1a1d);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.9), 0 0 15px rgba(197, 160, 89, 0.4);
+            border-color: #ffeba8;
+            color: #ffeba8;
+        }
+        .floating-mini-fab:active:not(.disabled) {
+            transform: scale(0.95);
+        }
+        .floating-mini-fab.disabled {
+            opacity: 0.25;
+            cursor: not-allowed;
+            box-shadow: none;
+            border-color: #333;
+            color: #555;
+        }
+
+        /* Uçan Sekme İçerik Paneli (3D Glassmorphism) */
+        .floating-menu-panel {
+            background: rgba(22, 22, 24, 0.92);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(197, 160, 89, 0.3);
+            border-radius: 16px;
+            width: 320px;
+            max-height: 400px;
+            overflow-y: auto;
+            padding: 20px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.9), inset 0 1px 2px rgba(255,255,255,0.15);
+            transform: translateY(30px) scale(0.9);
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .floating-menu-panel.active {
+            transform: translateY(0) scale(1);
+            opacity: 1;
+            visibility: visible;
+        }
+        .floating-menu-panel::-webkit-scrollbar { width: 5px; }
+        .floating-menu-panel::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 10px; }
+
+        .floating-menu-header {
+            font-family: 'Cinzel', serif;
+            font-size: 14px;
+            color: var(--accent);
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin-bottom: 12px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid #333;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
     </style>
 </head>
 <body>
@@ -531,6 +658,14 @@
 
                     <div class="slider-label"><span>Vinyet (Kenar Karartma)</span></div>
                     <input type="range" id="bgVignette" min="0" max="1" step="0.05" value="0" oninput="scheduleSaveAndDraw()">
+                    
+                    <!-- YENİ: ODAK BULANIKLIĞI VE GREN -->
+                    <hr style="border: 0; border-top: 1px solid #333; margin: 5px 0;">
+                    <div class="slider-label"><span>Odak Bulanıklığı (Merkez Net)</span></div>
+                    <input type="range" id="bgFocusBlur" min="0" max="15" value="0" oninput="scheduleSaveAndDraw()">
+
+                    <div class="slider-label"><span>Sinematik Gren (Film Dokusu)</span></div>
+                    <input type="range" id="bgGrain" min="0" max="50" value="0" oninput="scheduleSaveAndDraw()">
                 </div>
             </details>
             
@@ -646,6 +781,8 @@
                             <option value="engrave">Kazıma (İç Gölge / Pres)</option>
                             <option value="neon">Neon (Katmanlı Işıldama)</option>
                             <option value="hdrMetallic">✨ HDR Metalik (Parıltı)</option>
+                            <!-- YENİ: KABARTMA (EMBOSS) -->
+                            <option value="emboss">Kabartma (Emboss)</option>
                         </select>
                     </div>
                     <hr style="border: 0; border-top: 1px solid #333; margin: 5px 0;">
@@ -677,6 +814,10 @@
                         </label>
                         <input type="color" id="arHighlightColor" value="#c5a059" oninput="scheduleSaveAndDraw()">
                     </div>
+                    <!-- ZEMİN YANSIMASI (Yazı boyutu diğerleriyle eşitlendi: font-size: 12px vb.) -->
+                    <label style="display:flex; align-items:center; gap:5px; cursor:pointer; color:#e0e0e0; margin-top:5px; font-size: 12px; font-weight: bold;">
+                        <input type="checkbox" id="arReflection" onchange="scheduleSaveAndDraw()"> Zemin Yansıması
+                    </label>
                 </div>
             </details>
 
@@ -749,6 +890,7 @@
                             <option value="engrave">Kazıma (İç Gölge / Pres)</option>
                             <option value="neon">Neon (Katmanlı Işıldama)</option>
                             <option value="hdrMetallic">✨ HDR Metalik (Parıltı)</option>
+                            <option value="emboss">Kabartma (Emboss)</option>
                         </select>
                     </div>
                     <hr style="border: 0; border-top: 1px solid #333; margin: 5px 0;">
@@ -780,6 +922,10 @@
                         </label>
                         <input type="color" id="trHighlightColor" value="#c5a059" oninput="scheduleSaveAndDraw()">
                     </div>
+                    <!-- ZEMİN YANSIMASI (Eşitlenmiş boyut) -->
+                    <label style="display:flex; align-items:center; gap:5px; cursor:pointer; color:#e0e0e0; margin-top:5px; font-size: 12px; font-weight: bold;">
+                        <input type="checkbox" id="trReflection" onchange="scheduleSaveAndDraw()"> Zemin Yansıması
+                    </label>
                 </div>
             </details>
 
@@ -852,6 +998,7 @@
                             <option value="engrave">Kazıma (İç Gölge / Pres)</option>
                             <option value="neon">Neon (Katmanlı Işıldama)</option>
                             <option value="hdrMetallic">✨ HDR Metalik (Parıltı)</option>
+                            <option value="emboss">Kabartma (Emboss)</option>
                         </select>
                     </div>
                     <hr style="border: 0; border-top: 1px solid #333; margin: 5px 0;">
@@ -883,6 +1030,10 @@
                         </label>
                         <input type="color" id="exHighlightColor" value="#555555" oninput="scheduleSaveAndDraw()">
                     </div>
+                    <!-- ZEMİN YANSIMASI (Eşitlenmiş boyut) -->
+                    <label style="display:flex; align-items:center; gap:5px; cursor:pointer; color:#e0e0e0; margin-top:5px; font-size: 12px; font-weight: bold;">
+                        <input type="checkbox" id="exReflection" onchange="scheduleSaveAndDraw()"> Zemin Yansıması
+                    </label>
                 </div>
             </details>
 
@@ -955,6 +1106,7 @@
                             <option value="engrave">Kazıma (İç Gölge / Pres)</option>
                             <option value="neon">Neon (Katmanlı Işıldama)</option>
                             <option value="hdrMetallic">✨ HDR Metalik (Parıltı)</option>
+                            <option value="emboss">Kabartma (Emboss)</option>
                         </select>
                     </div>
                     <hr style="border: 0; border-top: 1px solid #333; margin: 5px 0;">
@@ -986,10 +1138,14 @@
                         </label>
                         <input type="color" id="srcHighlightColor" value="#c5a059" oninput="scheduleSaveAndDraw()">
                     </div>
+                    <!-- ZEMİN YANSIMASI (Eşitlenmiş boyut) -->
+                    <label style="display:flex; align-items:center; gap:5px; cursor:pointer; color:#e0e0e0; margin-top:5px; font-size: 12px; font-weight: bold;">
+                        <input type="checkbox" id="srcReflection" onchange="scheduleSaveAndDraw()"> Zemin Yansıması
+                    </label>
                 </div>
             </details>
 
-            <!-- Metin Kutuları ve Çöp Kutusu Butonları -->
+            <!-- Metin Kutuları ve Çöp Kutusu Buttonları -->
             <div class="input-clear-wrapper">
                 <input type="text" id="author" placeholder="Alim veya Eser Sahibi" value="Zümer Suresi, 3" oninput="scheduleSaveAndDraw()">
                 <button class="btn-clear-input" onclick="clearTextInput('author')" title="Müellif Metnini Sil"><i class="fas fa-trash-alt"></i></button>
@@ -1064,6 +1220,7 @@
                             <option value="engrave">Kazıma (İç Gölge / Pres)</option>
                             <option value="neon">Neon (Katmanlı Işıldama)</option>
                             <option value="hdrMetallic">✨ HDR Metalik (Parıltı)</option>
+                            <option value="emboss">Kabartma (Emboss)</option>
                         </select>
                     </div>
                     <hr style="border: 0; border-top: 1px solid #333; margin: 5px 0;">
@@ -1095,6 +1252,10 @@
                         </label>
                         <input type="color" id="brHighlightColor" value="#c5a059" oninput="scheduleSaveAndDraw()">
                     </div>
+                    <!-- ZEMİN YANSIMASI (Eşitlenmiş boyut) -->
+                    <label style="display:flex; align-items:center; gap:5px; cursor:pointer; color:#e0e0e0; margin-top:5px; font-size: 12px; font-weight: bold;">
+                        <input type="checkbox" id="brReflection" onchange="scheduleSaveAndDraw()"> Zemin Yansıması
+                    </label>
                 </div>
             </details>
 
@@ -1104,32 +1265,21 @@
             </div>
         </div>
 
-        <!-- 7. EK GÖRSEL / LOGO AYARLARI (YENİ UÇAN RESİM PANELİ) -->
+        <!-- 7. EK GÖRSEL / LOGO AYARLARI (YENİ UÇAN RESİM SINIRSIZ LİSTE SİSTEMİ) -->
         <div class="section" id="sec-floating" style="border-bottom: none;">
             <div class="section-title">Ek Görsel / Logo (Uçan Resim)</div>
             
-            <div style="margin-bottom: 10px; display:flex; gap:10px;">
-                <input type="file" id="floatingUpload" accept="image/png, image/jpeg, image/webp" style="display: none;">
-                <label for="floatingUpload" class="btn-tool-action" style="margin-top: 0; background: #1a1a1d; border: 1px dashed #c5a059; color: #e0e0e0; flex: 1;">
-                    <i class="fas fa-image" style="color: #c5a059;"></i> Mühür/Logo Seç
+            <div style="margin-bottom: 12px; display:flex; gap:10px;">
+                <input type="file" id="floatingUpload" accept="image/png, image/jpeg, image/webp" style="display: none;" onchange="handleNewImageUpload(this)">
+                <label for="floatingUpload" class="btn-tool-action" style="margin-top: 0; background: #1a1a1d; border: 1px dashed #c5a059; color: #e0e0e0; flex: 1; cursor:pointer;">
+                    <i class="fas fa-plus-circle" style="color: #c5a059;"></i> Yeni Görsel / Logo Ekle
                 </label>
-                <button class="btn-tool-action" style="margin-top: 0; flex: 0.3; color:#ff6b6b; border-color:#4a2020;" onclick="clearFloatingImage()" title="Görseli Kaldır">
-                    <i class="fas fa-trash-alt"></i>
-                </button>
             </div>
 
-            <div class="slider-label"><span>Görsel Boyutu</span></div>
-            <input type="range" id="floatSizeMultiplier" min="0.1" max="3.0" step="0.05" value="1.0" oninput="scheduleSaveAndDraw()" style="margin-bottom:10px;">
-
-            <details class="effect-panel">
-                <summary><i class="fas fa-layer-group"></i> ✨ 3D Gölge Ayarları</summary>
-                <div class="effect-content">
-                    <div class="slider-label"><span>Gölge Şeffaflığı</span></div>
-                    <input type="range" id="floatShadowOpacity" min="0" max="1" step="0.1" value="0.6" oninput="scheduleSaveAndDraw()">
-                    <div class="slider-label"><span>Gölge Bulanıklığı (Derinlik)</span></div>
-                    <input type="range" id="floatShadowBlur" min="0" max="100" step="1" value="35" oninput="scheduleSaveAndDraw()">
-                </div>
-            </details>
+            <!-- SINIRSIZ GÖRSEL LİSTE CONTAINER -->
+            <div id="floatingImagesListContainer" style="display: flex; flex-direction: column; gap: 10px;">
+                <!-- Dinamik olarak eklenen görseller burada listelenecektir -->
+            </div>
         </div>
 
         <div class="action-buttons" style="margin-top: 5px;">
@@ -1178,7 +1328,83 @@
         <div class="workspace-title">TASVİRMATİK 1.0</div>
         <canvas id="canvas"></canvas>
         <!-- MERKEZ ALT SABİT İPUCU ROZETİ -->
-        <div class="drag-hint-pc"><i class="fas fa-hand-pointer"></i> Metinleri sürükleyabilir, ilgili alana gitmek için **çift tıklayabilirsiniz**</div>
+        <div class="drag-hint-pc"><i class="fas fa-hand-pointer"></i> Metinleri ve logoları sürükleyebilir, ilgili alana gitmek için **çift tıklayabilirsiniz**</div>
+    </div>
+
+    <!-- ------------------------------------------------------------- -->
+    <!-- ÖZELLİK 2: UÇAN 3D AÇILIR SEKMELİ MENÜ HTML YAPISI (MOBİL & PC) -->
+    <!-- ------------------------------------------------------------- -->
+    <div class="floating-menu-container" id="floatingMenuContainer">
+        <!-- İçerik Paneli -->
+        <div class="floating-menu-panel" id="floatingMenuPanel">
+            <div class="floating-menu-header">
+                <span><i class="fas fa-layer-group"></i> Hızlı Kontrol Paneli</span>
+                <i class="fas fa-times" style="cursor:pointer;" onclick="toggleFloatingMenu()"></i>
+            </div>
+            
+            <div style="display:flex; flex-direction:column; gap:12px;">
+                <!-- EKLENEN YENİ BUTON: OTO KAYITLARI TEMİZLE -->
+                <div>
+                    <button class="btn-tool-action btn-danger-action" onclick="askClearAutoSave(); toggleFloatingMenu();" style="width: 100%; margin-top: 0;">
+                        <i class="fas fa-trash-restore"></i> Oto Kayıtları Temizle
+                    </button>
+                </div>
+
+                <div>
+                    <label style="font-size:11px; color:#aaa; display:block; margin-bottom:4px;">Hızlı Stil Şablonu</label>
+                    <select onchange="applyStylePreset(this.value); toggleFloatingMenu();" style="margin:0; font-size:12px;">
+                        <option value="">⚡ Şablon Seç...</option>
+                        <option value="goldClassic">👑 Altın Varak & Koyu Duman</option>
+                        <option value="minimalDark">🖤 Koyu Minimalist</option>
+                        <option value="parchmentVintage">📜 Klasik Parşömen</option>
+                        <option value="neonGlow">✨ Koyu Gece & Neon</option>
+                    </select>
+                </div>
+                
+                <div>
+                    <label style="font-size:11px; color:#aaa; display:block; margin-bottom:4px;">Tuval Formatı</label>
+                    <select id="floatingFormatSelect" onchange="document.getElementById('format').value=this.value; scheduleSaveAndDraw();" style="margin:0; font-size:12px;">
+                        <option value="169">X Manzara (1920x1080)</option>
+                        <option value="11">X Kare (1080x1080)</option>
+                        <option value="custom">✨ Orijinal Boyut</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label style="font-size:11px; color:#aaa; display:block; margin-bottom:4px;">Arka Plan Teması</label>
+                    <select id="floatingThemeSelect" onchange="document.getElementById('bgTheme').value=this.value; document.getElementById('bgImageSelect').value=''; customBgImage=null; scheduleSaveAndDraw();" style="margin:0; font-size:12px;">
+                        <option value="darkSmoke">1. Koyu Dumanlı</option>
+                        <option value="graySmoke">2. Gri Dumanlı</option>
+                        <option value="deepBlue">3. Derin Mavi</option>
+                        <option value="solidDark">4. Düz Siyah</option>
+                        <option value="solidLight">5. Düz Beyaz</option>
+                        <option value="parchment">6. Parşömen</option>
+                    </select>
+                </div>
+
+                <button class="btn-primary" onclick="downloadImage(); toggleFloatingMenu();" style="padding: 10px; font-size: 13px; margin-top:5px;">
+                    <i class="fas fa-download"></i> Hızlı İndir (4K)
+                </button>
+            </div>
+        </div>
+
+        <!-- YENİ: Uçan Aksiyon Grubu ve Mini FAB (Geri/İleri) -->
+        <div class="floating-action-group">
+            <!-- Geri Al Butonu -->
+            <div class="floating-mini-fab disabled" id="floatUndoBtn" onclick="if(!this.classList.contains('disabled')) undoAction()" title="Geri Al">
+                <i class="fas fa-undo-alt"></i>
+            </div>
+            
+            <!-- Uçan Ana Tetikleyici Buton -->
+            <div class="floating-fab" id="floatingFabBtn" onclick="toggleFloatingMenu()" title="Hızlı Menüyü Aç/Kapat">
+                <i class="fas fa-cube"></i>
+            </div>
+
+            <!-- İleri Al Butonu -->
+            <div class="floating-mini-fab disabled" id="floatRedoBtn" onclick="if(!this.classList.contains('disabled')) redoAction()" title="İleri Al">
+                <i class="fas fa-redo-alt"></i>
+            </div>
+        </div>
     </div>
 
     <script>
@@ -1196,15 +1422,23 @@
             ex: { x: 0, y: 0 },
             author: { x: 0, y: 0 },
             brand: { x: 0, y: 0 },
-            bg: { x: 0, y: 0 },
-            floating: { x: 0, y: 0 }
+            bg: { x: 0, y: 0 }
         };
 
-        let hitBoxes = { ar: null, tr: null, ex: null, author: null, brand: null, floating: null };
+        let hitBoxes = { ar: null, tr: null, ex: null, author: null, brand: null, floatingItems: [] };
         let customBgImage = null;
-        let customFloatingImage = null;
         
-        const STORAGE_KEY = 'tasvirmatik_autosave_v2';
+        // ÖZELLİK 3: SINIRSIZ EK GÖRSEL / LOGO LİSTESİ MANTIĞI
+        let floatingImages = []; // Her eleman: { id, imgObj, src, opacity, sizeMultiplier, shadowOpacity, shadowBlur, x, y }
+
+        function toggleFloatingMenu() {
+            const panel = document.getElementById('floatingMenuPanel');
+            const fab = document.getElementById('floatingFabBtn');
+            panel.classList.toggle('active');
+            fab.classList.toggle('active');
+        }
+        
+        const STORAGE_KEY = 'tasvirmatik_autosave_v3';
         let saveTimeout;
         
         // METİN KUTUSU SİLME FONKSİYONU
@@ -1217,38 +1451,109 @@
             }
         }
 
-        // UÇAN RESİM SİLME / YÜKLEME FONKSİYONU
-        function clearFloatingImage() {
-            customFloatingImage = null;
-            scheduleSaveAndDraw();
-            showToast("🗑️ Ek görsel kaldırıldı!");
-        }
-        
-        document.getElementById('floatingUpload').addEventListener('change', function(e) {
-            const file = e.target.files[0];
+        // ÖZELLİK 3: YENİ GÖRSEL YÜKLEME VE SINIRSIZ EKLEME FONKSİYONU
+        function handleNewImageUpload(inputEl) {
+            const file = inputEl.files[0];
             if (!file) return;
             const reader = new FileReader();
             reader.onload = function(event) {
                 const img = new Image();
                 img.onload = function() {
-                    customFloatingImage = img;
+                    const newItem = {
+                        id: 'img_' + Date.now(),
+                        imgObj: img,
+                        src: event.target.result,
+                        opacity: 1.0,
+                        sizeMultiplier: 1.0,
+                        shadowOpacity: 0.6,
+                        shadowBlur: 35,
+                        x: 0,
+                        y: 0
+                    };
+                    floatingImages.push(newItem);
+                    renderFloatingImagesUI();
                     scheduleSaveAndDraw();
-                    showToast("📸 Ek görsel başarıyla eklendi!");
+                    showToast("📸 Yeni ek görsel başarıyla eklendi!");
                 };
                 img.src = event.target.result;
             };
             reader.readAsDataURL(file);
-            this.value = ''; 
-        });
+            inputEl.value = '';
+        }
 
-        function scheduleSaveAndDraw() {
+        function removeFloatingImage(id) {
+            floatingImages = floatingImages.filter(item => item.id !== id);
+            renderFloatingImagesUI();
+            scheduleSaveAndDraw();
+            showToast("🗑️ Ek görsel kaldırıldı!");
+        }
+
+        function updateFloatingImageProp(id, prop, val) {
+            const item = floatingImages.find(i => i.id === id);
+            if (item) {
+                item[prop] = parseFloat(val);
+                scheduleSaveAndDraw();
+            }
+        }
+
+        function renderFloatingImagesUI() {
+            const container = document.getElementById('floatingImagesListContainer');
+            if (!container) return;
+            container.innerHTML = '';
+
+            if (floatingImages.length === 0) {
+                container.innerHTML = `<div style="font-size:11px; color:#666; text-align:center; padding:10px; background:#121214; border-radius:6px; border:1px dashed #333;">Henüz ek görsel/logo eklenmedi.</div>`;
+                return;
+            }
+
+            floatingImages.forEach((item, index) => {
+                const card = document.createElement('div');
+                card.style.cssText = "background:#121214; border:1px solid #333; border-radius:8px; padding:12px; margin-bottom:8px;";
+                card.innerHTML = `
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+                        <span style="font-size:12px; color:var(--accent); font-weight:bold;"><i class="fas fa-image"></i> Görsel #${index + 1}</span>
+                        <button class="btn-tool-action" style="margin:0; width:auto; padding:4px 8px; color:#ff6b6b; border-color:#4a2020;" onclick="removeFloatingImage('${item.id}')" title="Bu görseli sil">
+                            <i class="fas fa-trash-alt"></i> Sil
+                        </button>
+                    </div>
+                    <div class="slider-label"><span>Şeffaflık (Opaklık)</span></div>
+                    <input type="range" min="0.1" max="1.0" step="0.05" value="${item.opacity}" oninput="updateFloatingImageProp('${item.id}', 'opacity', this.value)">
+
+                    <div class="slider-label"><span>Görsel Boyutu</span></div>
+                    <input type="range" min="0.1" max="3.0" step="0.05" value="${item.sizeMultiplier}" oninput="updateFloatingImageProp('${item.id}', 'sizeMultiplier', this.value)">
+
+                    <details style="margin-top:5px;">
+                        <summary style="font-size:11px; color:#aaa; cursor:pointer;">✨ Gölge Ayarları</summary>
+                        <div style="padding-top:8px; display:flex; flex-direction:column; gap:5px;">
+                            <div class="slider-label"><span>Gölge Şeffaflığı</span></div>
+                            <input type="range" min="0" max="1" step="0.1" value="${item.shadowOpacity}" oninput="updateFloatingImageProp('${item.id}', 'shadowOpacity', this.value)">
+                            <div class="slider-label"><span>Gölge Bulanıklığı</span></div>
+                            <input type="range" min="0" max="100" step="1" value="${item.shadowBlur}" oninput="updateFloatingImageProp('${item.id}', 'shadowBlur', this.value)">
+                        </div>
+                    </details>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        // OPTİMİZE EDİLMİŞ SCHEDULE SAVE AND DRAW (GECİKMESİZ VE ANLIK)
+        function scheduleSaveAndDraw(isImmediateHistory = false) {
             drawAllCanvases();
             clearTimeout(saveTimeout);
-            saveTimeout = setTimeout(saveStateToLocal, 1000);
+            
+            if (isImmediateHistory) {
+                saveStateToLocal();
+                pushToHistory();
+            } else {
+                saveTimeout = setTimeout(() => {
+                    saveStateToLocal();
+                    pushToHistory();
+                }, 250);
+            }
         }
 
         function saveStateToLocal() {
-            const state = { inputs: {}, styles: styles, dragOffsets: dragOffsets };
+            const state = { inputs: {}, styles: styles, dragOffsets: dragOffsets, floatingImages: [] };
             document.querySelectorAll('input, select, textarea').forEach(el => {
                 if(el.id && el.type !== 'file' && el.type !== 'button') {
                     state.inputs[el.id] = el.type === 'checkbox' ? el.checked : el.value;
@@ -1258,62 +1563,74 @@
             if (customBgImage && customBgImage.src) {
                 state.savedBgSrc = customBgImage.src;
             }
-            if (customFloatingImage && customFloatingImage.src) {
-                state.savedFloatingSrc = customFloatingImage.src;
-            }
+
+            state.floatingImages = floatingImages.map(i => ({
+                id: i.id, src: i.src, opacity: i.opacity, sizeMultiplier: i.sizeMultiplier,
+                shadowOpacity: i.shadowOpacity, shadowBlur: i.shadowBlur, x: i.x, y: i.y
+            }));
             
             try {
                 localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
-                if(typeof pushToHistory === "function") pushToHistory();
             } catch (e) {
-                console.warn("Hafıza kotası aşıldı, resim harici veriler kaydedildi.");
-                delete state.savedBgSrc;
-                delete state.savedFloatingSrc;
+                console.warn("Hafıza kotası aşıldı.");
                 localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
-                if(typeof pushToHistory === "function") pushToHistory();
             }
         }
 
         function loadStateFromLocal() {
             try {
                 const data = localStorage.getItem(STORAGE_KEY);
-                if(!data) return;
-                const state = JSON.parse(data);
-                if(state.styles) styles = state.styles;
-                
-                if(state.dragOffsets) {
-                    dragOffsets = state.dragOffsets;
-                    if(!dragOffsets.author) dragOffsets.author = { x: 0, y: 0 };
-                    if(!dragOffsets.brand) dragOffsets.brand = { x: 0, y: 0 };
-                    if(!dragOffsets.floating) dragOffsets.floating = { x: 0, y: 0 };
-                }
-                
-                if(state.inputs) {
-                    for(const id in state.inputs) {
-                        const el = document.getElementById(id);
-                        if(el) {
-                            if(el.type === 'checkbox') el.checked = state.inputs[id];
-                            else el.value = state.inputs[id];
+                if (data) {
+                    const state = JSON.parse(data);
+                    if(state.styles) styles = state.styles;
+                    
+                    if(state.dragOffsets) {
+                        dragOffsets = state.dragOffsets;
+                        if(!dragOffsets.author) dragOffsets.author = { x: 0, y: 0 };
+                        if(!dragOffsets.brand) dragOffsets.brand = { x: 0, y: 0 };
+                        if(!dragOffsets.bg) dragOffsets.bg = { x: 0, y: 0 };
+                    }
+                    
+                    if(state.inputs) {
+                        for(const id in state.inputs) {
+                            const el = document.getElementById(id);
+                            if(el) {
+                                if(el.type === 'checkbox') el.checked = state.inputs[id];
+                                else el.value = state.inputs[id];
+                            }
                         }
                     }
-                }
-                
-                if (state.savedBgSrc) {
-                    loadCustomBackground(state.savedBgSrc, false);
-                } else {
-                    const bgSelectVal = document.getElementById('bgImageSelect').value;
-                    if (bgSelectVal) loadCustomBackground(bgSelectVal, false);
-                }
-                
-                if (state.savedFloatingSrc) {
-                    const fImg = new Image();
-                    fImg.onload = () => { customFloatingImage = fImg; scheduleSaveAndDraw(); };
-                    fImg.src = state.savedFloatingSrc;
-                }
+                    
+                    if (state.savedBgSrc) {
+                        loadCustomBackground(state.savedBgSrc, false);
+                    } else {
+                        const bgSelectVal = document.getElementById('bgImageSelect').value;
+                        if (bgSelectVal) loadCustomBackground(bgSelectVal, false);
+                    }
+                    
+                    if (state.floatingImages && Array.isArray(state.floatingImages)) {
+                        floatingImages = [];
+                        state.floatingImages.forEach(savedItem => {
+                            const fImg = new Image();
+                            fImg.onload = () => {
+                                floatingImages.push({
+                                    id: savedItem.id, imgObj: fImg, src: savedItem.src,
+                                    opacity: savedItem.opacity, sizeMultiplier: savedItem.sizeMultiplier,
+                                    shadowOpacity: savedItem.shadowOpacity, shadowBlur: savedItem.shadowBlur,
+                                    x: savedItem.x || 0, y: savedItem.y || 0
+                                });
+                                renderFloatingImagesUI();
+                                scheduleSaveAndDraw();
+                            };
+                            fImg.src = savedItem.src;
+                        });
+                    }
 
-                updateStyleButtonsUI();
+                    updateStyleButtonsUI();
+                }
             } catch(e) { console.error("Kayıt yüklenemedi", e); }
             
+            // HER ZAMAN İLK DURUMU GEÇMİŞE EKLE (Geri gelindiğinde sıfır halini bulsun)
             setTimeout(() => { if(typeof pushToHistory === "function") pushToHistory(); }, 800);
         }
 
@@ -1423,7 +1740,8 @@
 
         function askClearDragOffsets() {
             openModal("Sürüklemeyi Sıfırla", "Metinlerin kendi etrafında bağımsız kaydırdığınız konumları sıfırlanarak orijinal merkeze geri alınacaktır. Onaylıyor musunuz?", () => {
-                dragOffsets = { ar: {x:0, y:0}, tr: {x:0, y:0}, ex: {x:0, y:0}, author: {x:0, y:0}, brand: {x:0, y:0}, bg: {x:0, y:0}, floating: {x:0, y:0} };
+                dragOffsets = { ar: {x:0, y:0}, tr: {x:0, y:0}, ex: {x:0, y:0}, author: {x:0, y:0}, brand: {x:0, y:0}, bg: {x:0, y:0} };
+                floatingImages.forEach(i => { i.x = 0; i.y = 0; });
                 scheduleSaveAndDraw();
                 showToast("Sürükleme konumları sıfırlandı!");
             });
@@ -1506,8 +1824,8 @@
                 let offsetY = (h - newHeight) / 2;
 
                 if (typeof dragOffsets !== 'undefined' && dragOffsets.bg) {
-                    offsetX += dragOffsets.bg.x;
-                    offsetY += dragOffsets.bg.y;
+                    offsetX += dragOffsets.bg.x * exportMultiplier;
+                    offsetY += dragOffsets.bg.y * exportMultiplier;
                 }
 
                 offsetX = Math.min(0, Math.max(offsetX, w - newWidth));
@@ -1618,6 +1936,7 @@
             if (effectType === 'none') return;
             ctx.save();
             ctx.shadowColor = 'transparent';
+            ctx.globalCompositeOperation = 'screen';
 
             const seedRandom = (seed) => {
                 let x = Math.sin(seed++) * 10000;
@@ -1745,13 +2064,6 @@
             return { lines, maxLineWidth };
         }
 
-        function setSoftShadow(ctx, theme) {
-            if (!customBgImage && (theme === 'solidLight' || theme === 'oldPaper' || theme === 'parchment' || theme === 'sandStorm' || theme === 'lightPink')) {
-                ctx.shadowColor = 'rgba(0, 0, 0, 0.25)'; 
-            } else { ctx.shadowColor = 'rgba(0, 0, 0, 0.85)'; }
-            ctx.shadowBlur = 28; ctx.shadowOffsetX = 0; ctx.shadowOffsetY = 4; 
-        }
-
         let isDrawing = false;
         function drawAllCanvases() {
             if (!isDrawing) {
@@ -1784,8 +2096,11 @@
             const arSizeMultiplier = parseFloat(document.getElementById('arSizeMultiplier').value);
             const trSizeMultiplier = parseFloat(document.getElementById('trSizeMultiplier').value);
             const exSizeMultiplier = parseFloat(document.getElementById('exSizeMultiplier').value);
+            
+            const bgFocusBlurVal = document.getElementById('bgFocusBlur') ? parseFloat(document.getElementById('bgFocusBlur').value) : 0;
+            const bgGrainVal = document.getElementById('bgGrain') ? parseInt(document.getElementById('bgGrain').value) : 0;
 
-            if(exportMultiplier === 1) hitBoxes = { ar: null, tr: null, ex: null, author: null, brand: null, floating: null };
+            if(exportMultiplier === 1) hitBoxes = { ar: null, tr: null, ex: null, author: null, brand: null, floatingItems: [] };
 
             const arProps = {
                 fillType: document.getElementById('arFillType').value, effectType: document.getElementById('arEffectType').value,
@@ -1793,7 +2108,8 @@
                 strokeColor: document.getElementById('arStrokeColor').value, strokeWidth: parseFloat(document.getElementById('arStrokeWidth').value),
                 shadowColorHex: document.getElementById('arShadowColor').value, shadowOpacity: parseFloat(document.getElementById('arShadowOpacity').value),
                 shadowBlur: parseInt(document.getElementById('arShadowBlur').value), shadowOffset: 4, 
-                highlight: document.getElementById('arHighlight').checked, highlightColor: document.getElementById('arHighlightColor').value
+                highlight: document.getElementById('arHighlight').checked, highlightColor: document.getElementById('arHighlightColor').value,
+                reflection: document.getElementById('arReflection') ? document.getElementById('arReflection').checked : false
             };
 
             const trProps = {
@@ -1803,7 +2119,8 @@
                 shadowColorHex: document.getElementById('trShadowColor').value, shadowOpacity: parseFloat(document.getElementById('trShadowOpacity').value),
                 shadowBlur: parseInt(document.getElementById('trShadowBlur').value), shadowOffset: 4,
                 highlight: document.getElementById('trHighlight').checked, highlightColor: document.getElementById('trHighlightColor').value,
-                letterSpacing: parseInt(document.getElementById('trLetterSpacing').value)
+                letterSpacing: parseInt(document.getElementById('trLetterSpacing').value),
+                reflection: document.getElementById('trReflection') ? document.getElementById('trReflection').checked : false
             };
 
             const exProps = {
@@ -1813,7 +2130,8 @@
                 shadowColorHex: document.getElementById('exShadowColor').value, shadowOpacity: parseFloat(document.getElementById('exShadowOpacity').value),
                 shadowBlur: parseInt(document.getElementById('exShadowBlur').value), shadowOffset: 4,
                 highlight: document.getElementById('exHighlight').checked, highlightColor: document.getElementById('exHighlightColor').value,
-                letterSpacing: parseInt(document.getElementById('exLetterSpacing').value)
+                letterSpacing: parseInt(document.getElementById('exLetterSpacing').value),
+                reflection: document.getElementById('exReflection') ? document.getElementById('exReflection').checked : false
             };
 
             const srcProps = {
@@ -1829,7 +2147,8 @@
                 shadowOffset: 4,
                 highlight: document.getElementById('srcHighlight') ? document.getElementById('srcHighlight').checked : false,
                 highlightColor: document.getElementById('srcHighlightColor') ? document.getElementById('srcHighlightColor').value : '#c5a059',
-                letterSpacing: document.getElementById('srcLetterSpacing') ? parseInt(document.getElementById('srcLetterSpacing').value) : 0
+                letterSpacing: document.getElementById('srcLetterSpacing') ? parseInt(document.getElementById('srcLetterSpacing').value) : 0,
+                reflection: document.getElementById('srcReflection') ? document.getElementById('srcReflection').checked : false
             };
 
             const brProps = {
@@ -1845,7 +2164,8 @@
                 shadowOffset: 4,
                 highlight: document.getElementById('brHighlight') ? document.getElementById('brHighlight').checked : false,
                 highlightColor: document.getElementById('brHighlightColor') ? document.getElementById('brHighlightColor').value : '#c5a059',
-                letterSpacing: document.getElementById('brLetterSpacing') ? parseInt(document.getElementById('brLetterSpacing').value) : 0
+                letterSpacing: document.getElementById('brLetterSpacing') ? parseInt(document.getElementById('brLetterSpacing').value) : 0,
+                reflection: document.getElementById('brReflection') ? document.getElementById('brReflection').checked : false
             };
 
             const brandText = document.getElementById('brandText') ? document.getElementById('brandText').value : '';
@@ -1890,8 +2210,32 @@
             }
 
             drawBackground(ctx, baseW, baseH, theme, exportMultiplier);
-            
             ctx.filter = 'none';
+
+            if (bgFocusBlurVal > 0) {
+                const tempCanvas = document.createElement('canvas');
+                tempCanvas.width = canvas.width; 
+                tempCanvas.height = canvas.height;
+                const tCtx = tempCanvas.getContext('2d');
+                
+                tCtx.scale(exportMultiplier, exportMultiplier);
+                tCtx.filter = `blur(${bgFocusBlurVal * exportMultiplier * 1.5}px)`;
+                drawBackground(tCtx, baseW, baseH, theme, exportMultiplier);
+                tCtx.filter = 'none';
+                
+                const maskGrad = tCtx.createRadialGradient(baseW/2, baseH/2, baseH/4, baseW/2, baseH/2, baseW*0.65);
+                maskGrad.addColorStop(0, 'rgba(0,0,0,0)');
+                maskGrad.addColorStop(1, 'rgba(0,0,0,1)');
+                
+                tCtx.globalCompositeOperation = 'destination-in';
+                tCtx.fillStyle = maskGrad;
+                tCtx.fillRect(0, 0, baseW, baseH);
+                
+                ctx.save();
+                ctx.setTransform(1, 0, 0, 1, 0, 0); 
+                ctx.drawImage(tempCanvas, 0, 0);
+                ctx.restore();
+            }
 
             if (bgDarkenVal > 0) {
                 ctx.fillStyle = `rgba(0, 0, 0, ${bgDarkenVal})`;
@@ -2098,36 +2442,54 @@
                     hitBoxes.brand = { x: baseW * 0.05 + brandDrawX, y: brandDrawY - 15, w: baseW * 0.9, h: 50 };
                 }
             }
-            
-            // --- YENİ EKLENEN UÇAN RESİM ÇİZİMİ ---
-            if (customFloatingImage) {
+
+            if (bgGrainVal > 0) {
                 ctx.save();
-                const floatScale = (document.getElementById('floatSizeMultiplier') ? parseFloat(document.getElementById('floatSizeMultiplier').value) : 1.0) * scale;
-                const fWidth = customFloatingImage.width * floatScale;
-                const fHeight = customFloatingImage.height * floatScale;
-                
-                // Varsayılan pozisyon (Üst merkez)
-                let defaultFX = (baseW - fWidth) / 2;
-                let defaultFY = 80 * scale; 
-                
-                let fDrawX = defaultFX + dragOffsets.floating.x + globalXOffset;
-                let fDrawY = defaultFY + dragOffsets.floating.y + globalYOffset;
-                
-                // 3D Gölge
-                const fShadowOp = document.getElementById('floatShadowOpacity') ? parseFloat(document.getElementById('floatShadowOpacity').value) : 0.6;
-                const fShadowBlur = document.getElementById('floatShadowBlur') ? parseInt(document.getElementById('floatShadowBlur').value) : 35;
-                
-                ctx.shadowColor = `rgba(0, 0, 0, ${fShadowOp})`;
-                ctx.shadowBlur = fShadowBlur * scale;
-                ctx.shadowOffsetX = 0;
-                ctx.shadowOffsetY = 12 * scale;
-                
-                ctx.drawImage(customFloatingImage, fDrawX, fDrawY, fWidth, fHeight);
-                ctx.restore();
-                
-                if (exportMultiplier === 1) {
-                    hitBoxes.floating = { x: fDrawX, y: fDrawY, w: fWidth, h: fHeight };
+                ctx.setTransform(1, 0, 0, 1, 0, 0); 
+                const pCanvas = document.createElement('canvas');
+                pCanvas.width = 128; pCanvas.height = 128;
+                const pCtx = pCanvas.getContext('2d');
+                const imgD = pCtx.createImageData(128, 128);
+                for (let i = 0; i < imgD.data.length; i += 4) {
+                    const v = 128 + (Math.random() - 0.5) * (bgGrainVal * 5);
+                    imgD.data[i] = v; imgD.data[i+1] = v; imgD.data[i+2] = v;
+                    imgD.data[i+3] = bgGrainVal * 1.2;
                 }
+                pCtx.putImageData(imgD, 0, 0);
+                
+                ctx.globalCompositeOperation = 'overlay';
+                ctx.fillStyle = ctx.createPattern(pCanvas, 'repeat');
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                ctx.restore();
+            }
+            
+            // --- ÖZELLİK 3: SINIRSIZ EK GÖRSEL / LOGO ÇİZİM DÖNGÜSÜ ---
+            if (floatingImages && floatingImages.length > 0) {
+                floatingImages.forEach((item, index) => {
+                    ctx.save();
+                    const floatScale = item.sizeMultiplier * scale;
+                    const fWidth = item.imgObj.width * floatScale;
+                    const fHeight = item.imgObj.height * floatScale;
+                    
+                    let defaultFX = (baseW - fWidth) / 2 + (index * 40);
+                    let defaultFY = 80 * scale + (index * 40); 
+                    
+                    let fDrawX = defaultFX + item.x + globalXOffset;
+                    let fDrawY = defaultFY + item.y + globalYOffset;
+                    
+                    ctx.shadowColor = `rgba(0, 0, 0, ${item.shadowOpacity})`;
+                    ctx.shadowBlur = item.shadowBlur * scale;
+                    ctx.shadowOffsetX = 0;
+                    ctx.shadowOffsetY = 12 * scale;
+                    
+                    ctx.globalAlpha = item.opacity;
+                    ctx.drawImage(item.imgObj, fDrawX, fDrawY, fWidth, fHeight);
+                    ctx.restore();
+                    
+                    if (exportMultiplier === 1) {
+                        hitBoxes.floatingItems.push({ id: item.id, x: fDrawX, y: fDrawY, w: fWidth, h: fHeight });
+                    }
+                });
             }
         }
 
@@ -2144,22 +2506,35 @@
             if (styleObj.align === 'center') lineX = x - width / 2;
             else if (styleObj.align === 'right') lineX = x - width;
 
-                    if (props.highlight) {
-            ctx.save();
-            // 1. Katman: Geniş ve yüksek bulanıklığa sahip dış duman (Feathered Edge)
-            ctx.shadowColor = props.highlightColor;
-            ctx.shadowBlur = 50 * scale;
-            ctx.shadowOffsetX = 0;
-            ctx.shadowOffsetY = 0;
-            ctx.fillStyle = hexToRgba(props.highlightColor, 0.15); // Çok hafif iç renk
-            ctx.fillRect(lineX - 25 * scale, y + scaledLineHeight * 0.05, width + 50 * scale, scaledLineHeight * 1.1);
-            
-            // 2. Katman: Odaklayıcı, daha dar ve belirgin iç çekirdek dumanı
-            ctx.shadowBlur = 20 * scale;
-            ctx.fillStyle = hexToRgba(props.highlightColor, 0.35); // Daha yoğun merkez
-            ctx.fillRect(lineX - 5 * scale, y + scaledLineHeight * 0.15, width + 10 * scale, scaledLineHeight * 0.8);
-            ctx.restore();
-        }
+            if (props.reflection) {
+                ctx.save();
+                ctx.translate(0, y + scaledLineHeight * 1.15);
+                ctx.scale(1, -1);
+                
+                let refGrad = ctx.createLinearGradient(0, -scaledLineHeight * 0.1, 0, scaledLineHeight);
+                refGrad.addColorStop(0, hexToRgba(baseColorHex, 0.35));
+                refGrad.addColorStop(1, hexToRgba(baseColorHex, 0.0));
+                
+                ctx.fillStyle = refGrad;
+                ctx.shadowColor = 'transparent';
+                ctx.fillText(text.trim(), x, 0);
+                ctx.restore();
+            }
+
+            if (props.highlight) {
+                ctx.save();
+                ctx.shadowColor = props.highlightColor;
+                ctx.shadowBlur = 50 * scale;
+                ctx.shadowOffsetX = 0;
+                ctx.shadowOffsetY = 0;
+                ctx.fillStyle = hexToRgba(props.highlightColor, 0.15);
+                ctx.fillRect(lineX - 25 * scale, y + scaledLineHeight * 0.05, width + 50 * scale, scaledLineHeight * 1.1);
+                
+                ctx.shadowBlur = 20 * scale;
+                ctx.fillStyle = hexToRgba(props.highlightColor, 0.35);
+                ctx.fillRect(lineX - 5 * scale, y + scaledLineHeight * 0.15, width + 10 * scale, scaledLineHeight * 0.8);
+                ctx.restore();
+            }
 
             let fillStyle = props.fillColor;
             if (props.fillType === 'gold') {
@@ -2195,37 +2570,47 @@
 
             ctx.save();
             if (props.effectType === 'hdrMetallic') {
-                // 1. Düz renk yerine metalik yansıma gradyanı (Metallic Gradient)
                 let grad = ctx.createLinearGradient(0, y, 0, y + scaledLineHeight);
-                grad.addColorStop(0.1, '#ffffff'); // Üst parlak
-                grad.addColorStop(0.5, props.fillColor !== '#ffffff' ? props.fillColor : '#cccccc'); // Orta gövde rengi
-                grad.addColorStop(0.9, '#ffffff'); // Alt parlak
+                grad.addColorStop(0.1, '#ffffff');
+                grad.addColorStop(0.5, props.fillColor !== '#ffffff' ? props.fillColor : '#cccccc');
+                grad.addColorStop(0.9, '#ffffff');
                 
-                // 2. "Dark Glow" - Yoğun karanlık HDR gölgesi
-                ctx.shadowColor = '#000000'; // Simsiyah HDR bulutu
-                
-                // Geniş dış bulut
+                ctx.shadowColor = '#000000';
                 ctx.shadowBlur = 45 * scale;
                 ctx.shadowOffsetX = 0;
                 ctx.shadowOffsetY = 0;
                 ctx.fillStyle = grad;
                 ctx.fillText(text.trim(), x, y);
 
-                // Dar iç keskin gölge
                 ctx.shadowBlur = 15 * scale;
                 ctx.fillText(text.trim(), x, y);
                 
-                // 3. İnce, jilet gibi kontür (Hacim ve keskinlik için)
-                ctx.restore(); // Gölgeleri sıfırla
+                ctx.restore();
                 ctx.save();
                 ctx.lineWidth = 1.5 * scale;
-                ctx.strokeStyle = 'rgba(0,0,0,0.7)'; // Yarı saydam siyah dış hat
+                ctx.strokeStyle = 'rgba(0,0,0,0.7)';
                 ctx.strokeText(text.trim(), x, y);
-                
-                // Üzerine tekrar gradyan dolguyu bas ki kontür altında kalmasın, temiz görünsün
                 ctx.fillStyle = grad;
                 ctx.fillText(text.trim(), x, y);
 
+            } else if (props.effectType === 'emboss') {
+                ctx.shadowColor = hexToRgba(props.shadowColorHex, props.shadowOpacity);
+                ctx.shadowBlur = props.shadowBlur * scale;
+                ctx.shadowOffsetX = props.shadowOffset * scale;
+                ctx.shadowOffsetY = props.shadowOffset * scale;
+                ctx.fillStyle = fillStyle;
+                ctx.fillText(text.trim(), x, y);
+                ctx.shadowColor = 'transparent';
+
+                ctx.fillStyle = 'rgba(0,0,0,0.75)';
+                ctx.fillText(text.trim(), x + 3 * scale, y + 3 * scale);
+
+                ctx.fillStyle = 'rgba(255,255,255,0.75)';
+                ctx.fillText(text.trim(), x - 3 * scale, y - 3 * scale);
+
+                ctx.fillStyle = fillStyle;
+                ctx.fillText(text.trim(), x, y);
+                
             } else if (props.effectType === 'neon') {
                 ctx.shadowColor = hexToRgba(props.shadowColorHex, props.shadowOpacity);
                 ctx.fillStyle = '#ffffff'; 
@@ -2328,153 +2713,183 @@
         }
 
         // ========================================================
-// SÜRÜKLEME VE ÇİFT TIKLAMA / DOKUNMA MOTORU (EKSİKSİZ BÜTÜN)
-// ========================================================
-let activeDragTarget = null;
-let dragStartX = 0, dragStartY = 0;
-let initialDragOffset = { x: 0, y: 0 };
-let lastTapTime = 0; 
+        // SÜRÜKLEME VE ÇİFT TIKLAMA / DOKUNMA MOTORU
+        // ========================================================
+        let activeDragTarget = null;
+        let activeFloatingId = null;
+        let dragStartX = 0, dragStartY = 0;
+        let initialDragOffset = { x: 0, y: 0 };
+        let lastTapTime = 0; 
 
-function getEventPos(canvas, e) {
-    const rect = canvas.getBoundingClientRect();
-    const scaleX = canvas.width / rect.width;
-    const scaleY = canvas.height / rect.height;
-    let clientX = 0, clientY = 0;
+        function getEventPos(canvas, e) {
+            const rect = canvas.getBoundingClientRect();
+            const scaleX = canvas.width / rect.width;
+            const scaleY = canvas.height / rect.height;
+            let clientX = 0, clientY = 0;
 
-    if (e.touches && e.touches.length > 0) {
-        clientX = e.touches[0].clientX;
-        clientY = e.touches[0].clientY;
-    } else if (e.changedTouches && e.changedTouches.length > 0) {
-        clientX = e.changedTouches[0].clientX;
-        clientY = e.changedTouches[0].clientY;
-    } else {
-        clientX = e.clientX || 0;
-        clientY = e.clientY || 0;
-    }
-
-    return {
-        x: (clientX - rect.left) * scaleX,
-        y: (clientY - rect.top) * scaleY
-    };
-}
-
-function handleDoubleClick(canvas, e) {
-    const pos = getEventPos(canvas, e);
-    const targets = ['floating', 'brand', 'author', 'ex', 'tr', 'ar'];
-    
-    const targetElementMap = {
-        'ar': 'arabicText',
-        'tr': 'turkishText',
-        'ex': 'extraText',
-        'author': 'author',
-        'brand': 'brandText'
-    };
-
-    for (let target of targets) {
-        if (target === 'floating') continue; // Uçan resim için çift tıkla metne gitme yok
-        
-        let box = hitBoxes[target];
-        if (box && pos.x >= box.x && pos.x <= box.x + box.w && pos.y >= box.y && pos.y <= box.y + box.h) {
-            const elemId = targetElementMap[target];
-            const elem = document.getElementById(elemId);
-            if (elem) {
-                elem.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                elem.focus();
-                
-                const parentSec = elem.closest('.section') || elem;
-                const originalBg = parentSec.style.backgroundColor;
-                parentSec.style.transition = 'background-color 0.3s, box-shadow 0.3s';
-                parentSec.style.backgroundColor = 'rgba(197, 160, 89, 0.15)';
-                parentSec.style.boxShadow = 'inset 0 0 15px rgba(197, 160, 89, 0.4)';
-                
-                setTimeout(() => {
-                    parentSec.style.backgroundColor = originalBg;
-                    parentSec.style.boxShadow = 'none';
-                }, 1200);
-
-                showToast("🎯 Metni Düzenle!");
+            if (e.touches && e.touches.length > 0) {
+                clientX = e.touches[0].clientX;
+                clientY = e.touches[0].clientY;
+            } else if (e.changedTouches && e.changedTouches.length > 0) {
+                clientX = e.changedTouches[0].clientX;
+                clientY = e.changedTouches[0].clientY;
+            } else {
+                clientX = e.clientX || 0;
+                clientY = e.clientY || 0;
             }
-            break;
+
+            return {
+                x: (clientX - rect.left) * scaleX,
+                y: (clientY - rect.top) * scaleY
+            };
         }
-    }
-}
 
-function handleDragStart(canvas, e) {
-    const pos = getEventPos(canvas, e);
+        function handleDoubleClick(canvas, e) {
+            const pos = getEventPos(canvas, e);
+            const targets = ['brand', 'author', 'ex', 'tr', 'ar'];
+            
+            const targetElementMap = {
+                'ar': 'arabicText',
+                'tr': 'turkishText',
+                'ex': 'extraText',
+                'author': 'author',
+                'brand': 'brandText'
+            };
 
-    // MOBİL ÇİFT DOKUNMA (DOUBLE TAP)
-    if (e.type === 'touchstart') {
-        const currentTime = new Date().getTime();
-        const tapGap = currentTime - lastTapTime;
+            for (let target of targets) {
+                let box = hitBoxes[target];
+                if (box && pos.x >= box.x && pos.x <= box.x + box.w && pos.y >= box.y && pos.y <= box.y + box.h) {
+                    const elemId = targetElementMap[target];
+                    const elem = document.getElementById(elemId);
+                    if (elem) {
+                        elem.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        elem.focus();
+                        
+                        const parentSec = elem.closest('.section') || elem;
+                        const originalBg = parentSec.style.backgroundColor;
+                        parentSec.style.transition = 'background-color 0.3s, box-shadow 0.3s';
+                        parentSec.style.backgroundColor = 'rgba(197, 160, 89, 0.15)';
+                        parentSec.style.boxShadow = 'inset 0 0 15px rgba(197, 160, 89, 0.4)';
+                        
+                        setTimeout(() => {
+                            parentSec.style.backgroundColor = originalBg;
+                            parentSec.style.boxShadow = 'none';
+                        }, 1200);
 
-        if (tapGap < 350 && tapGap > 0) {
-            if (e.cancelable) e.preventDefault();
-            handleDoubleClick(canvas, e);
-            lastTapTime = 0;
+                        showToast("🎯 Metni Düzenle!");
+                    }
+                    break;
+                }
+            }
+        }
+
+        function handleDragStart(canvas, e) {
+            const pos = getEventPos(canvas, e);
+
+            if (e.type === 'touchstart') {
+                const currentTime = new Date().getTime();
+                const tapGap = currentTime - lastTapTime;
+
+                if (tapGap < 350 && tapGap > 0) {
+                    if (e.cancelable) e.preventDefault();
+                    handleDoubleClick(canvas, e);
+                    lastTapTime = 0;
+                    activeDragTarget = null;
+                    activeFloatingId = null;
+                    return;
+                }
+                lastTapTime = currentTime;
+            }
+
             activeDragTarget = null;
-            return;
+            activeFloatingId = null;
+
+            if (hitBoxes.floatingItems && hitBoxes.floatingItems.length > 0) {
+                for (let fItem of hitBoxes.floatingItems) {
+                    if (pos.x >= fItem.x && pos.x <= fItem.x + fItem.w && pos.y >= fItem.y && pos.y <= fItem.y + fItem.h) {
+                        activeDragTarget = 'floatingItem';
+                        activeFloatingId = fItem.id;
+                        dragStartX = pos.x;
+                        dragStartY = pos.y;
+                        const targetObj = floatingImages.find(i => i.id === fItem.id);
+                        initialDragOffset = { x: targetObj.x, y: targetObj.y };
+                        if (e.type === 'touchstart' && e.cancelable) e.preventDefault();
+                        return;
+                    }
+                }
+            }
+
+            const targets = ['brand', 'author', 'ex', 'tr', 'ar'];
+            let hitText = false;
+
+            for (let target of targets) {
+                let box = hitBoxes[target];
+                if (box && pos.x >= box.x && pos.x <= box.x + box.w && pos.y >= box.y && pos.y <= box.y + box.h) {
+                    activeDragTarget = target;
+                    dragStartX = pos.x; 
+                    dragStartY = pos.y;
+                    initialDragOffset = { x: dragOffsets[target].x, y: dragOffsets[target].y };
+                    hitText = true;
+                    if (e.type === 'touchstart' && e.cancelable) e.preventDefault();
+                    break;
+                }
+            }
+
+            if (!hitText) {
+                activeDragTarget = 'bg';
+                dragStartX = pos.x; 
+                dragStartY = pos.y;
+                if (!dragOffsets.bg) dragOffsets.bg = { x: 0, y: 0 };
+                initialDragOffset = { x: dragOffsets.bg.x, y: dragOffsets.bg.y };
+                if (e.type === 'touchstart' && e.cancelable) e.preventDefault();
+            }
         }
-        lastTapTime = currentTime;
-    }
 
-    activeDragTarget = null;
-    // Öncelik 'floating' (uçan resim) katmanında, böylece metinle çakışırsa resim tutulur
-    const targets = ['floating', 'brand', 'author', 'ex', 'tr', 'ar'];
-    let hitText = false;
-
-    for (let target of targets) {
-        let box = hitBoxes[target];
-        if (box && pos.x >= box.x && pos.x <= box.x + box.w && pos.y >= box.y && pos.y <= box.y + box.h) {
-            activeDragTarget = target;
-            dragStartX = pos.x; 
-            dragStartY = pos.y;
-            initialDragOffset = { x: dragOffsets[target].x, y: dragOffsets[target].y };
-            hitText = true;
-            if (e.type === 'touchstart' && e.cancelable) e.preventDefault();
-            break;
+        function handleDragMove(canvas, e) {
+            if (!activeDragTarget) return;
+            if (e.type === 'touchmove' && e.cancelable) e.preventDefault();
+            
+            const pos = getEventPos(canvas, e);
+            const dx = pos.x - dragStartX;
+            const dy = pos.y - dragStartY;
+            
+            if (activeDragTarget === 'floatingItem') {
+                const targetObj = floatingImages.find(i => i.id === activeFloatingId);
+                if (targetObj) {
+                    targetObj.x = initialDragOffset.x + dx;
+                    targetObj.y = initialDragOffset.y + dy;
+                }
+            } else {
+                dragOffsets[activeDragTarget].x = initialDragOffset.x + dx;
+                dragOffsets[activeDragTarget].y = initialDragOffset.y + dy;
+            }
+            
+            drawAllCanvases(); // Geçmişi (Undo/Redo) kirletmeden sadece anlık görsel çizim yap
         }
-    }
 
-    if (!hitText) {
-        activeDragTarget = 'bg';
-        dragStartX = pos.x; 
-        dragStartY = pos.y;
-        if (!dragOffsets.bg) dragOffsets.bg = { x: 0, y: 0 };
-        initialDragOffset = { x: dragOffsets.bg.x, y: dragOffsets.bg.y };
-        if (e.type === 'touchstart' && e.cancelable) e.preventDefault();
-    }
-}
+        function handleDragEnd() {
+            if (activeDragTarget) {
+                saveStateToLocal();
+                pushToHistory(); // Tüm hareket bittiğinde TEK bir net kayıt at
+            }
+            activeDragTarget = null; 
+            activeFloatingId = null;
+        }
 
-function handleDragMove(canvas, e) {
-    if (!activeDragTarget) return;
-    if (e.type === 'touchmove' && e.cancelable) e.preventDefault();
-    
-    const pos = getEventPos(canvas, e);
-    const dx = pos.x - dragStartX;
-    const dy = pos.y - dragStartY;
-    
-    dragOffsets[activeDragTarget].x = initialDragOffset.x + dx;
-    dragOffsets[activeDragTarget].y = initialDragOffset.y + dy;
-    
-    scheduleSaveAndDraw();
-}
-
-function handleDragEnd() { activeDragTarget = null; }
-
-function attachDragListeners(canvasId) {
-    const canvas = document.getElementById(canvasId);
-    if(!canvas) return;
-    
-    canvas.addEventListener('mousedown', (e) => handleDragStart(canvas, e));
-    canvas.addEventListener('mousemove', (e) => handleDragMove(canvas, e));
-    window.addEventListener('mouseup', handleDragEnd);
-    
-    canvas.addEventListener('dblclick', (e) => handleDoubleClick(canvas, e));
-    
-    canvas.addEventListener('touchstart', (e) => handleDragStart(canvas, e), {passive: false});
-    canvas.addEventListener('touchmove', (e) => handleDragMove(canvas, e), {passive: false});
-    window.addEventListener('touchend', handleDragEnd);
-}
+        function attachDragListeners(canvasId) {
+            const canvas = document.getElementById(canvasId);
+            if(!canvas) return;
+            
+            canvas.addEventListener('mousedown', (e) => handleDragStart(canvas, e));
+            canvas.addEventListener('mousemove', (e) => handleDragMove(canvas, e));
+            window.addEventListener('mouseup', handleDragEnd);
+            
+            canvas.addEventListener('dblclick', (e) => handleDoubleClick(canvas, e));
+            
+            canvas.addEventListener('touchstart', (e) => handleDragStart(canvas, e), {passive: false});
+            canvas.addEventListener('touchmove', (e) => handleDragMove(canvas, e), {passive: false});
+            window.addEventListener('touchend', handleDragEnd);
+        }
 
         document.fonts.ready.then(() => { 
             loadStateFromLocal();
@@ -2535,7 +2950,10 @@ function attachDragListeners(canvasId) {
                 styles: JSON.parse(JSON.stringify(styles)), 
                 dragOffsets: JSON.parse(JSON.stringify(dragOffsets)), 
                 bgImage: customBgImage ? customBgImage.src : null,
-                floatingImage: customFloatingImage ? customFloatingImage.src : null
+                floatingImages: floatingImages.map(i => ({
+                    id: i.id, src: i.src, opacity: i.opacity, sizeMultiplier: i.sizeMultiplier,
+                    shadowOpacity: i.shadowOpacity, shadowBlur: i.shadowBlur, x: i.x, y: i.y
+                }))
             };
             document.querySelectorAll('input, select, textarea').forEach(el => {
                 if(el.id && el.type !== 'file' && el.type !== 'button') {
@@ -2565,38 +2983,74 @@ function attachDragListeners(canvasId) {
         function updateHistoryButtonsUI() {
             const btnUndo = document.getElementById('btnUndo');
             const btnRedo = document.getElementById('btnRedo');
-            if(btnUndo) btnUndo.disabled = historyIndex <= 0;
-            if(btnRedo) btnRedo.disabled = historyIndex >= stateHistory.length - 1;
+            const floatUndoBtn = document.getElementById('floatUndoBtn');
+            const floatRedoBtn = document.getElementById('floatRedoBtn');
+            
+            const canUndo = historyIndex > 0;
+            const canRedo = historyIndex < stateHistory.length - 1;
+
+            if(btnUndo) btnUndo.disabled = !canUndo;
+            if(btnRedo) btnRedo.disabled = !canRedo;
+            
+            if(floatUndoBtn) {
+                if(canUndo) floatUndoBtn.classList.remove('disabled');
+                else floatUndoBtn.classList.add('disabled');
+            }
+            if(floatRedoBtn) {
+                if(canRedo) floatRedoBtn.classList.remove('disabled');
+                else floatRedoBtn.classList.add('disabled');
+            }
         }
 
         function applyHistoryState(stateStr) {
             isUndoRedoAction = true; 
             const state = JSON.parse(stateStr);
             
-            styles = state.styles;
-            dragOffsets = state.dragOffsets;
+            if (state.styles) styles = state.styles;
             
-            for(const id in state.inputs) {
-                const el = document.getElementById(id);
-                if(el) {
-                    if(el.type === 'checkbox') el.checked = state.inputs[id];
-                    else el.value = state.inputs[id];
+            // Koordinatlar bozuk veya eski sürümsede asla hata vermemesi için güvenli atama
+            if (state.dragOffsets) {
+                dragOffsets = state.dragOffsets;
+            } else {
+                dragOffsets = { ar: {x:0, y:0}, tr: {x:0, y:0}, ex: {x:0, y:0}, author: {x:0, y:0}, brand: {x:0, y:0}, bg: {x:0, y:0} };
+            }
+            
+            if (state.inputs) {
+                for(const id in state.inputs) {
+                    const el = document.getElementById(id);
+                    if(el) {
+                        if(el.type === 'checkbox') el.checked = state.inputs[id];
+                        else el.value = state.inputs[id];
+                    }
                 }
             }
             
             if (state.bgImage) { loadCustomBackground(state.bgImage, false); } 
             else { customBgImage = null; }
 
-            if (state.floatingImage) {
-                const fImg = new Image();
-                fImg.onload = () => { customFloatingImage = fImg; drawAllCanvases(); };
-                fImg.src = state.floatingImage;
+            if (state.floatingImages && Array.isArray(state.floatingImages)) {
+                floatingImages = [];
+                state.floatingImages.forEach(savedItem => {
+                    const fImg = new Image();
+                    fImg.onload = () => {
+                        floatingImages.push({
+                            id: savedItem.id, imgObj: fImg, src: savedItem.src,
+                            opacity: savedItem.opacity, sizeMultiplier: savedItem.sizeMultiplier,
+                            shadowOpacity: savedItem.shadowOpacity, shadowBlur: savedItem.shadowBlur,
+                            x: savedItem.x || 0, y: savedItem.y || 0
+                        });
+                        renderFloatingImagesUI();
+                        drawAllCanvases();
+                    };
+                    fImg.src = savedItem.src;
+                });
             } else {
-                customFloatingImage = null;
+                floatingImages = [];
+                renderFloatingImagesUI();
             }
 
             updateStyleButtonsUI();
-            if (!state.floatingImage) drawAllCanvases();
+            drawAllCanvases();
             
             localStorage.setItem(STORAGE_KEY, stateStr);
             setTimeout(() => { isUndoRedoAction = false; }, 200);
